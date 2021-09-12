@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".registration.Screen_2_1">
 
     <include
         android:id="@+id/include"
@@ -34,10 +34,11 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_weight="0.1"
+            android:layout_weight="0.07"
             android:background="@drawable/button_colours"
             android:gravity="center"
-            android:padding="20dp"
+            android:padding="5dp"
+            android:textSize="20dp"
             android:text=" Select Gsm no." />
 
         <TextView
@@ -49,7 +50,7 @@
             android:hint="factory/ old password"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="30dp"/>
+            android:textSize="20dp"/>
 
         <TextView
             android:id="@+id/screen_2_1_textview_2"
@@ -60,17 +61,18 @@
             android:hint="New password"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="30dp"/>
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/screen_2_1_button_2"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_weight="0.1"
+            android:layout_weight="0.07"
             android:background="@drawable/button_colours"
             android:gravity="center"
-            android:padding="20dp"
+            android:padding="5dp"
+            android:textSize="20dp"
             android:text="Set" />
 
         <TextView
