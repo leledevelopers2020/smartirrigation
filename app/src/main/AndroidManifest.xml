@@ -9,6 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartIrrigation">
+        <activity
+            android:name=".registration.Screen_3_1"
+            android:exported="true" />
+        <activity
+            android:name=".registration.Screen_2_1"
+            android:exported="true" />
+        <activity
+            android:name=".registration.Screen_1"
+            android:exported="true" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
