@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartIrrigation">
         <activity
+            android:name=".registration.screen_3_2"
+            android:exported="true" />
+        <activity
+            android:name=".registration.screen_2_2"
+            android:exported="true" />
+        <activity
             android:name=".registration.Screen_3_1"
             android:exported="true" />
         <activity
