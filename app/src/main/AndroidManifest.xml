@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leledevelopers.smartirrigation">
 
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,12 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartIrrigation">
-        <activity
-            android:name=".registration.screen_3_2"
-            android:exported="true" />
-        <activity
-            android:name=".registration.screen_2_2"
-            android:exported="true" />
         <activity
             android:name=".registration.Screen_3_1"
             android:exported="true" />
@@ -31,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
