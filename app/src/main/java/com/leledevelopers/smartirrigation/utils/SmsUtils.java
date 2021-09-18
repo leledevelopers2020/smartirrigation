@@ -1,5 +1,9 @@
 package com.leledevelopers.smartirrigation.utils;
-
+/**
+ *
+ * @author Shivam Z
+ * This is class containes all constants and methods for Sending and Recevive SMS.
+ */
 public class SmsUtils {
     // SMS responses from controller
     public static final String INSMS_1_1="Admin set successfully";
