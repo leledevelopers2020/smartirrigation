@@ -20,11 +20,10 @@ import androidx.core.app.ActivityCompat;
 
 import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.services.SmsServices;
+import com.leledevelopers.smartirrigation.utils.ProjectUitls;
 
 public class MainActivity extends SmsServices {
-    public static final String EXTRA_SMS_SENDER = "extra_sms_sender";
-    public static final String EXTRA_SMS_MESSAGE = "extra_sms_message";
-    private static final int SMS_REQUEST_CODE = 101;
+
     private static final String TAG = MainActivity.class.getSimpleName();
     TextView textView;
     Button button;
@@ -45,7 +44,7 @@ public class MainActivity extends SmsServices {
                             senderNumber = currentMessage.getDisplayOriginatingAddress();
                             message = currentMessage.getDisplayMessageBody();
                             Log.d(TAG, "senderNUm = " + senderNumber + " message = " + message);
-                            Toast.makeText(MainActivity.this,"senderNUm = " + senderNumber + " message = " + message,Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "senderNUm = " + senderNumber + " message = " + message, Toast.LENGTH_LONG).show();
                             textView.setText("senderNUm = " + senderNumber + "\nmessage = " + message);
                         }
                     } else {
@@ -59,6 +58,7 @@ public class MainActivity extends SmsServices {
             // getApplicationContext().unregisterReceiver(this);
         }
     };
+
     public SmsMessage getIncomingMessage(Object object, Bundle bundle) {
         SmsMessage smsMessage;
         if (Build.VERSION.SDK_INT >= 23) {
@@ -80,10 +80,8 @@ public class MainActivity extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.status);
-        button = findViewById(R.id.settings);
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECEIVE_SMS}, SMS_REQUEST_CODE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECEIVE_SMS}, ProjectUitls.SMS_REQUEST_CODE);
         }
 
         //registerBroadCasts();
@@ -115,15 +113,14 @@ public class MainActivity extends SmsServices {
 
     @Override
     public void sendMessage() {
-        Log.d(TAG,"sendMessage");
+
     }
 
     @Override
-    public void receiveMessage() {
-        Log.d(TAG,"receiveMessage");
+    public void initViews() {
+        textView = findViewById(R.id.status);
+        button = findViewById(R.id.settings);
     }
-
-
 
 
 }
