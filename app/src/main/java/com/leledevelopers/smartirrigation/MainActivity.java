@@ -111,10 +111,6 @@ public class MainActivity extends SmsServices {
         }
     }
 
-    @Override
-    public void sendMessage() {
-
-    }
 
     @Override
     public void initViews() {
