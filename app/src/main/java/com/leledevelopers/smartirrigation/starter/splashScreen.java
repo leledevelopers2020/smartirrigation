@@ -1,12 +1,11 @@
 package com.leledevelopers.smartirrigation.starter;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.leledevelopers.smartirrigation.MainActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.leledevelopers.smartirrigation.R;
 import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.registration.Screen_3_1;

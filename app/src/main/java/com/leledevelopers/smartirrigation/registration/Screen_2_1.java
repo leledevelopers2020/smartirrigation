@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.leledevelopers.smartirrigation.R;
+import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 
@@ -25,6 +27,7 @@ import java.io.IOException;
 
 public class Screen_2_1 extends SmsServices {
     private static final String TAG = Screen_2_1.class.getSimpleName();
+    private SmsReceiver smsReceiver = new SmsReceiver();
     private TextView oldPassword, newPassword, status;
     private Button gsmContact, set;
     private final String fileName="details.txt";
@@ -108,4 +111,31 @@ public class Screen_2_1 extends SmsServices {
             }
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        smsReceiver.setContext(getApplicationContext());
+        smsReceiver.startBroadcastReceiver();
+        smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
+            @Override
+            public void onReceiveSms(String phoneNumber, String message) {
+                Log.d("SmsReceiver", "Yup got it!! " + phoneNumber + " , " + message);
+                status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        smsReceiver.registerBroadCasts();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        smsReceiver.unRegisterBroadCasts();
+    }
+
 }
