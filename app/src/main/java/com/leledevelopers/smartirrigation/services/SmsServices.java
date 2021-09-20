@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.leledevelopers.smartirrigation.utils.ProjectUitls;
+import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 
 /**
  * @author Narsing Rao.K
@@ -49,8 +49,10 @@ public abstract class SmsServices extends AppCompatActivity {
                 new String[]{Manifest.permission.RECEIVE_SMS,
                         Manifest.permission.READ_SMS,
                         Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.SEND_SMS
-                }, ProjectUitls.SMS_REQUEST_CODE);
+                        Manifest.permission.SEND_SMS,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, ProjectUtils.SMS_REQUEST_CODE);
     }
 
     /**
@@ -62,7 +64,9 @@ public abstract class SmsServices extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.RECEIVE_SMS) +
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) +
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_SMS)+
-                ActivityCompat.checkSelfPermission(context,Manifest.permission.SEND_SMS)
+                ActivityCompat.checkSelfPermission(context,Manifest.permission.SEND_SMS)+
+                ActivityCompat.checkSelfPermission(context,Manifest.permission.READ_EXTERNAL_STORAGE)+
+                ActivityCompat.checkSelfPermission(context,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {

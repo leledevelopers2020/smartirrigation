@@ -20,7 +20,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.services.SmsServices;
-import com.leledevelopers.smartirrigation.utils.ProjectUitls;
+import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 
 public class MainActivity extends SmsServices {
 
@@ -81,7 +81,7 @@ public class MainActivity extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECEIVE_SMS}, ProjectUitls.SMS_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECEIVE_SMS}, ProjectUtils.SMS_REQUEST_CODE);
         }
 
         //registerBroadCasts();
