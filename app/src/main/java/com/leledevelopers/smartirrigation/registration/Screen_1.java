@@ -30,10 +30,6 @@ public class Screen_1 extends SmsServices {
         });
     }
 
-    @Override
-    public void sendMessage() {
-
-    }
 
     @Override
     public void initViews() {
