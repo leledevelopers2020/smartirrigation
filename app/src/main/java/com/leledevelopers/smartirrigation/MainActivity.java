@@ -11,6 +11,8 @@ import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 
+import java.util.Date;
+
 public class MainActivity extends SmsServices {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -44,6 +46,12 @@ public class MainActivity extends SmsServices {
                 Log.d("SmsReceiver", "Yup got it!! " + phoneNumber + " , " + message);
                 status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
             }
+
+            @Override
+            public void checkTime(String time) {
+
+            }
+
         });
     }
 
