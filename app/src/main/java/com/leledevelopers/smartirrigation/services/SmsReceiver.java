@@ -6,10 +6,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Narsing Rao.k
@@ -20,6 +25,7 @@ public class SmsReceiver {
     private Context context;
     private BroadcastReceiver broadcastReceiver;
     private SmsReceiverBroadcast smsReceiverBroadcast;
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss a");
 
     public SmsReceiver() {
         this.smsReceiverBroadcast = null;
@@ -97,11 +103,27 @@ public class SmsReceiver {
         }
     }
 
+    public void waitFor_1_Minute(){
+        Date date = new Date();
+        long d1 = date.getTime();
+        Log.d("SmsReceiver", "old time "+d1);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                long d2 = new Date().getTime();
+                Log.d("SmsReceiver", "new time "+d2);
+                long l = d2-d1;
+                smsReceiverBroadcast.checkTime((((l / (1000 * 60)) % 60))+"");
+            }
+        }, 60 * 1000);
+    }
+
     /**
      * @author Narsing Rao.K
      * This interface is used to trigger the sms in activities.
      */
     public interface SmsReceiverBroadcast {
         public void onReceiveSms(String phoneNumber, String message);
+        public void checkTime(String time);
     }
 }
