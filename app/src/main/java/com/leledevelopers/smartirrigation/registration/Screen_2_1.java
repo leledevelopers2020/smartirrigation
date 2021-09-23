@@ -37,7 +37,7 @@ public class Screen_2_1 extends SmsServices {
     private final String fileName = "details.txt";
     private final String filePath = "MyFileDir";
     String filePhoneNumber = "9912473753";
-    String filePassword = "asdfgh";
+    String filePassword = "psw";
     private Boolean b;
 
     @Override
@@ -65,13 +65,13 @@ public class Screen_2_1 extends SmsServices {
                 Log.d("SmsReceiver", "on click");
                 smsReceiver.waitFor_1_Minute();
                 b = true;
-                if (filePhoneNumber != null && filePassword != null) {
-                    File myExternalFile = new File(getExternalFilesDir(filePath), fileName);
+                if (getPhoneNumber() != null && filePassword != null) {
+                    File myExternalFile = new File(getExternalFilesDir(ProjectUtils.DIRECTORY_PATH), ProjectUtils.FILE_NAME);
                     FileOutputStream fos = null;
                     try {
                         fos = new FileOutputStream(myExternalFile);
-                        fos.write(filePhoneNumber.getBytes());
-                        fos.write(filePassword.getBytes());
+                        String data = getPhoneNumber()+"#"+filePassword;
+                        fos.write(data.getBytes());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -79,7 +79,7 @@ public class Screen_2_1 extends SmsServices {
                     }
                     Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(Screen_2_1.this, "PLease enter the data", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Screen_2_1.this, "PLease select proper GSM number or enter correct otp/old password", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -112,6 +112,7 @@ public class Screen_2_1 extends SmsServices {
             if (phone.moveToFirst()) {
                 String contactNumberName = phone.getString(phone.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 String contactNumber = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                setPhoneNumber(contactNumber);
                 gsmContact.setText(contactNumberName + " - " + contactNumber);
             }
         }
