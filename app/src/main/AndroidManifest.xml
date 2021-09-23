@@ -21,7 +21,13 @@
             android:exported="true" />
         <activity
             android:name=".starter.splashScreen"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".registration.Screen_3_1"
             android:exported="true" />
@@ -31,11 +37,6 @@
         <activity
             android:name=".registration.Screen_1"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
     </application>

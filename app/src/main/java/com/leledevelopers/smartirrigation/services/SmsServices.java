@@ -9,26 +9,33 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.leledevelopers.smartirrigation.registration.Screen_3_1;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * @author Narsing Rao.K
  */
 public abstract class SmsServices extends AppCompatActivity {
     protected Context context;
+    protected String phoneNumber;
 
     /**
      * This method should contain the code send SMS
      *
      * @return void
      */
-    public void sendMessage(String phoneNumber,String Message)
+    public void sendMessage(String phoneNumber,String message)
     {
      //   String phoneNumber=txt_pNumber.getText().toString().trim();
     //    String Message=txt_message.getAccessibilityClassName().toString().trim();
-        if(!phoneNumber.equals("") || !Message.equals("")) {
+        if(!phoneNumber.equals("") || message!=null || !message.equals("")) {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, "Message", null, null);
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
         }
     }
 
@@ -75,5 +82,14 @@ public abstract class SmsServices extends AppCompatActivity {
         }
 
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
 
 }
