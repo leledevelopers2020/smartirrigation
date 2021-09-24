@@ -16,9 +16,8 @@ import java.util.Date;
 public class MainActivity extends SmsServices {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private SmsReceiver smsReceiver = new SmsReceiver();
     TextView status;
-    Button button;
+    Button settings, configureFieldIrrigation, configureFieldFertigation, configurePumpFiltration, printReportFieldStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,49 +26,50 @@ public class MainActivity extends SmsServices {
         initViews();
         this.context = getApplicationContext();
         accessPermissions();
-        button.setOnClickListener(new View.OnClickListener() {
+        configureFieldIrrigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Screen_1.class));
+                status.setText("Navigating to Screen 5");
+                startActivity(new Intent(MainActivity.this, Screen_5.class));
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        smsReceiver.setContext(getApplicationContext());
-        smsReceiver.startBroadcastReceiver();
-        smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
+        configureFieldFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onReceiveSms(String phoneNumber, String message) {
-                Log.d("SmsReceiver", "Yup got it!! " + phoneNumber + " , " + message);
-                status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
+            public void onClick(View v) {
+                status.setText("Navigating to Screen 6");
+                startActivity(new Intent(MainActivity.this, Screen_6.class));
             }
-
-            @Override
-            public void checkTime(String time) {
-
-            }
-
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        smsReceiver.registerBroadCasts();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        smsReceiver.unRegisterBroadCasts();
+        configurePumpFiltration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                status.setText("Navigating to Screen 7");
+                startActivity(new Intent(MainActivity.this, Screen_7.class));
+            }
+        });
+        printReportFieldStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                status.setText("Navigating to Screen 8");
+                startActivity(new Intent(MainActivity.this, Screen_8.class));
+            }
+        });
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                status.setText("Navigating to Screen 9");
+                startActivity(new Intent(MainActivity.this, Screen_9.class));
+            }
+        });
     }
 
     @Override
     public void initViews() {
-        status = findViewById(R.id.status);
-        button = findViewById(R.id.settings);
+        status = findViewById(R.id.screen_4_status);
+        configureFieldIrrigation = findViewById(R.id.screen_4_button1);
+        configureFieldFertigation = findViewById(R.id.screen_4_button2);
+        configurePumpFiltration = findViewById(R.id.screen_4_button3);
+        printReportFieldStatus = findViewById(R.id.screen_4_button4);
+        settings = findViewById(R.id.settings);
     }
 }

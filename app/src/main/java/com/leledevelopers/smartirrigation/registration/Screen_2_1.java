@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.leledevelopers.smartirrigation.R;
+import com.leledevelopers.smartirrigation.Screen_9;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
@@ -25,9 +26,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Screen_2_1 extends SmsServices {
     private static final String TAG = Screen_2_1.class.getSimpleName();

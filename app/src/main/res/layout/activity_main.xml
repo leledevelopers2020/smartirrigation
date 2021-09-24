@@ -19,6 +19,7 @@
 
 
         <Button
+            android:id="@+id/screen_4_button1"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -30,6 +31,7 @@
             android:textSize="20dp"
             android:text="Configure field irrigation" />
         <Button
+            android:id="@+id/screen_4_button2"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -42,6 +44,7 @@
             android:text="Configure field fertigation" />
 
         <Button
+            android:id="@+id/screen_4_button3"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -54,6 +57,7 @@
             android:textSize="20dp" />
 
         <Button
+            android:id="@+id/screen_4_button4"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -77,7 +81,7 @@
             android:textSize="20dp"
             android:text="Settings" />
         <TextView
-            android:id="@+id/status"
+            android:id="@+id/screen_4_status"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
