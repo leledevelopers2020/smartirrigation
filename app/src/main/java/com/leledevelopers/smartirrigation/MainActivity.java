@@ -72,4 +72,10 @@ public class MainActivity extends SmsServices {
         printReportFieldStatus = findViewById(R.id.screen_4_button4);
         settings = findViewById(R.id.settings);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
