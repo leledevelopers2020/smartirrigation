@@ -17,17 +17,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".registration.Screen_9"
+            android:name=".Screen_10"
             android:exported="true" />
         <activity
-            android:name=".starter.splashScreen"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".Screen_9"
+            android:exported="true" />
+        <activity
+            android:name=".Screen_8"
+            android:exported="true" />
+        <activity
+            android:name=".Screen_7"
+            android:exported="true" />
+        <activity
+            android:name=".Screen_6"
+            android:exported="true" />
+        <activity
+            android:name=".Screen_5"
+            android:exported="true" />
         <activity
             android:name=".registration.Screen_3_1"
             android:exported="true" />
@@ -36,9 +42,19 @@
             android:exported="true" />
         <activity
             android:name=".registration.Screen_1"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".starter.splashScreen"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

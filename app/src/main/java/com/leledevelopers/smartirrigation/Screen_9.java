@@ -1,10 +1,8 @@
-package com.leledevelopers.smartirrigation.registration;
+package com.leledevelopers.smartirrigation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-
-import com.leledevelopers.smartirrigation.R;
 
 public class Screen_9 extends AppCompatActivity {
 

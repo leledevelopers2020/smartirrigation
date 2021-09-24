@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Screen_9">
+    tools:context=".Screen_6">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Screen 9/Settings Page"
+        android:text="Screen 6"
         android:textAlignment="center"
         android:textSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
