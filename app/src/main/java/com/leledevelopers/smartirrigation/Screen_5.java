@@ -23,7 +23,7 @@ public class Screen_5 extends AppCompatActivity {
     private int hour,min;
     EditText valveOnPeriod,valveOffPeriod,soilDryness,soilWetness,motorOnTime,priority,cycles,wetPeriod;
     TextView screenStatus5;
-    Button enableFertigation,disableFertigation;
+    private Button enableFertigation,disableFertigation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +65,12 @@ public class Screen_5 extends AppCompatActivity {
         });
 
         //disable fertigation
+        disableFertigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
     }
@@ -79,8 +85,8 @@ public class Screen_5 extends AppCompatActivity {
         priority=findViewById(R.id.priority);
         cycles=findViewById(R.id.priority);
         wetPeriod=findViewById(R.id.wetPeriod);
-        enableFertigation=findViewById(R.id.enableFieldFertigation);
-        disableFertigation=findViewById(R.id.disableFertigation);
+        enableFertigation=findViewById(R.id.enableFieldFertigation5);
+        disableFertigation=findViewById(R.id.disableFertigation5);
         screenStatus5=findViewById(R.id.screen_5_status);
     }
 }

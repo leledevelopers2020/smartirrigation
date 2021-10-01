@@ -47,6 +47,7 @@
                 android:gravity="center"/>
         </LinearLayout>
         <Button
+            android:id="@+id/setSystemTime"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.1"
@@ -56,6 +57,7 @@
             android:padding="10dp"
             android:layout_margin="7dp" />
         <Button
+            android:id="@+id/getSystemTime"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.1"
@@ -64,6 +66,7 @@
             android:padding="10dp"
             android:text="Get System Time"/>
         <Button
+            android:id="@+id/updatePassword"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.1"
@@ -73,6 +76,7 @@
             android:padding="10dp"
             android:text="Update Password"/>
         <Button
+            android:id="@+id/setMotorloadCutoff"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.1"
@@ -82,7 +86,7 @@
             android:text="Set Motor Load Cutoff"/>
 
         <TextView
-            android:id="@+id/screen_1_status"
+            android:id="@+id/screen_9_status"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -93,6 +97,7 @@
             android:textColorHint="@color/sandcolor"
             android:textSize="20dp" />
         <Button
+            android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.1"

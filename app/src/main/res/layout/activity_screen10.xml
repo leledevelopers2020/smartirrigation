@@ -52,6 +52,7 @@
                 android:gravity="center"
                 android:hint="  0 - 1024 "
                 android:maxLength="4"
+                android:inputType="number"
                 android:textSize="20dp" />
         </LinearLayout>
 
@@ -79,10 +80,12 @@
                 android:gravity="center"
                 android:hint=" 0 - 1024 "
                 android:maxLength="4"
+                android:inputType="number"
                 android:textSize="20dp" />
         </LinearLayout>
 
         <Button
+            android:id="@+id/setMotorLoadThreshold"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -94,6 +97,7 @@
             android:textSize="20dp" />
 
         <TextView
+            android:id="@+id/screen_10_status"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
