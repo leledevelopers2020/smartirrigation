@@ -9,13 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.leledevelopers.smartirrigation.registration.Screen_3_1;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 /**
  * @author Narsing Rao.K

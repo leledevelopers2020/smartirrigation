@@ -11,4 +11,9 @@ public class Screen_10 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen10);
     }
+
+    private void initViews() {
+
+    }
+
 }

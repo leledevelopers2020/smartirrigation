@@ -2,20 +2,15 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.leledevelopers.smartirrigation.registration.Screen_1;
-import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 
-import java.util.Date;
+public class Screen_4 extends SmsServices {
 
-public class MainActivity extends SmsServices {
-
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = Screen_4.class.getSimpleName();
     TextView status;
     Button settings, configureFieldIrrigation, configureFieldFertigation, configurePumpFiltration, printReportFieldStatus;
 
@@ -30,35 +25,35 @@ public class MainActivity extends SmsServices {
             @Override
             public void onClick(View v) {
                 status.setText("Navigating to Screen 5");
-                startActivity(new Intent(MainActivity.this, Screen_5.class));
+                startActivity(new Intent(Screen_4.this, Screen_5.class));
             }
         });
         configureFieldFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 status.setText("Navigating to Screen 6");
-                startActivity(new Intent(MainActivity.this, Screen_6.class));
+                startActivity(new Intent(Screen_4.this, Screen_6.class));
             }
         });
         configurePumpFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 status.setText("Navigating to Screen 7");
-                startActivity(new Intent(MainActivity.this, Screen_7.class));
+                startActivity(new Intent(Screen_4.this, Screen_7.class));
             }
         });
         printReportFieldStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 status.setText("Navigating to Screen 8");
-                startActivity(new Intent(MainActivity.this, Screen_8.class));
+                startActivity(new Intent(Screen_4.this, Screen_8.class));
             }
         });
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 status.setText("Navigating to Screen 9");
-                startActivity(new Intent(MainActivity.this, Screen_9.class));
+                startActivity(new Intent(Screen_4.this, Screen_9.class));
             }
         });
     }

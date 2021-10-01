@@ -41,7 +41,7 @@
             android:textSize="20dp"
             android:text=" Select Wi-Fi ID  " />
 
-        <TextView
+        <EditText
             android:id="@+id/screen_2_1_textview_1"
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -11,4 +11,8 @@ public class Screen_7 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen7);
     }
+    private void initViews()
+    {
+
+    }
 }

@@ -6,14 +6,102 @@
     android:layout_height="match_parent"
     tools:context=".Screen_9">
 
-    <TextView
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Screen 9/Settings Page"
-        android:textAlignment="center"
-        android:textSize="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:text="Settings"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Change Language"
+                android:textSize="20dp"
+                android:gravity="center"/>
+            <Spinner
+                android:id="@+id/language_spinner"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:prompt="Select your language"
+                android:gravity="center"/>
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:background="@drawable/button_colours"
+            android:text="Set System Time"
+            android:padding="10dp"
+            android:layout_margin="7dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:background="@drawable/button_colours"
+            android:padding="10dp"
+            android:text="Get System Time"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:background="@drawable/button_colours"
+            android:layout_margin="7dp"
+            android:padding="10dp"
+            android:text="Update Password"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:background="@drawable/button_colours"
+            android:padding="10dp"
+            android:text="Set Motor Load Cutoff"/>
+
+        <TextView
+            android:id="@+id/screen_1_status"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.4"
+            android:gravity="center"
+            android:hint="Status"
+            android:textColor="@color/sandcolor"
+            android:textColorHint="@color/sandcolor"
+            android:textSize="20dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:background="@drawable/button_colours"
+            android:layout_margin="7dp"
+            android:padding="10dp"
+            android:text="Save"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

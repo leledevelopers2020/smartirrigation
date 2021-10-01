@@ -35,7 +35,7 @@
             android:name=".Screen_5"
             android:exported="true" />
         <activity
-            android:name=".registration.Screen_3_1"
+            android:name=".MainActivity_GSM"
             android:exported="true" />
         <activity
             android:name=".registration.Screen_2_1"
@@ -44,7 +44,7 @@
             android:name=".registration.Screen_1"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Screen_4"
             android:exported="true" />
         <activity
             android:name=".starter.splashScreen"
