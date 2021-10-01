@@ -5,15 +5,146 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Screen_6">
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Screen 6"
-        android:textAlignment="center"
-        android:textSize="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:text="Configure Field Fertigation"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Select field No."
+                android:textSize="20dp"
+                android:gravity="center"/>
+            <Spinner
+                android:id="@+id/fieldNoSpinner6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:prompt="Field No."
+                android:gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Wet Period"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/wetPeriod"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLength="3"
+                android:hint=" 1-999 (min) "
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Inject Period "
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/injectPeriod"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLength="3"
+                android:hint=" 1-999 (min) "
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="No. of Iterations "
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/noOfIterations"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLength="1"
+                android:hint=" 1-5 "
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:background="@drawable/button_colours"
+            android:padding="15dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:text="Enable Fertigation"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:background="@drawable/button_colours"
+            android:padding="15dp"
+            android:text="Disable Fertigation"/>
+        <TextView
+            android:id="@+id/screen_1_status"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.4"
+            android:gravity="center"
+            android:hint="Status"
+            android:textColor="@color/sandcolor"
+            android:textColorHint="@color/sandcolor"
+            android:textSize="20dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
