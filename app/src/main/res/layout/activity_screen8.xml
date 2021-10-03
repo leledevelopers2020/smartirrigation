@@ -40,7 +40,6 @@
              android:layout_width="0dp"
              android:layout_height="wrap_content"
              android:layout_weight="0.5"
-             android:prompt="Select your language"
              android:layout_marginRight="10dp"
              android:padding="5dp"/>
       </LinearLayout>
