@@ -31,6 +31,7 @@ public class MainActivity_GSM extends SmsServices {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "Welcome");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen31);
         initViews();
@@ -156,40 +157,8 @@ public class MainActivity_GSM extends SmsServices {
                 e.printStackTrace();
             }
         }
-        try {
-            createConfgFiles();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
-    private void createConfgFiles() throws IOException {
-        File file1 = new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.CONFG_IRRIGATION_FILE);
-        File file2 = new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.CONFG_FILTRATION_FILE);
-        File file3 = new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.CONFG_FERTIGATION_FILE);
-        File file4 = new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.REPORT_FIELD_FILE);
-        if (file1.exists()) {
-            Log.v(TAG, "file1 yes");
-        } else {
-            Log.d(TAG, "file1 no " + " new file : " + file1.createNewFile());
-        }
 
-        if (file2.exists()) {
-            Log.v(TAG, "file2 yes");
-        } else {
-            Log.d(TAG, "file2 no " + " new file : " + file2.createNewFile());
-        }
-
-        if (file3.exists()) {
-            Log.v(TAG, "file3 yes");
-        } else {
-            Log.d(TAG, "file3 no " + " new file : " + file3.createNewFile());
-        }
-
-        if (file4.exists()) {
-            Log.v(TAG, "file4 yes");
-        } else {
-            Log.d(TAG, "file4 no " + " new file : " + file4.createNewFile());
-        }
-    }
 }

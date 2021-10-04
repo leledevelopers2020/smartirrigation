@@ -1,4 +1,4 @@
-package com.leledevelopers.smartirrigation.utils;
+package com.leledevelopers.smartirrigation.models;
 
 public class ConfigureFieldIrrigationModel {
     private int fieldNo;

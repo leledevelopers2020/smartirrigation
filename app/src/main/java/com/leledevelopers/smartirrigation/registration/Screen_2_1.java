@@ -18,8 +18,10 @@ import androidx.annotation.Nullable;
 import com.leledevelopers.smartirrigation.MainActivity_GSM;
 import com.leledevelopers.smartirrigation.R;
 import com.leledevelopers.smartirrigation.Screen_9;
+import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
+import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
@@ -36,7 +38,7 @@ public class Screen_2_1 extends SmsServices {
     private final String fileName = "details.txt";
     private final String filePath = "MyFileDir";
     String filePhoneNumber = "9912473753";
-    String filePassword="psw" ;
+    String filePassword = "psw";
     private Boolean b;
 
     @Override
@@ -44,6 +46,8 @@ public class Screen_2_1 extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen21);
         initViews();
+        Toast.makeText(Screen_2_1.this, TAG, Toast.LENGTH_LONG).show();
+        System.out.println(TAG + " into");
         this.context = getApplicationContext();
         gsmContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +74,7 @@ public class Screen_2_1 extends SmsServices {
                     FileOutputStream fos = null;
                     try {
                         fos = new FileOutputStream(myExternalFile);
-                        String data = getPhoneNumber()+"#"+filePassword;
+                        String data = getPhoneNumber() + "#" + filePassword;
                         fos.write(data.getBytes());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -117,6 +121,7 @@ public class Screen_2_1 extends SmsServices {
             }
         }
     }
+
     public void checkSMS(String message) {
         switch (message) {
             case SmsUtils.INSMS_1_1: {
@@ -130,6 +135,11 @@ public class Screen_2_1 extends SmsServices {
             }
             case SmsUtils.INSMS_3_1: {
                 status.setText("Password Updated successfully");
+                try {
+                    createConfgFiles();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 startActivity(new Intent(Screen_2_1.this, MainActivity_GSM.class));
                 break;
             }
@@ -174,6 +184,17 @@ public class Screen_2_1 extends SmsServices {
         smsReceiver.unRegisterBroadCasts();
     }
 
-
+    private void createConfgFiles() throws IOException {
+        CURD_Files curd_files = new CURD_FilesImpl();
+        if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME)) {
+            curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME);
+        }
+        if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FERTIGATION_NAME)) {
+            curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FERTIGATION_NAME);
+        }
+        if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FILTRATION_NAME)) {
+            curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FILTRATION_NAME);
+        }
+    }
 
 }
