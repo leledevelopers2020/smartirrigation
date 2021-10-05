@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.leledevelopers.smartirrigation.R;
 import com.leledevelopers.smartirrigation.registration.Screen_1;
-import com.leledevelopers.smartirrigation.registration.Screen_3_1;
+import com.leledevelopers.smartirrigation.MainActivity_GSM;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 
@@ -38,7 +36,7 @@ public class splashScreen extends SmsServices {
             public void run() {
                 if (registered) {
                     Intent intent = new Intent(splashScreen.this,
-                            Screen_3_1.class);                     // if registered with GSM it goes to screen_3_1 or else if with wi-fi goes to screen_3_2
+                            MainActivity_GSM.class);                     // if registered with GSM it goes to screen_3_1 or else if with wi-fi goes to screen_3_2
                     startActivity(intent);
                     finish();
                 } else {

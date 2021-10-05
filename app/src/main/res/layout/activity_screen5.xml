@@ -6,13 +6,277 @@
     android:layout_height="match_parent"
     tools:context=".Screen_5">
 
-    <TextView
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Screen 5"
-        android:textAlignment="center"
-        android:textSize="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        android:orientation="vertical"
+        android:layout_marginTop="70dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:text="Configure Field Irrigation"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Select field No."
+            android:textSize="20dp"
+            android:gravity="center"/>
+        <Spinner
+            android:id="@+id/fieldNoSpinner5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Valve On Period"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/valveOnPeriod"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLength="3"
+                android:inputType="number"
+                android:hint=" 10-999 (min) "
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Valve Off Period"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/valveOffPeriod"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLength="2"
+                android:inputType="number"
+                android:hint=" 1-99 (days) "
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Soil Dryness"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/soilDryness"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLength="3"
+                android:hint=" 100-999  "
+                android:inputType="number"
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Soil Wetness"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/soilWetness"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLength="5"
+                android:inputType="number"
+                android:hint=" 10000-99999 "
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Motor On Time"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/motorOnTime"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:hint="HH:MM"
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Priority"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/priority"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLength="2"
+                android:inputType="number"
+                android:hint=" 1-12  "
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Cycles"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/cycles"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:hint=" 1-9 "
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="Trigger from"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/wetPeriod"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLength="3"
+                android:hint=" Day-1....Day-7 "
+                android:textSize="20dp"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/enableFieldFertigation5"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:layout_gravity="center"
+            android:background="@drawable/button_colours"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Enable Fertigation"/>
+        <Button
+            android:id="@+id/disableFertigation5"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:layout_gravity="center"
+            android:background="@drawable/button_colours"
+            android:padding="15dp"
+            android:text="Disable Fertigation"/>
+        <TextView
+            android:id="@+id/screen_5_status"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:hint="Status "
+            android:textColor="@color/sandcolor"
+            android:textColorHint="@color/sandcolor"
+            android:textSize="20dp" />
+    </LinearLayout>
+</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

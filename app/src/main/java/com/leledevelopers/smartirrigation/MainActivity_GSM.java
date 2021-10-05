@@ -1,39 +1,29 @@
-package com.leledevelopers.smartirrigation.registration;
+package com.leledevelopers.smartirrigation;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leledevelopers.smartirrigation.MainActivity;
-import com.leledevelopers.smartirrigation.R;
+import com.leledevelopers.smartirrigation.registration.Screen_1;
+import com.leledevelopers.smartirrigation.registration.Screen_2_1;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
-import com.leledevelopers.smartirrigation.starter.splashScreen;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Screen_3_1 extends SmsServices {
-    private static final String TAG = Screen_3_1.class.getSimpleName();
+public class MainActivity_GSM extends SmsServices {
+    private static final String TAG = MainActivity_GSM.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private TextView smsLabel, status;
     private Button connect, resetConnection;
@@ -41,6 +31,7 @@ public class Screen_3_1 extends SmsServices {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "Welcome");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen31);
         initViews();
@@ -70,9 +61,9 @@ public class Screen_3_1 extends SmsServices {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Toast.makeText(Screen_3_1.this, "You clicked yes button", Toast.LENGTH_LONG).show();
-                        new File(Screen_3_1.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
-                        startActivity(new Intent(Screen_3_1.this,Screen_1.class));
+                        Toast.makeText(MainActivity_GSM.this, "You clicked yes button", Toast.LENGTH_LONG).show();
+                        new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
+                        startActivity(new Intent(MainActivity_GSM.this, Screen_1.class));
                     }
                 });
 
@@ -106,14 +97,14 @@ public class Screen_3_1 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                Log.d("SmsReceiver", "Yup got it!! " + phoneNumber + " , " + message);
+
                 status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                 checkSMS(message);
             }
 
             @Override
             public void checkTime(String time) {
-                Log.d("SmsReceiver", "new time " + time);
+
                 if (b) {
                     status.setText("System Down");
                 }
@@ -138,25 +129,25 @@ public class Screen_3_1 extends SmsServices {
     public void checkSMS(String message) {
         switch (message) {
             case SmsUtils.INSMS_2_1: {
-                startActivity(new Intent(Screen_3_1.this, MainActivity.class));
+                startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
                 break;
             }
             case SmsUtils.INSMS_2_2: {
                 status.setText("Admin Changed, please reauthenticate device");
-                startActivity(new Intent(Screen_3_1.this, Screen_2_1.class));
+                startActivity(new Intent(MainActivity_GSM.this, Screen_2_1.class));
                 break;
             }
         }
     }
 
     private void readUserFile() {
-        File file = new File(Screen_3_1.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
+        File file = new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
         if (file.exists()) {
             StringBuilder text = new StringBuilder();
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(file));
                 String line;
-                while ((line = reader.readLine())!= null){
+                while ((line = reader.readLine()) != null) {
                     text.append(line);
                 }
                 String[] s = text.toString().split("[#]");
@@ -166,5 +157,8 @@ public class Screen_3_1 extends SmsServices {
                 e.printStackTrace();
             }
         }
+
     }
+
+
 }

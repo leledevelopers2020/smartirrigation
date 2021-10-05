@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.leledevelopers.smartirrigation.MainActivity_GSM;
 import com.leledevelopers.smartirrigation.R;
 import com.leledevelopers.smartirrigation.Screen_9;
+import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
+import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
@@ -43,6 +46,8 @@ public class Screen_2_1 extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen21);
         initViews();
+        Toast.makeText(Screen_2_1.this, TAG, Toast.LENGTH_LONG).show();
+        System.out.println(TAG + " into");
         this.context = getApplicationContext();
         gsmContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,15 +65,16 @@ public class Screen_2_1 extends SmsServices {
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("SmsReceiver", "on click");
+
                 smsReceiver.waitFor_1_Minute();
                 b = true;
+
                 if (getPhoneNumber() != null && filePassword != null) {
                     File myExternalFile = new File(getExternalFilesDir(ProjectUtils.DIRECTORY_PATH), ProjectUtils.FILE_NAME);
                     FileOutputStream fos = null;
                     try {
                         fos = new FileOutputStream(myExternalFile);
-                        String data = getPhoneNumber()+"#"+filePassword;
+                        String data = getPhoneNumber() + "#" + filePassword;
                         fos.write(data.getBytes());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -95,8 +101,8 @@ public class Screen_2_1 extends SmsServices {
     @Override
     public void initViews() {
         gsmContact = findViewById(R.id.screen_2_1_button_1);
-        oldPassword = findViewById(R.id.screen_2_1_textview_1);
-        newPassword = findViewById(R.id.screen_2_1_textview_2);
+        oldPassword = findViewById(R.id.screen_2_1_edittext_1);
+        newPassword = findViewById(R.id.screen_2_1_edittext_2);
         set = findViewById(R.id.screen_2_1_button_2);
         status = findViewById(R.id.screen_2_1_status);
     }
@@ -116,6 +122,30 @@ public class Screen_2_1 extends SmsServices {
         }
     }
 
+    public void checkSMS(String message) {
+        switch (message) {
+            case SmsUtils.INSMS_1_1: {
+                startActivity(new Intent(Screen_2_1.this, Screen_9.class));
+                break;
+            }
+            case SmsUtils.INSMS_1_2: {
+                Log.d("SmsReceiver", "true");
+                oldPassword.requestFocus();
+                break;
+            }
+            case SmsUtils.INSMS_3_1: {
+                status.setText("Password Updated successfully");
+                try {
+                    createConfgFiles();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                startActivity(new Intent(Screen_2_1.this, MainActivity_GSM.class));
+                break;
+            }
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -125,7 +155,7 @@ public class Screen_2_1 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                Log.d("SmsReceiver", "Yup got it!! " + phoneNumber + " , " + message);
+
                 status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                 checkSMS(message);
             }
@@ -154,22 +184,16 @@ public class Screen_2_1 extends SmsServices {
         smsReceiver.unRegisterBroadCasts();
     }
 
-    public void checkSMS(String message) {
-        switch (message) {
-            case SmsUtils.INSMS_1_1: {
-                startActivity(new Intent(Screen_2_1.this, Screen_9.class));
-                break;
-            }
-            case SmsUtils.INSMS_1_2: {
-                Log.d("SmsReceiver", "true");
-                oldPassword.requestFocus();
-                break;
-            }
-            case SmsUtils.INSMS_3_1: {
-                status.setText("Password Updated successfully");
-                startActivity(new Intent(Screen_2_1.this, Screen_3_1.class));
-                break;
-            }
+    private void createConfgFiles() throws IOException {
+        CURD_Files curd_files = new CURD_FilesImpl();
+        if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME)) {
+            curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME);
+        }
+        if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FERTIGATION_NAME)) {
+            curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FERTIGATION_NAME);
+        }
+        if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FILTRATION_NAME)) {
+            curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FILTRATION_NAME);
         }
     }
 
