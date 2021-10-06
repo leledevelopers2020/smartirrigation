@@ -58,13 +58,13 @@ public class SmsUtils {
     }
 
     //Configure field fertigation
-    public String OutSMS_6(String fieldNo, String wetPeriod,String injectPeriod, String noIterations)
+    public String OutSMS_6(int fieldNo, int wetPeriod,int injectPeriod, int noIterations)
     {
         return "ENABLE"+fieldNo+" "+wetPeriod+" "+injectPeriod+" "+noIterations+" ";
     }
 
     //Disable field fertigation
-    public String OutSMS_7(String fieldNo)
+    public String OutSMS_7(int fieldNo)
     {
         return "DISABLE"+fieldNo;
     }

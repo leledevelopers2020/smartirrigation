@@ -1,24 +1,28 @@
 package com.leledevelopers.smartirrigation;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.leledevelopers.smartirrigation.models.FiltrationModel;
+import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
+import com.leledevelopers.smartirrigation.services.SmsServices;
+import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
-public class Screen_7 extends AppCompatActivity {
+public class Screen_7 extends SmsServices {
     private static final String TAG = Screen_7.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private Boolean b;
     EditText filtrationControlUnitNoDelay_1, filtrationControlUnitNoDelay_2, filtrationControlUnitNoDelay_3;
     EditText filtrationControlUnitOnTime, filtrationControlUnitSeparation;
-    private Button enableFiltration7, disableFiltration7;
+    private Button enableFiltration, disableFiltration;
     private TextView status;
-
+    private FiltrationModel model;
+    private CURD_Files curd_files = new CURD_FilesImpl();
+    private SmsUtils smsUtils = new SmsUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +31,15 @@ public class Screen_7 extends AppCompatActivity {
         initViews();
     }
 
-    private void initViews() {
+    @Override
+    public void initViews() {
         filtrationControlUnitNoDelay_1 = findViewById(R.id.filtrationControlUnitNoDelay_1);
         filtrationControlUnitNoDelay_2 = findViewById(R.id.filtrationControlUnitNoDelay_2);
         filtrationControlUnitNoDelay_3 = findViewById(R.id.filtrationControlUnitNoDelay_3);
         filtrationControlUnitOnTime = findViewById(R.id.filtrationControlUnitOnTime);
         filtrationControlUnitSeparation = findViewById(R.id.filtrationControlUnitSeparation);
-        enableFiltration7 = findViewById(R.id.enableFiltration7);
-        disableFiltration7 = findViewById(R.id.disableFiltration7);
+        enableFiltration = findViewById(R.id.enableFiltration7);
+        disableFiltration = findViewById(R.id.disableFiltration7);
         status = findViewById(R.id.screen_7_status);
     }
 
