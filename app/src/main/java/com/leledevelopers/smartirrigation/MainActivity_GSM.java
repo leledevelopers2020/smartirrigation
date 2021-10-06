@@ -41,7 +41,7 @@ public class MainActivity_GSM extends SmsServices {
             public void onClick(View v) {
                 smsReceiver.waitFor_1_Minute();
                 b = true;
-                sendMessage(getPhoneNumber(), SmsUtils.OutSMS_2);
+                sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2);
                 status.setText(SmsUtils.OutSMS_2 + " delivery");
             }
         });
@@ -151,7 +151,7 @@ public class MainActivity_GSM extends SmsServices {
                     text.append(line);
                 }
                 String[] s = text.toString().split("[#]");
-                setPhoneNumber(s[0]);
+                SmsServices.phoneNumber = s[0];
                 smsLabel.setText(s[0]);
             } catch (IOException e) {
                 e.printStackTrace();

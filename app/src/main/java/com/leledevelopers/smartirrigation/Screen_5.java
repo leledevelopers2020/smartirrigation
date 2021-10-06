@@ -12,15 +12,23 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.leledevelopers.smartirrigation.models.ConfigureFieldIrrigationModel;
+import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
+import com.leledevelopers.smartirrigation.services.SmsServices;
+import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
+import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
-public class Screen_5 extends AppCompatActivity {
+public class Screen_5 extends SmsServices {
     private static final String TAG = Screen_5.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     ArrayAdapter<CharSequence> adapter;
@@ -30,6 +38,9 @@ public class Screen_5 extends AppCompatActivity {
     TextView status;
     private Button enableFertigation, disableFertigation;
     private Boolean b;
+    private ConfigureFieldIrrigationModel model;
+    private CURD_Files curd_files = new CURD_FilesImpl();
+    private SmsUtils smsUtils = new SmsUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +52,60 @@ public class Screen_5 extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        valveOnPeriod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFertigation.setVisibility(View.VISIBLE);
+            }
+        });
+
+        valveOffPeriod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFertigation.setVisibility(View.VISIBLE);
+            }
+        });
+
+        soilDryness.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFertigation.setVisibility(View.VISIBLE);
+            }
+        });
+
+        soilWetness.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFertigation.setVisibility(View.VISIBLE);
+            }
+        });
+
+        priority.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFertigation.setVisibility(View.VISIBLE);
+            }
+        });
+
+        cycles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFertigation.setVisibility(View.VISIBLE);
+            }
+        });
+
+        wetPeriod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFertigation.setVisibility(View.VISIBLE);
+            }
+        });
+
         // motor time
         motorOnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                enableFertigation.setVisibility(View.VISIBLE);
                 TimePickerDialog timePickerDialog = new TimePickerDialog(Screen_5.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         new TimePickerDialog.OnTimeSetListener() {
@@ -67,7 +128,25 @@ public class Screen_5 extends AppCompatActivity {
         enableFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
+                model.setValveOnPeriod(Integer.parseInt(valveOnPeriod.getText().toString()));
+                model.setValveOffPeriod(Integer.parseInt(valveOffPeriod.getText().toString()));
+                model.setSoilDryness(Integer.parseInt(soilDryness.getText().toString()));
+                model.setSoilWetness(Integer.parseInt(soilWetness.getText().toString()));
+                model.setMotorOnTime(motorOnTime.getText().toString());
+                model.setPriority(Integer.parseInt(priority.getText().toString()));
+                model.setCycle(Integer.parseInt(cycles.getText().toString()));
+                model.setTiggerFrom(wetPeriod.getText().toString());
+                System.out.println("after set " + model.toString());
+                getHoursAndMinutes(model.getMotorOnTime());
+                try {
+                    curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, model);
+                    String smsdata = smsUtils.OutSMS_4(model.getFieldNo(), model.getValveOnPeriod(), model.getValveOffPeriod(), model.getMotorOnTimeHr(),
+                            model.getMotorOnTimeMins(), model.getSoilDryness(), model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
+                    sendMessage(SmsServices.phoneNumber, smsdata);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -75,14 +154,57 @@ public class Screen_5 extends AppCompatActivity {
         disableFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                enableFertigation.setVisibility(View.INVISIBLE);
+                String smsdata = smsUtils.OutSMS_5(model.getFieldNo());
+                sendMessage(SmsServices.phoneNumber, smsdata);
             }
         });
 
-
+        initilizeModel();
     }
 
-    private void initViews() {
+    private void initilizeModel() {
+        if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_IRRIGATION_FILE)) {
+            try {
+                model = (ConfigureFieldIrrigationModel) curd_files.getFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
+                Toast.makeText(Screen_5.this, model.toString(), Toast.LENGTH_LONG).show();
+                spinner.setSelection(model.getFieldNo() - 1);
+                valveOnPeriod.setText(model.getValveOnPeriod() + "");
+                valveOffPeriod.setText(model.getValveOffPeriod() + "");
+                soilDryness.setText(model.getSoilDryness() + "");
+                soilWetness.setText(model.getSoilWetness() + "");
+                motorOnTime.setText(model.getMotorOnTime());
+                priority.setText(model.getPriority() + "");
+                cycles.setText(model.getCycle() + "");
+                wetPeriod.setText(model.getTiggerFrom());
+                getHoursAndMinutes(model.getMotorOnTime());
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(Screen_5.this, "NO data", Toast.LENGTH_LONG).show();
+            model = new ConfigureFieldIrrigationModel();
+        }
+    }
+
+    private void getHoursAndMinutes(String motorOnTime) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm aa", Locale.ENGLISH);
+        try {
+            Calendar c = Calendar.getInstance();
+            c.setTime(dateFormatter.parse(motorOnTime));
+            String hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
+            String mintue = String.valueOf(c.get(Calendar.MINUTE));
+            model.setMotorOnTimeHr(Integer.parseInt(hour));
+            model.setMotorOnTimeMins(Integer.parseInt(mintue));
+            System.out.println("Hour: " + hour);
+            System.out.println("Minute: " + mintue);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void initViews() {
         spinner = (Spinner) findViewById(R.id.fieldNoSpinner5);
         valveOnPeriod = findViewById(R.id.valveOnPeriod);
         valveOffPeriod = findViewById(R.id.valveOffPeriod);
@@ -90,7 +212,7 @@ public class Screen_5 extends AppCompatActivity {
         soilWetness = findViewById(R.id.soilWetness);
         motorOnTime = findViewById(R.id.motorOnTime);
         priority = findViewById(R.id.priority);
-        cycles = findViewById(R.id.priority);
+        cycles = findViewById(R.id.cycles);
         wetPeriod = findViewById(R.id.wetPeriod);
         enableFertigation = findViewById(R.id.enableFieldFertigation5);
         disableFertigation = findViewById(R.id.disableFertigation5);

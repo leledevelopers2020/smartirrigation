@@ -71,7 +71,7 @@ public class splashScreen extends SmsServices {
                     text.append(line);
                 }
                 String[] s = text.toString().split("[#]");
-                setPhoneNumber(s[0]);
+                SmsServices.phoneNumber = s[0];
             } catch (IOException e) {
                 e.printStackTrace();
             }

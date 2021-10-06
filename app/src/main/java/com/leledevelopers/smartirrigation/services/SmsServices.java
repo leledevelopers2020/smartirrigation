@@ -16,7 +16,7 @@ import com.leledevelopers.smartirrigation.utils.ProjectUtils;
  */
 public abstract class SmsServices extends AppCompatActivity {
     protected Context context;
-    protected String phoneNumber;
+    protected static String phoneNumber;
 
     /**
      * This method should contain the code send SMS
@@ -77,13 +77,13 @@ public abstract class SmsServices extends AppCompatActivity {
 
     }
 
-    public String getPhoneNumber() {
+    /*public String getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
+*/
 
 }

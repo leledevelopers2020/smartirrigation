@@ -43,16 +43,16 @@ public class SmsUtils {
     }
 
     //Configure field irrigation valve
-    public String OutSMS_4(String fieldNo , String valveOnPeriod , String valveOffPeriod ,String motorOnTimeHr ,
-                           String motorOnTimeMins ,String soilDryness,String soilWetness,String priority,
-                           String cycle,String triggerFrom)
+    public String OutSMS_4(int fieldNo , int valveOnPeriod , int valveOffPeriod ,int motorOnTimeHr ,
+                           int motorOnTimeMins ,int soilDryness,int soilWetness,int priority,
+                           int cycle,String triggerFrom)
     {
         return "SET"+fieldNo+" "+valveOnPeriod+" "+valveOffPeriod+" "+motorOnTimeHr+" "+motorOnTimeMins+" "+soilDryness
                 +" "+soilWetness+" "+priority+" "+cycle+" "+triggerFrom+" ";
     }
 
     //Disable Field Irrigation valve
-    public String OutSMS_5(String fieldNo)
+    public String OutSMS_5(int fieldNo)
     {
         return "HOLD"+fieldNo;
     }

@@ -1,14 +1,19 @@
 package com.leledevelopers.smartirrigation.models;
 
-public class ConfigureFieldIrrigationModel {
+import java.io.Serializable;
+
+public class ConfigureFieldIrrigationModel implements Serializable {
     private int fieldNo;
     private int valveOnPeriod;
     private int valveOffPeriod;
     private int soilDryness;
+    private int soilWetness;
     private String motorOnTime;
     private int priority;
     private int cycle;
     private String tiggerFrom;
+    private int motorOnTimeHr;
+    private int motorOnTimeMins;
 
     public int getFieldNo() {
         return fieldNo;
@@ -72,5 +77,44 @@ public class ConfigureFieldIrrigationModel {
 
     public void setTiggerFrom(String tiggerFrom) {
         this.tiggerFrom = tiggerFrom;
+    }
+
+    public int getSoilWetness() {
+        return soilWetness;
+    }
+
+    public void setSoilWetness(int soilWetness) {
+        this.soilWetness = soilWetness;
+    }
+
+    public int getMotorOnTimeHr() {
+        return motorOnTimeHr;
+    }
+
+    public void setMotorOnTimeHr(int motorOnTimeHr) {
+        this.motorOnTimeHr = motorOnTimeHr;
+    }
+
+    public int getMotorOnTimeMins() {
+        return motorOnTimeMins;
+    }
+
+    public void setMotorOnTimeMins(int motorOnTimeMins) {
+        this.motorOnTimeMins = motorOnTimeMins;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigureFieldIrrigationModel{" +
+                "fieldNo=" + fieldNo +
+                ", valveOnPeriod=" + valveOnPeriod +
+                ", valveOffPeriod=" + valveOffPeriod +
+                ", soilDryness=" + soilDryness +
+                ", soilWetness=" + soilWetness +
+                ", motorOnTime='" + motorOnTime + '\'' +
+                ", priority=" + priority +
+                ", cycle=" + cycle +
+                ", tiggerFrom='" + tiggerFrom + '\'' +
+                '}';
     }
 }

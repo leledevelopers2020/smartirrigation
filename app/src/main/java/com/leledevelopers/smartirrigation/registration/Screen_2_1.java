@@ -69,12 +69,12 @@ public class Screen_2_1 extends SmsServices {
                 smsReceiver.waitFor_1_Minute();
                 b = true;
 
-                if (getPhoneNumber() != null && filePassword != null) {
+                if (SmsServices.phoneNumber != null && filePassword != null) {
                     File myExternalFile = new File(getExternalFilesDir(ProjectUtils.DIRECTORY_PATH), ProjectUtils.FILE_NAME);
                     FileOutputStream fos = null;
                     try {
                         fos = new FileOutputStream(myExternalFile);
-                        String data = getPhoneNumber() + "#" + filePassword;
+                        String data = SmsServices.phoneNumber + "#" + filePassword;
                         fos.write(data.getBytes());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -116,7 +116,7 @@ public class Screen_2_1 extends SmsServices {
             if (phone.moveToFirst()) {
                 String contactNumberName = phone.getString(phone.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 String contactNumber = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                setPhoneNumber(contactNumber);
+                SmsServices.phoneNumber = contactNumber;
                 gsmContact.setText(contactNumberName + " - " + contactNumber);
             }
         }
