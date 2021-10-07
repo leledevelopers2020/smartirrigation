@@ -90,10 +90,10 @@ public class Screen_6 extends SmsServices {
             }
         });
 
-        initilizeModel();
+        initializeModel();
     }
 
-    private void initilizeModel() {
+    private void initializeModel() {
         if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FERTIGATION_FILE)) {
             try {
                 model = (ConfigurationFeildFertigationModel) curd_files.getFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE);

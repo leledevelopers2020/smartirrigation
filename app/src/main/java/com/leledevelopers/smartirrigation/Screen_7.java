@@ -1,16 +1,21 @@
 package com.leledevelopers.smartirrigation;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leledevelopers.smartirrigation.models.FiltrationModel;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
+import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
+
+import java.io.IOException;
 
 public class Screen_7 extends SmsServices {
     private static final String TAG = Screen_7.class.getSimpleName();
@@ -29,6 +34,89 @@ public class Screen_7 extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen7);
         initViews();
+        filtrationControlUnitNoDelay_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFiltration.setVisibility(View.VISIBLE);
+            }
+        });
+        filtrationControlUnitNoDelay_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFiltration.setVisibility(View.VISIBLE);
+            }
+        });
+        filtrationControlUnitNoDelay_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFiltration.setVisibility(View.VISIBLE);
+            }
+        });
+        filtrationControlUnitOnTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFiltration.setVisibility(View.VISIBLE);
+            }
+        });
+        filtrationControlUnitSeparation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFiltration.setVisibility(View.VISIBLE);
+            }
+        });
+        enableFiltration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disableFiltration.setVisibility(View.VISIBLE);
+                model.setFcDelay_1(Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()));
+                model.setFcDelay_2(Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString()));
+                model.setFcDelay_3(Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString()));
+                model.setFcOnTime(Integer.parseInt(filtrationControlUnitOnTime.getText().toString()));
+                model.setFcSeperation(Integer.parseInt(filtrationControlUnitSeparation.getText().toString()));
+                try {
+                    curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE,model);
+                    String smsData=smsUtils.OutSMS_8(model.getFcDelay_1()+"",model.getFcDelay_2()+""
+                            ,model.getFcDelay_3()+"",model.getFcOnTime()+"",
+                            model.getFcSeperation()+"");
+                    sendMessage(SmsServices.phoneNumber,smsData);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        disableFiltration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableFiltration.setVisibility(View.VISIBLE);
+                String smsData=smsUtils.OutSMS_9;
+                sendMessage(SmsServices.phoneNumber,smsData);
+
+            }
+        });
+        initializeModel();
+    }
+
+    private void initializeModel() {
+        if(curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE))
+        {
+            try {
+                model=(FiltrationModel) curd_files.getFile(getApplicationContext(),ProjectUtils.CONFG_FILTRATION_FILE);
+                filtrationControlUnitNoDelay_1.setText(model.getFcDelay_1());
+                filtrationControlUnitNoDelay_2.setText(model.getFcDelay_2());
+                filtrationControlUnitNoDelay_3.setText(model.getFcDelay_3());
+                filtrationControlUnitOnTime.setText(model.getFcOnTime());
+                filtrationControlUnitSeparation.setText(model.getFcSeperation());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            Toast.makeText(Screen_7.this, "NO data", Toast.LENGTH_LONG).show();
+
+        }
     }
 
     @Override

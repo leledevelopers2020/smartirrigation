@@ -42,23 +42,27 @@
 
         <EditText
             android:id="@+id/screen_2_1_edittext_1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:gravity="center"
             android:hint="factory/ old password"
             android:textAlignment="center"
+            android:padding="10dp"
+            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="20dp" />
 
         <EditText
             android:id="@+id/screen_2_1_edittext_2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:gravity="center"
             android:hint="New password"
+            android:padding="10dp"
             android:textAlignment="center"
+            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="20dp" />
 

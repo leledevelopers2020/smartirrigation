@@ -141,8 +141,9 @@ public class Screen_5 extends SmsServices {
                 getHoursAndMinutes(model.getMotorOnTime());
                 try {
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, model);
-                    String smsdata = smsUtils.OutSMS_4(model.getFieldNo(), model.getValveOnPeriod(), model.getValveOffPeriod(), model.getMotorOnTimeHr(),
-                            model.getMotorOnTimeMins(), model.getSoilDryness(), model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
+                    String smsdata = smsUtils.OutSMS_4(model.getFieldNo(), model.getValveOnPeriod(), model.getValveOffPeriod()
+                            , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
+                            model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
                     sendMessage(SmsServices.phoneNumber, smsdata);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -160,10 +161,10 @@ public class Screen_5 extends SmsServices {
             }
         });
 
-        initilizeModel();
+        initializeModel();
     }
 
-    private void initilizeModel() {
+    private void initializeModel() {
         if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_IRRIGATION_FILE)) {
             try {
                 model = (ConfigureFieldIrrigationModel) curd_files.getFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
