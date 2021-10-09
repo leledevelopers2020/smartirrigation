@@ -28,6 +28,7 @@ public class Screen_7 extends SmsServices {
     private FiltrationModel model;
     private CURD_Files curd_files = new CURD_FilesImpl();
     private SmsUtils smsUtils = new SmsUtils();
+    private  String regex = "\\d+";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,8 @@ public class Screen_7 extends SmsServices {
         enableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(validateInput())
+                {
                 disableFiltration.setVisibility(View.VISIBLE);
                 model.setFcDelay_1(Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()));
                 model.setFcDelay_2(Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString()));
@@ -74,15 +77,15 @@ public class Screen_7 extends SmsServices {
                 model.setFcOnTime(Integer.parseInt(filtrationControlUnitOnTime.getText().toString()));
                 model.setFcSeperation(Integer.parseInt(filtrationControlUnitSeparation.getText().toString()));
                 try {
-                    curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE,model);
-                    String smsData=smsUtils.OutSMS_8(model.getFcDelay_1()+"",model.getFcDelay_2()+""
-                            ,model.getFcDelay_3()+"",model.getFcOnTime()+"",
-                            model.getFcSeperation()+"");
-                    sendMessage(SmsServices.phoneNumber,smsData);
-                }
-                catch (IOException e) {
+                    curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
+                    String smsData = smsUtils.OutSMS_8(model.getFcDelay_1() + "", model.getFcDelay_2() + ""
+                            , model.getFcDelay_3() + "", model.getFcOnTime() + "",
+                            model.getFcSeperation() + "");
+                    sendMessage(SmsServices.phoneNumber, smsData);
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
             }
         });
         disableFiltration.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +98,49 @@ public class Screen_7 extends SmsServices {
             }
         });
         initializeModel();
+    }
+
+    private boolean validateInput() {
+        if(!(filtrationControlUnitNoDelay_1.getText().toString().matches(regex) &&
+                filtrationControlUnitNoDelay_1.getText().toString().length()>=1))
+        {
+            filtrationControlUnitNoDelay_1.requestFocus();
+            filtrationControlUnitNoDelay_1.getText().clear();
+            filtrationControlUnitNoDelay_1.setError("please enter a valid value");
+            return false;
+        }
+        if(!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
+                filtrationControlUnitNoDelay_2.getText().toString().length()>=1))
+        {
+            filtrationControlUnitNoDelay_2.requestFocus();
+            filtrationControlUnitNoDelay_2.getText().clear();
+            filtrationControlUnitNoDelay_2.setError("please enter a valid value");
+            return false;
+        }
+        if(!(filtrationControlUnitNoDelay_3.getText().toString().matches(regex) &&
+                filtrationControlUnitNoDelay_3.getText().toString().length()>=1))
+        {
+            filtrationControlUnitNoDelay_3.requestFocus();
+            filtrationControlUnitNoDelay_3.getText().clear();
+            filtrationControlUnitNoDelay_3.setError("please enter a valid value");
+            return false;
+        }
+        if(!(filtrationControlUnitOnTime.getText().toString().matches(regex) &&
+                filtrationControlUnitOnTime.getText().toString().length()>=1))
+        {
+            filtrationControlUnitOnTime.requestFocus();
+            filtrationControlUnitOnTime.getText().clear();
+            filtrationControlUnitOnTime.setError("please enter a valid value");
+            return false;
+        }
+        if(!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
+                filtrationControlUnitSeparation.getText().toString().length()>=2))
+        {
+            filtrationControlUnitSeparation.requestFocus();
+            filtrationControlUnitSeparation.getText().clear();
+            filtrationControlUnitSeparation.setError("please enter a valid value");
+        }
+        return true;
     }
 
     private void initializeModel() {

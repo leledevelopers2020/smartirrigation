@@ -31,6 +31,7 @@ public class Screen_6 extends SmsServices {
     private ConfigurationFeildFertigationModel model;
     private CURD_Files curd_files = new CURD_FilesImpl();
     private SmsUtils smsUtils = new SmsUtils();
+    private  String regex = "\\d+";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,9 @@ public class Screen_6 extends SmsServices {
         enableFieldFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
+                if (validateInput())
+                {
+                    model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
                 model.setWetPeriod(Integer.parseInt(wetPeriod.getText().toString()));
                 model.setInjectPeriod(Integer.parseInt(injectPeriod.getText().toString()));
                 model.setNoIterations(Integer.parseInt(noOfIterations.getText().toString()));
@@ -79,6 +82,7 @@ public class Screen_6 extends SmsServices {
                     e.printStackTrace();
                 }
             }
+            }
         });
 
         disableFieldFertigation.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +95,35 @@ public class Screen_6 extends SmsServices {
         });
 
         initializeModel();
+    }
+
+    private boolean validateInput() {
+        if(spinner.getSelectedItem().toString().trim().equals("Pick one"))
+        {
+            spinner.requestFocus();
+        }
+        if(!(wetPeriod.getText().toString().matches(regex) && wetPeriod.getText().toString().length()>=1))
+        {
+            wetPeriod.requestFocus();
+            wetPeriod.getText().clear();
+            wetPeriod.setError("please enter a valid value");
+            return false;
+        }
+        if(!(injectPeriod.getText().toString().matches(regex) && injectPeriod.getText().toString().length()>=1))
+        {
+            injectPeriod.requestFocus();
+            injectPeriod.getText().clear();
+            injectPeriod.setError("please enter a valid value");
+            return false;
+        }
+        if(!(noOfIterations.getText().toString().matches(regex)) && noOfIterations.getText().toString().length()==1)
+        {
+            noOfIterations.requestFocus();
+            noOfIterations.getText().clear();
+            noOfIterations.setError("please enter a valid value");
+            return false;
+        }
+        return true;
     }
 
     private void initializeModel() {

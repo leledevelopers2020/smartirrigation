@@ -33,7 +33,7 @@ public class MainActivity_GSM extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "Welcome");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_screen31);
+        setContentView(R.layout.activity_mainactivity_gsm);
         initViews();
         readUserFile();
         connect.setOnClickListener(new View.OnClickListener() {

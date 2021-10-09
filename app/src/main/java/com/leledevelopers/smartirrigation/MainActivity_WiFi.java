@@ -1,16 +1,15 @@
-package com.leledevelopers.smartirrigation.registration;
+package com.leledevelopers.smartirrigation;
 
 import android.os.Bundle;
 
-import com.leledevelopers.smartirrigation.R;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 
-public class screen_3_2 extends SmsServices {
+public class MainActivity_WiFi extends SmsServices {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_screen32);
+        setContentView(R.layout.activity_mainactivity_wifi);
     }
 
     /**
