@@ -41,6 +41,7 @@ public class Screen_5 extends SmsServices {
     private ConfigureFieldIrrigationModel model;
     private CURD_Files curd_files = new CURD_FilesImpl();
     private SmsUtils smsUtils = new SmsUtils();
+    private  String regex = "\\d+";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +129,7 @@ public class Screen_5 extends SmsServices {
         enableFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(validateInput())
                 model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
                 model.setValveOnPeriod(Integer.parseInt(valveOnPeriod.getText().toString()));
                 model.setValveOffPeriod(Integer.parseInt(valveOffPeriod.getText().toString()));
@@ -162,6 +164,71 @@ public class Screen_5 extends SmsServices {
         });
 
         initializeModel();
+    }
+
+    private boolean validateInput()
+    {
+
+        if(spinner.getSelectedItem().toString().trim().equals("Pick one"))
+        {
+            spinner.requestFocus();
+            return false;
+        }
+        if(!(valveOnPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length()>=2))
+        {
+            valveOnPeriod.requestFocus();
+            valveOnPeriod.getText().clear();
+            valveOnPeriod.setError("please enter a valid value");
+            return false;
+        }
+        if(!(valveOffPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length()>=1))
+        {
+            valveOnPeriod.requestFocus();
+            valveOnPeriod.getText().clear();
+            valveOnPeriod.setError("please enter a valid value");
+            return false;
+        }
+        if(!(soilDryness.getText().toString().matches(regex)) && soilDryness.getText().toString().length()>=3)
+        {
+            soilDryness.requestFocus();
+            soilDryness.getText().clear();
+            soilDryness.setError("please enter a valid value");
+            return false;
+        }
+        if(!(soilWetness.getText().toString().matches(regex) && soilWetness.getText().toString().length()==5))
+        {
+            soilWetness.requestFocus();
+            soilWetness.setError("please enter a valid value");
+            soilWetness.getText().clear();
+            return false;
+        }
+        if(motorOnTime.getText().toString()=="")  /// motor time validation is to be checked
+        {
+            motorOnTime.requestFocus();
+            motorOnTime.setError("please enter a valid value");
+            return false;
+        }
+        if(!(priority.getText().toString().matches(regex) && priority.getText().toString().length()>=1))
+        {
+            priority.requestFocus();
+            priority.setError("please enter a valid value");
+            priority.getText().clear();
+            return false;
+        }
+        if(!(cycles.getText().toString().matches(regex) && cycles.getText().toString().length()==1))
+        {
+            cycles.requestFocus();
+            cycles.getText().clear();
+            cycles.setError("please enter a valid value");
+            return false;
+        }
+
+
+
+        // wet period validation has to be written
+
+
+         return true;
     }
 
     private void initializeModel() {

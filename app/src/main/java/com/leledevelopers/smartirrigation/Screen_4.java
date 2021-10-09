@@ -17,7 +17,7 @@ public class Screen_4 extends SmsServices {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_screen4);
         initViews();
         this.context = getApplicationContext();
         accessPermissions();
