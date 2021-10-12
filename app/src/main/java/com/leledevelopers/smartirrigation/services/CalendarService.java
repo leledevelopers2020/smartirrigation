@@ -9,13 +9,19 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 
 public class CalendarService {
-    String date = null;
+    String date;
     public DatePickerDialog datePickerDialog;
     public DatePickerDialog.OnDateSetListener mDateSetListener;
     Context context;
+    private BaseCalendarService baseCalendarService;
 
     public CalendarService(Context context) {
         this.context = context;
+        this.baseCalendarService = null;
+    }
+
+    public void setBaseCalendarService(BaseCalendarService baseCalendarService) {
+        this.baseCalendarService = baseCalendarService;
     }
 
     public String dateCalculator() {
@@ -24,19 +30,21 @@ public class CalendarService {
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month + 1;
+                date = year+"-"+month+"-"+dayOfMonth;
+                //date = month + "/" + dayOfMonth + "/" + year;
+                baseCalendarService.onClickOk(date);
+            }
+        };
         datePickerDialog = new DatePickerDialog(context,
                 android.R.style.Theme_Holo_Light_Dialog_MinWidth
                 , mDateSetListener,
                 year, month, day);
         datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         datePickerDialog.show();
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                date = month + "/" + dayOfMonth + "/" + year;
-            }
-        };
         return date;
     }
 
@@ -68,6 +76,10 @@ public class CalendarService {
 
         //default should never happen
         return "JAN";
+    }
+
+    public interface BaseCalendarService {
+        public void onClickOk(String date);
     }
 
 }
