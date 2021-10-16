@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.leledevelopers.smartirrigation.models.BaseConfigureFieldIrrigationModel;
 import com.leledevelopers.smartirrigation.models.ConfigureFieldIrrigationModel;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
@@ -25,7 +27,9 @@ import com.leledevelopers.smartirrigation.utils.SmsUtils;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class Screen_5 extends SmsServices {
@@ -39,9 +43,11 @@ public class Screen_5 extends SmsServices {
     private Button enableFertigation, disableFertigation;
     private Boolean b;
     private ConfigureFieldIrrigationModel model;
-    private CURD_Files curd_files = new CURD_FilesImpl();
+    private CURD_Files<ConfigureFieldIrrigationModel> curd_files = new CURD_FilesImpl<ConfigureFieldIrrigationModel>();
+    private List<ConfigureFieldIrrigationModel> modelList = new ArrayList<ConfigureFieldIrrigationModel>();
+    private BaseConfigureFieldIrrigationModel baseConfigureFieldIrrigationModel = new BaseConfigureFieldIrrigationModel();
     private SmsUtils smsUtils = new SmsUtils();
-    private  String regex = "\\d+";
+    private String regex = "\\d+";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,33 @@ public class Screen_5 extends SmsServices {
         adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        initializeModel();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (modelList.get(position).isEnabled()) {
+                    disableFertigation.setVisibility(View.VISIBLE);
+                    model = modelList.get(position);
+                    System.out.println(model.toString());
+                    valveOnPeriod.setText(model.getValveOnPeriod() + "");
+                    valveOffPeriod.setText(model.getValveOffPeriod() + "");
+                    soilDryness.setText(model.getSoilDryness() + "");
+                    soilWetness.setText(model.getSoilWetness() + "");
+                    motorOnTime.setText(model.getMotorOnTime());
+                    priority.setText(model.getPriority() + "");
+                    cycles.setText(model.getCycle() + "");
+                    wetPeriod.setText(model.getTiggerFrom());
+                    getHoursAndMinutes(model.getMotorOnTime());
+                } else {
+                    setEmptyData();
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         valveOnPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +161,40 @@ public class Screen_5 extends SmsServices {
         enableFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateInput())
+                if (validateInput()) {
+                    updateData_And_SendSMS("enable");
+                }
+            }
+        });
+
+        //disable fertigation
+        disableFertigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateData_And_SendSMS("disable");
+            }
+        });
+    }
+
+    private void setEmptyData() {
+        disableFertigation.setVisibility(View.INVISIBLE);
+        valveOnPeriod.setText("");
+        valveOffPeriod.setText("");
+        soilDryness.setText("");
+        soilWetness.setText("");
+        motorOnTime.setText("");
+        priority.setText("");
+        cycles.setText("");
+        wetPeriod.setText("");
+        model = null;
+    }
+
+    private void updateData_And_SendSMS(String typeOfAction) {
+        if (!spinner.getSelectedItem().toString().trim().equals("Pick one")) {
+            String smsdata;
+            int fieldNo = Integer.parseInt(spinner.getSelectedItem().toString());
+            if (typeOfAction.equals("enable")) {
+                model = modelList.get(fieldNo - 1);
                 model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
                 model.setValveOnPeriod(Integer.parseInt(valveOnPeriod.getText().toString()));
                 model.setValveOffPeriod(Integer.parseInt(valveOffPeriod.getText().toString()));
@@ -141,82 +206,78 @@ public class Screen_5 extends SmsServices {
                 model.setTiggerFrom(wetPeriod.getText().toString());
                 System.out.println("after set " + model.toString());
                 getHoursAndMinutes(model.getMotorOnTime());
-                try {
-                    curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, model);
-                    String smsdata = smsUtils.OutSMS_4(model.getFieldNo(), model.getValveOnPeriod(), model.getValveOffPeriod()
-                            , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
-                            model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
-                    sendMessage(SmsServices.phoneNumber, smsdata);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        //disable fertigation
-        disableFertigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                model.setEnabled(true);
+                smsdata = smsUtils.OutSMS_4(model.getFieldNo(), model.getValveOnPeriod(), model.getValveOffPeriod()
+                        , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
+                        model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
+                baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
                 enableFertigation.setVisibility(View.INVISIBLE);
-                String smsdata = smsUtils.OutSMS_5(model.getFieldNo());
-                sendMessage(SmsServices.phoneNumber, smsdata);
+                disableFertigation.setVisibility(View.VISIBLE);
+            } else {
+                setEmptyData();
+                model = new ConfigureFieldIrrigationModel();
+                smsdata = smsUtils.OutSMS_5(fieldNo);
+                baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(-1);
+                enableFertigation.setVisibility(View.VISIBLE);
+                disableFertigation.setVisibility(View.INVISIBLE);
             }
-        });
-
-        initializeModel();
+            sendMessage(SmsServices.phoneNumber, smsdata);
+            modelList.set(fieldNo - 1, model);
+            baseConfigureFieldIrrigationModel.setModelList(modelList);
+            try {
+                curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(Screen_5.this, "Please select the field no", Toast.LENGTH_LONG).show();
+            enableFertigation.setVisibility(View.VISIBLE);
+        }
     }
 
-    private boolean validateInput()
-    {
+    private boolean validateInput() {
 
-        if(spinner.getSelectedItem().toString().trim().equals("Pick one"))
-        {
+        if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
             spinner.requestFocus();
             return false;
         }
-        if(!(valveOnPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length()>=2))
-        {
+        if (!(valveOnPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length() >= 2)) {
             valveOnPeriod.requestFocus();
             valveOnPeriod.getText().clear();
             valveOnPeriod.setError("please enter a valid value");
             return false;
         }
-        if(!(valveOffPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length()>=1))
-        {
+        if (!(valveOffPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length() >= 1)) {
             valveOnPeriod.requestFocus();
             valveOnPeriod.getText().clear();
             valveOnPeriod.setError("please enter a valid value");
             return false;
         }
-        if(!(soilDryness.getText().toString().matches(regex)) && soilDryness.getText().toString().length()>=3)
-        {
+        if (!(soilDryness.getText().toString().matches(regex)) && soilDryness.getText().toString().length() >= 3) {
             soilDryness.requestFocus();
             soilDryness.getText().clear();
             soilDryness.setError("please enter a valid value");
             return false;
         }
-        if(!(soilWetness.getText().toString().matches(regex) && soilWetness.getText().toString().length()==5))
-        {
+        if (!(soilWetness.getText().toString().matches(regex) && soilWetness.getText().toString().length() == 5)) {
             soilWetness.requestFocus();
             soilWetness.setError("please enter a valid value");
             soilWetness.getText().clear();
             return false;
         }
-        if(motorOnTime.getText().toString()=="")  /// motor time validation is to be checked
+        if (motorOnTime.getText().toString() == "")  /// motor time validation is to be checked
         {
             motorOnTime.requestFocus();
             motorOnTime.setError("please enter a valid value");
             return false;
         }
-        if(!(priority.getText().toString().matches(regex) && priority.getText().toString().length()>=1))
-        {
+        if (!(priority.getText().toString().matches(regex) && priority.getText().toString().length() >= 1)) {
             priority.requestFocus();
             priority.setError("please enter a valid value");
             priority.getText().clear();
             return false;
         }
-        if(!(cycles.getText().toString().matches(regex) && cycles.getText().toString().length()==1))
-        {
+        if (!(cycles.getText().toString().matches(regex) && cycles.getText().toString().length() == 1)) {
             cycles.requestFocus();
             cycles.getText().clear();
             cycles.setError("please enter a valid value");
@@ -224,34 +285,49 @@ public class Screen_5 extends SmsServices {
         }
 
 
-
         // wet period validation has to be written
 
 
-         return true;
+        return true;
     }
 
     private void initializeModel() {
-        if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_IRRIGATION_FILE)) {
-            try {
-                model = (ConfigureFieldIrrigationModel) curd_files.getFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
-                Toast.makeText(Screen_5.this, model.toString(), Toast.LENGTH_LONG).show();
-                spinner.setSelection(model.getFieldNo() - 1);
-                valveOnPeriod.setText(model.getValveOnPeriod() + "");
-                valveOffPeriod.setText(model.getValveOffPeriod() + "");
-                soilDryness.setText(model.getSoilDryness() + "");
-                soilWetness.setText(model.getSoilWetness() + "");
-                motorOnTime.setText(model.getMotorOnTime());
-                priority.setText(model.getPriority() + "");
-                cycles.setText(model.getCycle() + "");
-                wetPeriod.setText(model.getTiggerFrom());
-                getHoursAndMinutes(model.getMotorOnTime());
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
+        disableFertigation.setVisibility(View.INVISIBLE);
+        try {
+            if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_IRRIGATION_FILE)) {
+                //modelList = curd_files.getFileData(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
+                baseConfigureFieldIrrigationModel = (BaseConfigureFieldIrrigationModel) curd_files.getFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
+                modelList = baseConfigureFieldIrrigationModel.getModelList();
+                if (baseConfigureFieldIrrigationModel.getLastEnabledFieldNo() != -1) {
+                    model = modelList.get(baseConfigureFieldIrrigationModel.getLastEnabledFieldNo());
+                    Toast.makeText(Screen_5.this, model.toString(), Toast.LENGTH_LONG).show();
+                    if (model.isEnabled()) {
+                        spinner.setSelection(model.getFieldNo() - 1);
+                        valveOnPeriod.setText(model.getValveOnPeriod() + "");
+                        valveOffPeriod.setText(model.getValveOffPeriod() + "");
+                        soilDryness.setText(model.getSoilDryness() + "");
+                        soilWetness.setText(model.getSoilWetness() + "");
+                        motorOnTime.setText(model.getMotorOnTime());
+                        priority.setText(model.getPriority() + "");
+                        cycles.setText(model.getCycle() + "");
+                        wetPeriod.setText(model.getTiggerFrom());
+                        getHoursAndMinutes(model.getMotorOnTime());
+                    }
+                }
+            } else {
+                Toast.makeText(Screen_5.this, "NO data", Toast.LENGTH_LONG).show();
+                for (int i = 0; i < 12; i++) {
+                    model = new ConfigureFieldIrrigationModel();
+                    model.setFieldNo(i);
+                    model.setEnabled(false);
+                    modelList.add(new ConfigureFieldIrrigationModel());
+                    baseConfigureFieldIrrigationModel.setModelList(modelList);
+                }
+                curd_files.createFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
+
             }
-        } else {
-            Toast.makeText(Screen_5.this, "NO data", Toast.LENGTH_LONG).show();
-            model = new ConfigureFieldIrrigationModel();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
         }
     }
 
