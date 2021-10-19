@@ -134,17 +134,6 @@ public class Screen_8 extends SmsServices {
                 cursor.close();
             }
         });
-     /*   spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
     }
     @Override
     public void initViews() {

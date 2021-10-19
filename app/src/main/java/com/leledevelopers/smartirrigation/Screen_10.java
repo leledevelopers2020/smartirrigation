@@ -8,9 +8,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
+import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
-public class Screen_10 extends AppCompatActivity {
+public class Screen_10 extends SmsServices {
     private static final String TAG = Screen_10.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private Boolean b;
@@ -25,7 +26,8 @@ public class Screen_10 extends AppCompatActivity {
         initViews();
     }
 
-    private void initViews() {
+    @Override
+    public void initViews() {
         noLoadCutoffText = findViewById(R.id.noLoadCutoffText);
         fullLoadCutOffText = findViewById(R.id.fullLoadCutOffText);
         setMotorLoadThreshold = findViewById(R.id.setMotorLoadThreshold);
@@ -41,7 +43,9 @@ public class Screen_10 extends AppCompatActivity {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                checkSMS(message);
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                    checkSMS(message);
+                }
             }
 
             @Override

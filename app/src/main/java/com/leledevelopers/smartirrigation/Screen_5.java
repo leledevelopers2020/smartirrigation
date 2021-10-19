@@ -283,11 +283,6 @@ public class Screen_5 extends SmsServices {
             cycles.setError("please enter a valid value");
             return false;
         }
-
-
-        // wet period validation has to be written
-
-
         return true;
     }
 
@@ -372,7 +367,9 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                checkSMS(message);
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                    checkSMS(message);
+                }
             }
 
             @Override

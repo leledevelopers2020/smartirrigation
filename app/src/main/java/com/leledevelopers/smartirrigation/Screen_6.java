@@ -152,22 +152,6 @@ public class Screen_6 extends SmsServices {
     }
 
     private void initializeModel() {
-       /* if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FERTIGATION_FILE)) {
-            try {
-                model = (ConfigurationFeildFertigationModel) curd_files.getFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE);
-                Toast.makeText(Screen_6.this, model.toString(), Toast.LENGTH_LONG).show();
-                spinner.setSelection(model.getFieldNo() - 1);
-                wetPeriod.setText(model.getWetPeriod()+"");
-                injectPeriod.setText(model.getInjectPeriod()+"");
-                noOfIterations.setText(model.getNoIterations()+"");
-
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(Screen_6.this, "NO data", Toast.LENGTH_LONG).show();
-            model = new ConfigurationFeildFertigationModel();
-        }*/
         disableFieldFertigation.setVisibility(View.INVISIBLE);
         try {
             if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FERTIGATION_FILE)) {
@@ -269,7 +253,9 @@ public class Screen_6 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                checkSMS(message);
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                    checkSMS(message);
+                }
                 System.out.println("phoneNumber1 = " + phoneNumber);
                 System.out.println("phoneNumber2 = " + SmsServices.phoneNumber.trim());
             }

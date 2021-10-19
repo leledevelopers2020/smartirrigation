@@ -8,6 +8,8 @@ public class FiltrationModel implements Serializable {
     private int fcDelay_3;
     private int fcOnTime;
     private int fcSeperation;
+    private boolean isEnabled = false;
+    private boolean isInitialData = true;
 
     public int getFcDelay_1() {
         return fcDelay_1;
@@ -49,6 +51,22 @@ public class FiltrationModel implements Serializable {
         this.fcSeperation = fcSeperation;
     }
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public boolean isInitialData() {
+        return isInitialData;
+    }
+
+    public void setInitialData(boolean initialData) {
+        isInitialData = initialData;
+    }
+
     @Override
     public String toString() {
         return "FiltrationModel{" +
@@ -57,6 +75,8 @@ public class FiltrationModel implements Serializable {
                 ", fcDelay_3=" + fcDelay_3 +
                 ", fcOnTime=" + fcOnTime +
                 ", fcSeperation=" + fcSeperation +
+                ", isEnabled=" + isEnabled +
+                ", isInitialData=" + isInitialData +
                 '}';
     }
 }
