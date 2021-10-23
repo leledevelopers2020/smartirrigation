@@ -3,6 +3,7 @@ package com.leledevelopers.smartirrigation;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,8 @@ public class MainActivity_GSM extends SmsServices {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "Welcome");
+        System.out.println(Build.VERSION.SDK_INT);
+        System.out.println(SmsServices.phoneNumber.replaceAll("\\s", ""));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainactivity_gsm);
         initViews();
@@ -87,7 +90,6 @@ public class MainActivity_GSM extends SmsServices {
         status = findViewById(R.id.screen_3_1_status);
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -99,7 +101,9 @@ public class MainActivity_GSM extends SmsServices {
                 b = false;
 
                 status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
-                checkSMS(message);
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                    checkSMS(message);
+                }
             }
 
             @Override

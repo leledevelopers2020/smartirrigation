@@ -40,6 +40,7 @@ public class Screen_2_1 extends SmsServices {
     String filePhoneNumber = "9912473753";
     String filePassword = "psw";
     private Boolean b;
+    private boolean isSetClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class Screen_2_1 extends SmsServices {
                         fos = new FileOutputStream(myExternalFile);
                         String data = SmsServices.phoneNumber + "#" + filePassword;
                         fos.write(data.getBytes());
+                        isSetClicked = true;
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -155,9 +157,11 @@ public class Screen_2_1 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-
+                System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                 status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
-                checkSMS(message);
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && isSetClicked) {
+                    checkSMS(message);
+                }
             }
 
             @Override

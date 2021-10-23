@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leledevelopers.smartirrigation.models.ConfigureFieldIrrigationModel;
 import com.leledevelopers.smartirrigation.models.FiltrationModel;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
@@ -28,140 +29,271 @@ public class Screen_7 extends SmsServices {
     private FiltrationModel model;
     private CURD_Files curd_files = new CURD_FilesImpl();
     private SmsUtils smsUtils = new SmsUtils();
-    private  String regex = "\\d+";
+    private String regex = "\\d+";
+    private boolean isEditedDelay_1 = false;
+    private boolean isEditedDelay_2 = false;
+    private boolean isEditedDelay_3 = false;
+    private boolean isEditedOnTime = false;
+    private boolean isEditedSeparation = false;
+    private boolean isInitial = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen7);
         initViews();
+        initializeModel();
         filtrationControlUnitNoDelay_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFiltration.setVisibility(View.VISIBLE);
+                System.out.println("--->++---> " + filtrationControlUnitNoDelay_1.getText().toString() + " & " + model.getFcDelay_1());
+                if (isInitial) {
+                    disableFiltration.setVisibility(View.INVISIBLE);
+                } else if (filtrationControlUnitNoDelay_1.getText().toString().equals(model.getFcDelay_1() + "")) {
+                    System.out.println("--->++---> " + "yes");
+                    isEditedDelay_1 = false;
+
+                } else {
+                    System.out.println("--->++---> " + "No");
+                    isEditedDelay_1 = true;
+                }
+                isAnyViewEdited();
             }
         });
         filtrationControlUnitNoDelay_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFiltration.setVisibility(View.VISIBLE);
+                System.out.println("--->++---> " + filtrationControlUnitNoDelay_2.getText().toString() + " & " + model.getFcDelay_2());
+                if (isInitial) {
+                    disableFiltration.setVisibility(View.INVISIBLE);
+                } else if (filtrationControlUnitNoDelay_2.getText().toString().equals(model.getFcDelay_2() + "")) {
+                    System.out.println("--->++---> " + "yes");
+                    isEditedDelay_2 = false;
+                } else {
+                    System.out.println("--->++---> " + "No");
+                    isEditedDelay_2 = true;
+                }
+                isAnyViewEdited();
             }
         });
         filtrationControlUnitNoDelay_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFiltration.setVisibility(View.VISIBLE);
+                System.out.println("--->++---> " + filtrationControlUnitNoDelay_3.getText().toString() + " & " + model.getFcDelay_3());
+                if (isInitial) {
+                    disableFiltration.setVisibility(View.INVISIBLE);
+                } else if (filtrationControlUnitNoDelay_3.getText().toString().equals(model.getFcDelay_3() + "")) {
+                    System.out.println("--->++---> " + "yes");
+                    isEditedDelay_3 = false;
+                } else {
+                    System.out.println("--->++---> " + "No");
+                    isEditedDelay_3 = true;
+                }
+                isAnyViewEdited();
             }
         });
         filtrationControlUnitOnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFiltration.setVisibility(View.VISIBLE);
+                System.out.println("--->++---> " + filtrationControlUnitOnTime.getText().toString() + " & " + model.getFcOnTime());
+                if (isInitial) {
+                    disableFiltration.setVisibility(View.INVISIBLE);
+                } else if (filtrationControlUnitOnTime.getText().toString().equals(model.getFcOnTime() + "")) {
+                    System.out.println("--->++---> " + "yes");
+                    isEditedOnTime = false;
+                } else {
+                    System.out.println("--->++---> " + "No");
+                    isEditedOnTime = true;
+                }
+                isAnyViewEdited();
             }
         });
         filtrationControlUnitSeparation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFiltration.setVisibility(View.VISIBLE);
+                System.out.println("--->++---> " + filtrationControlUnitSeparation.getText().toString() + " & " + model.getFcSeperation());
+                if (isInitial) {
+                    disableFiltration.setVisibility(View.INVISIBLE);
+                } else if (filtrationControlUnitSeparation.getText().toString().equals(model.getFcSeperation() + "")) {
+                    System.out.println("--->++---> " + "yes");
+                    isEditedSeparation = false;
+                } else {
+                    System.out.println("--->++---> " + "No");
+                    isEditedSeparation = true;
+                }
+                isAnyViewEdited();
             }
         });
         enableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateInput())
-                {
-                disableFiltration.setVisibility(View.VISIBLE);
-                model.setFcDelay_1(Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()));
-                model.setFcDelay_2(Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString()));
-                model.setFcDelay_3(Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString()));
-                model.setFcOnTime(Integer.parseInt(filtrationControlUnitOnTime.getText().toString()));
-                model.setFcSeperation(Integer.parseInt(filtrationControlUnitSeparation.getText().toString()));
-                try {
-                    curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
-                    String smsData = smsUtils.OutSMS_8(model.getFcDelay_1() + "", model.getFcDelay_2() + ""
-                            , model.getFcDelay_3() + "", model.getFcOnTime() + "",
-                            model.getFcSeperation() + "");
-                    sendMessage(SmsServices.phoneNumber, smsData);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (validateInput()) {
+                   /* disableFiltration.setVisibility(View.VISIBLE);
+                    model.setFcDelay_1(Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()));
+                    model.setFcDelay_2(Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString()));
+                    model.setFcDelay_3(Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString()));
+                    model.setFcOnTime(Integer.parseInt(filtrationControlUnitOnTime.getText().toString()));
+                    model.setFcSeperation(Integer.parseInt(filtrationControlUnitSeparation.getText().toString()));
+                    model.setEnabled(true);
+                    try {
+                        curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
+                        String smsData = smsUtils.OutSMS_8(model.getFcDelay_1() + "", model.getFcDelay_2() + ""
+                                , model.getFcDelay_3() + "", model.getFcOnTime() + "",
+                                model.getFcSeperation() + "");
+                        sendMessage(SmsServices.phoneNumber, smsData);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    enableFiltration.setVisibility(View.INVISIBLE);
+                    initializeModel();*/
+                    updateData_And_SendSMS("enable");
                 }
-            }
             }
         });
         disableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFiltration.setVisibility(View.VISIBLE);
-                String smsData=smsUtils.OutSMS_9;
-                sendMessage(SmsServices.phoneNumber,smsData);
-
+                /*model.setEnabled(false);
+                try {
+                    curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String smsData = smsUtils.OutSMS_9;
+                sendMessage(SmsServices.phoneNumber, smsData);
+                enableFiltration.setVisibility(View.VISIBLE);*/
+                updateData_And_SendSMS("disable");
             }
         });
+
+    }
+
+    private void updateData_And_SendSMS(String typeOfAction) {
+        String smsData;
+        if (typeOfAction.equals("enable")) {
+            model.setFcDelay_1(Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()));
+            model.setFcDelay_2(Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString()));
+            model.setFcDelay_3(Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString()));
+            model.setFcOnTime(Integer.parseInt(filtrationControlUnitOnTime.getText().toString()));
+            model.setFcSeperation(Integer.parseInt(filtrationControlUnitSeparation.getText().toString()));
+            model.setEnabled(true);
+            System.out.println("after set " + model.toString());
+            smsData = smsUtils.OutSMS_8(model.getFcDelay_1() + "", model.getFcDelay_2() + ""
+                    , model.getFcDelay_3() + "", model.getFcOnTime() + "",
+                    model.getFcSeperation() + "");
+          /*  enableFiltration.setVisibility(View.INVISIBLE);
+            disableFiltration.setVisibility(View.VISIBLE);*/
+        } else {
+            model = new FiltrationModel();
+            smsData = smsUtils.OutSMS_9;
+           /* enableFiltration.setVisibility(View.VISIBLE);
+            disableFiltration.setVisibility(View.INVISIBLE);*/
+            isInitial = true;
+            isEditedDelay_1 = false;
+            isEditedDelay_2 = false;
+            isEditedDelay_3 = false;
+            isEditedSeparation = false;
+            isEditedOnTime = false;
+        }
+        try {
+            System.out.println("pushing to file "+model.toString());
+            curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        sendMessage(SmsServices.phoneNumber, smsData);
         initializeModel();
     }
 
+    private void isAnyViewEdited() {
+        if (isEditedDelay_1 || isEditedDelay_2 || isEditedDelay_3 || isEditedOnTime || isEditedSeparation) {
+            disableFiltration.setVisibility(View.INVISIBLE);
+            enableFiltration.setVisibility(View.VISIBLE);
+        } else {
+            disableFiltration.setVisibility(View.VISIBLE);
+            enableFiltration.setVisibility(View.INVISIBLE);
+        }
+        // return (isEditedDelay_1 || isEditedDelay_2 || isEditedDelay_3 || isEditedOnTime || isEditedSeparation) ? true : false;
+    }
+
     private boolean validateInput() {
-        if(!(filtrationControlUnitNoDelay_1.getText().toString().matches(regex) &&
-                filtrationControlUnitNoDelay_1.getText().toString().length()>=1))
-        {
+        if (!(filtrationControlUnitNoDelay_1.getText().toString().matches(regex) &&
+                filtrationControlUnitNoDelay_1.getText().toString().length() >= 1)) {
             filtrationControlUnitNoDelay_1.requestFocus();
             filtrationControlUnitNoDelay_1.getText().clear();
             filtrationControlUnitNoDelay_1.setError("please enter a valid value");
             return false;
         }
-        if(!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
-                filtrationControlUnitNoDelay_2.getText().toString().length()>=1))
-        {
+        if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
+                filtrationControlUnitNoDelay_2.getText().toString().length() >= 1)) {
             filtrationControlUnitNoDelay_2.requestFocus();
             filtrationControlUnitNoDelay_2.getText().clear();
             filtrationControlUnitNoDelay_2.setError("please enter a valid value");
             return false;
         }
-        if(!(filtrationControlUnitNoDelay_3.getText().toString().matches(regex) &&
-                filtrationControlUnitNoDelay_3.getText().toString().length()>=1))
-        {
+        if (!(filtrationControlUnitNoDelay_3.getText().toString().matches(regex) &&
+                filtrationControlUnitNoDelay_3.getText().toString().length() >= 1)) {
             filtrationControlUnitNoDelay_3.requestFocus();
             filtrationControlUnitNoDelay_3.getText().clear();
             filtrationControlUnitNoDelay_3.setError("please enter a valid value");
             return false;
         }
-        if(!(filtrationControlUnitOnTime.getText().toString().matches(regex) &&
-                filtrationControlUnitOnTime.getText().toString().length()>=1))
-        {
+        if (!(filtrationControlUnitOnTime.getText().toString().matches(regex) &&
+                filtrationControlUnitOnTime.getText().toString().length() >= 1)) {
             filtrationControlUnitOnTime.requestFocus();
             filtrationControlUnitOnTime.getText().clear();
             filtrationControlUnitOnTime.setError("please enter a valid value");
             return false;
         }
-        if(!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
-                filtrationControlUnitSeparation.getText().toString().length()>=2))
-        {
+        if (!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
+                filtrationControlUnitSeparation.getText().toString().length() >= 2)) {
             filtrationControlUnitSeparation.requestFocus();
             filtrationControlUnitSeparation.getText().clear();
             filtrationControlUnitSeparation.setError("please enter a valid value");
+            return false;
         }
         return true;
     }
 
     private void initializeModel() {
-        if(curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE))
-        {
+        if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE)) {
             try {
-                model=(FiltrationModel) curd_files.getFile(getApplicationContext(),ProjectUtils.CONFG_FILTRATION_FILE);
-                filtrationControlUnitNoDelay_1.setText(model.getFcDelay_1());
-                filtrationControlUnitNoDelay_2.setText(model.getFcDelay_2());
-                filtrationControlUnitNoDelay_3.setText(model.getFcDelay_3());
-                filtrationControlUnitOnTime.setText(model.getFcOnTime());
-                filtrationControlUnitSeparation.setText(model.getFcSeperation());
+                isInitial = false;
+                model = (FiltrationModel) curd_files.getFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE);
+                System.out.println("getting file "+model.toString());
+                if (model.isEnabled()) {
+                    System.out.println("isEnabled " + model.isEnabled());
+
+                    filtrationControlUnitNoDelay_1.setText(model.getFcDelay_1() + "");
+                    filtrationControlUnitNoDelay_2.setText(model.getFcDelay_2() + "");
+                    filtrationControlUnitNoDelay_3.setText(model.getFcDelay_3() + "");
+                    filtrationControlUnitOnTime.setText(model.getFcOnTime() + "");
+                    filtrationControlUnitSeparation.setText(model.getFcSeperation() + "");
+
+                    disableFiltration.setVisibility(View.VISIBLE);
+                    enableFiltration.setVisibility(View.INVISIBLE);
+                } else {
+                    System.out.println("isEnabled " + model.isEnabled());
+
+                    filtrationControlUnitNoDelay_1.setText("");
+                    filtrationControlUnitNoDelay_2.setText("");
+                    filtrationControlUnitNoDelay_3.setText("");
+                    filtrationControlUnitOnTime.setText("");
+                    filtrationControlUnitSeparation.setText("");
+
+                    disableFiltration.setVisibility(View.INVISIBLE);
+                    enableFiltration.setVisibility(View.VISIBLE);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             Toast.makeText(Screen_7.this, "NO data", Toast.LENGTH_LONG).show();
-
+            model = new FiltrationModel();
+            isInitial = true;
+            disableFiltration.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -186,7 +318,9 @@ public class Screen_7 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                checkSMS(message);
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                    checkSMS(message);
+                }
             }
 
             @Override

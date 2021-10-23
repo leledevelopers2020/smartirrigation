@@ -9,9 +9,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
+import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
-public class Screen_9 extends AppCompatActivity {
+public class Screen_9 extends SmsServices {
     private static final String TAG = Screen_9.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private Boolean b;
@@ -29,8 +30,8 @@ public class Screen_9 extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
-
-    private void initViews() {
+    @Override
+    public void initViews() {
         spinner = (Spinner) findViewById(R.id.language_spinner);
         setSystemTime = findViewById(R.id.setSystemTime);
         getSystemTime = findViewById(R.id.getSystemTime);
@@ -49,7 +50,9 @@ public class Screen_9 extends AppCompatActivity {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                checkSMS(message);
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                    checkSMS(message);
+                }
             }
 
             @Override

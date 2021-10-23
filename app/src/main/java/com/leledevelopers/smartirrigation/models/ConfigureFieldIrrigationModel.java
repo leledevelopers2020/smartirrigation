@@ -14,6 +14,7 @@ public class ConfigureFieldIrrigationModel implements Serializable {
     private String tiggerFrom;
     private int motorOnTimeHr;
     private int motorOnTimeMins;
+    private boolean isEnabled = false;
 
     public int getFieldNo() {
         return fieldNo;
@@ -103,6 +104,14 @@ public class ConfigureFieldIrrigationModel implements Serializable {
         this.motorOnTimeMins = motorOnTimeMins;
     }
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "ConfigureFieldIrrigationModel{" +
@@ -115,6 +124,9 @@ public class ConfigureFieldIrrigationModel implements Serializable {
                 ", priority=" + priority +
                 ", cycle=" + cycle +
                 ", tiggerFrom='" + tiggerFrom + '\'' +
+                ", motorOnTimeHr=" + motorOnTimeHr +
+                ", motorOnTimeMins=" + motorOnTimeMins +
+                ", isEnabled=" + isEnabled +
                 '}';
     }
 }
