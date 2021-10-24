@@ -33,6 +33,7 @@ import java.io.IOException;
 public class Screen_2_1 extends SmsServices {
     private static final String TAG = Screen_2_1.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
+
     private TextView oldPassword, newPassword, status;
     private Button gsmContact, set;
     private final String fileName = "details.txt";
@@ -40,6 +41,7 @@ public class Screen_2_1 extends SmsServices {
     String filePhoneNumber = "9912473753";
     String filePassword = "psw";
     private Boolean b;
+    SmsUtils smsUtils=new SmsUtils();
     private boolean isSetClicked = false;
 
     @Override
@@ -71,6 +73,8 @@ public class Screen_2_1 extends SmsServices {
                 b = true;
 
                 if (SmsServices.phoneNumber != null && filePassword != null) {
+
+                    String smsData=smsUtils.OutSMS_1(oldPassword.getText().toString(),newPassword.getText().toString());
                     File myExternalFile = new File(getExternalFilesDir(ProjectUtils.DIRECTORY_PATH), ProjectUtils.FILE_NAME);
                     FileOutputStream fos = null;
                     try {
@@ -83,6 +87,8 @@ public class Screen_2_1 extends SmsServices {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    sendMessage(SmsServices.phoneNumber,smsData);
+
                     Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(Screen_2_1.this, "PLease select proper GSM number or enter correct otp/old password", Toast.LENGTH_LONG).show();
