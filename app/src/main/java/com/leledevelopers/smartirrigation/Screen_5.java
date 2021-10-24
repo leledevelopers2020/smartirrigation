@@ -211,15 +211,15 @@ public class Screen_5 extends SmsServices {
                         , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
                         model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
-                enableFertigation.setVisibility(View.INVISIBLE);
-                disableFertigation.setVisibility(View.VISIBLE);
+             /*   enableFertigation.setVisibility(View.INVISIBLE);
+                disableFertigation.setVisibility(View.VISIBLE);*/
             } else {
                 setEmptyData();
                 model = new ConfigureFieldIrrigationModel();
                 smsdata = smsUtils.OutSMS_5(fieldNo);
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(-1);
-                enableFertigation.setVisibility(View.VISIBLE);
-                disableFertigation.setVisibility(View.INVISIBLE);
+              /*  enableFertigation.setVisibility(View.VISIBLE);
+                disableFertigation.setVisibility(View.INVISIBLE);*/
             }
             sendMessage(SmsServices.phoneNumber, smsdata);
             modelList.set(fieldNo - 1, model);
@@ -233,6 +233,7 @@ public class Screen_5 extends SmsServices {
             Toast.makeText(Screen_5.this, "Please select the field no", Toast.LENGTH_LONG).show();
             enableFertigation.setVisibility(View.VISIBLE);
         }
+        initializeModel();
     }
 
     private boolean validateInput() {
