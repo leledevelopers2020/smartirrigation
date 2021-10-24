@@ -25,8 +25,8 @@ public abstract class SmsServices extends AppCompatActivity {
      */
     public void sendMessage(String phoneNumber,String message)
     {
-     //   String phoneNumber=txt_pNumber.getText().toString().trim();
-    //    String Message=txt_message.getAccessibilityClassName().toString().trim();
+        //   String phoneNumber=txt_pNumber.getText().toString().trim();
+        //    String Message=txt_message.getAccessibilityClassName().toString().trim();
         if(!phoneNumber.equals("") || message!=null || !message.equals("")) {
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNumber, null, message, null, null);
@@ -80,7 +80,6 @@ public abstract class SmsServices extends AppCompatActivity {
     /*public String getPhoneNumber() {
         return phoneNumber;
     }
-
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }

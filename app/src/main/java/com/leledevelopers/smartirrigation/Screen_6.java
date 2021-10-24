@@ -152,7 +152,7 @@ public class Screen_6 extends SmsServices {
     }
 
     private void initializeModel() {
-        disableFieldFertigation.setVisibility(View.INVISIBLE);
+
         try {
             if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FERTIGATION_FILE)) {
                 //modelList = curd_files.getFileData(Screen_5.this, ProjectUtils.CONFG_FERTIGATION_FILE);
@@ -166,6 +166,8 @@ public class Screen_6 extends SmsServices {
                         wetPeriod.setText(model.getWetPeriod() + "");
                         injectPeriod.setText(model.getInjectPeriod() + "");
                         noOfIterations.setText(model.getNoIterations() + "");
+                        disableFieldFertigation.setVisibility(View.VISIBLE);
+                        enableFieldFertigation.setVisibility(View.INVISIBLE);
                     }
                 }
             } else {
@@ -176,6 +178,8 @@ public class Screen_6 extends SmsServices {
                     model.setEnabled(false);
                     modelList.add(new ConfigurationFeildFertigationModel());
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
+                    disableFieldFertigation.setVisibility(View.INVISIBLE);
+                    enableFieldFertigation.setVisibility(View.VISIBLE);
                 }
                 curd_files.createFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
 
@@ -207,17 +211,17 @@ public class Screen_6 extends SmsServices {
                 model.setEnabled(true);
                 smsdata = smsUtils.OutSMS_6(model.getFieldNo(), model.getWetPeriod(),
                         model.getInjectPeriod(), model.getNoIterations());
-                sendMessage(SmsServices.phoneNumber, smsdata);
+              //  sendMessage(SmsServices.phoneNumber, smsdata);
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
-                enableFieldFertigation.setVisibility(View.INVISIBLE);
-                disableFieldFertigation.setVisibility(View.VISIBLE);
+             /*   enableFieldFertigation.setVisibility(View.INVISIBLE);
+                disableFieldFertigation.setVisibility(View.VISIBLE);*/
             } else {
                 setEmptyData();
                 model = new ConfigurationFeildFertigationModel();
                 smsdata = smsUtils.OutSMS_7(model.getFieldNo());
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(-1);
-                enableFieldFertigation.setVisibility(View.VISIBLE);
-                disableFieldFertigation.setVisibility(View.INVISIBLE);
+             /*   enableFieldFertigation.setVisibility(View.VISIBLE);
+                disableFieldFertigation.setVisibility(View.INVISIBLE);*/
             }
             sendMessage(SmsServices.phoneNumber, smsdata);
             modelList.set(fieldNo - 1, model);
@@ -231,6 +235,7 @@ public class Screen_6 extends SmsServices {
             Toast.makeText(Screen_6.this, "Please select the field no", Toast.LENGTH_LONG).show();
             enableFieldFertigation.setVisibility(View.VISIBLE);
         }
+        initializeModel();
     }
 
     @Override
