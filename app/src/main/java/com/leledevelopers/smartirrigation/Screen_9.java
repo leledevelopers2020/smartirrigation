@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -10,13 +11,18 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.leledevelopers.smartirrigation.registration.Screen_2_1;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class Screen_9 extends SmsServices {
     private static final String TAG = Screen_9.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
+    private SmsUtils smsUtils=new SmsUtils();
     private Boolean b;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> adapter;
@@ -36,6 +42,36 @@ public class Screen_9 extends SmsServices {
             public void onClick(View v) {
                 startActivity(new Intent(Screen_9.this,MainActivity_GSM.class));
                 finish();
+            }
+        });
+        setMotorloadCutoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Screen_9.this,Screen_10.class));
+            }
+        });
+        updatePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Screen_9.this, Screen_2_1.class));
+                finish();
+            }
+        });
+        setSystemTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar=Calendar.getInstance();
+                String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",calendar.get(Calendar.MONTH+1)+"",
+                        calendar.get(Calendar.YEAR)+"",calendar.get(Calendar.HOUR_OF_DAY)+""
+                        ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");
+                sendMessage(SmsServices.phoneNumber,smsData);
+            }
+        });
+        getSystemTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String smsData=smsUtils.OutSMS_11;
+                sendMessage(SmsServices.phoneNumber,smsData);
             }
         });
     }
