@@ -97,7 +97,7 @@ public class Screen_2_1 extends SmsServices {
         checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (!isChecked) {
+                if (isChecked) {
                     // show password
                     oldPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
@@ -109,7 +109,7 @@ public class Screen_2_1 extends SmsServices {
         checkbox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (!isChecked) {
+                if (isChecked) {
                     // show password
                     newPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
