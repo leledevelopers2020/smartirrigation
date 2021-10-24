@@ -222,6 +222,10 @@ public class Screen_6 extends SmsServices {
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(-1);
              /*   enableFieldFertigation.setVisibility(View.VISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);*/
+
+
+
+
             }
             sendMessage(SmsServices.phoneNumber, smsdata);
             modelList.set(fieldNo - 1, model);
