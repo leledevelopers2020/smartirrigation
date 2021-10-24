@@ -7,9 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,7 @@ public class Screen_2_1 extends SmsServices {
     String filePassword = "psw";
     private Boolean b;
     private boolean isSetClicked = false;
+    private CheckBox checkbox1,checkbox2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +94,30 @@ public class Screen_2_1 extends SmsServices {
                 }
             }
         });
+        checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (!isChecked) {
+                    // show password
+                    oldPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    // hide password
+                    oldPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
+        checkbox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (!isChecked) {
+                    // show password
+                    newPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    // hide password
+                    newPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
     }
 
     private boolean externalStorageIsAvailableForRW() {
@@ -107,6 +136,8 @@ public class Screen_2_1 extends SmsServices {
         newPassword = findViewById(R.id.screen_2_1_edittext_2);
         set = findViewById(R.id.screen_2_1_button_2);
         status = findViewById(R.id.screen_2_1_status);
+        checkbox1=findViewById(R.id.checkbox1);
+        checkbox2=findViewById(R.id.checkbox2);
     }
 
     @Override
