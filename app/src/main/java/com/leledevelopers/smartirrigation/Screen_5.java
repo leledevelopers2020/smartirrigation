@@ -299,17 +299,22 @@ public class Screen_5 extends SmsServices {
                         model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
             } else {
-               /* setEmptyData();
-                model = new ConfigureFieldIrrigationModel();*/
-               // model.setEnabled(false);
                 smsdata = smsUtils.OutSMS_5(fieldNo);
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
-
             }
             sendMessage(SmsServices.phoneNumber, smsdata);
             modelList.set(fieldNo - 1, model);
             enableFertigation.setVisibility(View.INVISIBLE);
             disableFertigation.setVisibility(View.INVISIBLE);
+            isEditedValveOnPeriod = false;
+            isEditedValveOffPeriod = false;
+            isEditedSoilDryness = false;
+            isEditedSoilWetness = false;
+            isEditedMotorOnTime = false;
+            isEditedPriority = false;
+            isEditedCycles = false;
+            isEditedWetPeriod = false;
+
             /*baseConfigureFieldIrrigationModel.setModelList(modelList);
             try {
                 curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);

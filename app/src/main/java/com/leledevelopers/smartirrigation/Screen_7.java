@@ -128,24 +128,6 @@ public class Screen_7 extends SmsServices {
             @Override
             public void onClick(View v) {
                 if (validateInput()) {
-                   /* disableFiltration.setVisibility(View.VISIBLE);
-                    model.setFcDelay_1(Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()));
-                    model.setFcDelay_2(Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString()));
-                    model.setFcDelay_3(Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString()));
-                    model.setFcOnTime(Integer.parseInt(filtrationControlUnitOnTime.getText().toString()));
-                    model.setFcSeperation(Integer.parseInt(filtrationControlUnitSeparation.getText().toString()));
-                    model.setEnabled(true);
-                    try {
-                        curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
-                        String smsData = smsUtils.OutSMS_8(model.getFcDelay_1() + "", model.getFcDelay_2() + ""
-                                , model.getFcDelay_3() + "", model.getFcOnTime() + "",
-                                model.getFcSeperation() + "");
-                        sendMessage(SmsServices.phoneNumber, smsData);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    enableFiltration.setVisibility(View.INVISIBLE);
-                    initializeModel();*/
                     updateData_And_SendSMS("enable");
                 }
             }
@@ -153,15 +135,6 @@ public class Screen_7 extends SmsServices {
         disableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*model.setEnabled(false);
-                try {
-                    curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String smsData = smsUtils.OutSMS_9;
-                sendMessage(SmsServices.phoneNumber, smsData);
-                enableFiltration.setVisibility(View.VISIBLE);*/
                 updateData_And_SendSMS("disable");
             }
         });
@@ -181,26 +154,14 @@ public class Screen_7 extends SmsServices {
             smsData = smsUtils.OutSMS_8(model.getFcDelay_1() + "", model.getFcDelay_2() + ""
                     , model.getFcDelay_3() + "", model.getFcOnTime() + "",
                     model.getFcSeperation() + "");
-          /*  enableFiltration.setVisibility(View.INVISIBLE);
-            disableFiltration.setVisibility(View.VISIBLE);*/
         } else {
-            model = new FiltrationModel();
             smsData = smsUtils.OutSMS_9;
-           /* enableFiltration.setVisibility(View.VISIBLE);
-            disableFiltration.setVisibility(View.INVISIBLE);*/
-            isInitial = true;
-            isEditedDelay_1 = false;
-            isEditedDelay_2 = false;
-            isEditedDelay_3 = false;
-            isEditedSeparation = false;
-            isEditedOnTime = false;
         }
-        try {
-            System.out.println("pushing to file "+model.toString());
-            curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        isEditedDelay_1 = false;
+        isEditedDelay_2 = false;
+        isEditedDelay_3 = false;
+        isEditedSeparation = false;
+        isEditedOnTime = false;
         sendMessage(SmsServices.phoneNumber, smsData);
         initializeModel();
     }
@@ -346,6 +307,12 @@ public class Screen_7 extends SmsServices {
         switch (message) {
             case SmsUtils.INSMS_8_1: {
                 status.setText("Pump Filtration Activated");
+                try {
+                    System.out.println("pushing to file "+model.toString());
+                    curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             }
             case SmsUtils.INSMS_9_1: {

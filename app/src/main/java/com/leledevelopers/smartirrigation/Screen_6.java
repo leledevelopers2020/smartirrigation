@@ -259,7 +259,9 @@ public class Screen_6 extends SmsServices {
             modelList.set(fieldNo - 1, model);
             enableFieldFertigation.setVisibility(View.INVISIBLE);
             disableFieldFertigation.setVisibility(View.VISIBLE);
-
+            isEditedInjectPeriod = false;
+            isEditedNoOfIterations = false;
+            isEditedWetPeriod = false;
         } else {
             Toast.makeText(Screen_6.this, "Please select the field no", Toast.LENGTH_LONG).show();
             enableFieldFertigation.setVisibility(View.VISIBLE);
