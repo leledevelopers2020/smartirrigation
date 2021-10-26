@@ -30,7 +30,7 @@
                 android:layout_weight="0.2"
                 android:gravity="center"
                 android:text="Configure Field Irrigation"
-                android:textSize="30dp" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,8 +45,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:text="Select field No."
-                    android:textSize="20dp" />
+                    android:text="Select field No." />
 
                 <Spinner
                     android:id="@+id/fieldNoSpinner5"
@@ -70,8 +69,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:text="Valve On Period"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textColor="@color/black" />
 
                 <EditText
                     android:id="@+id/valveOnPeriod"
@@ -81,8 +79,7 @@
                     android:gravity="center"
                     android:hint=" 10-999 (min) "
                     android:inputType="number"
-                    android:maxLength="3"
-                    android:textSize="20dp" />
+                    android:maxLength="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -98,8 +95,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:text="Valve Off Period"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textColor="@color/black" />
 
                 <EditText
                     android:id="@+id/valveOffPeriod"
@@ -109,8 +105,7 @@
                     android:gravity="center"
                     android:hint=" 1-99 (days) "
                     android:inputType="number"
-                    android:maxLength="2"
-                    android:textSize="20dp" />
+                    android:maxLength="2" />
             </LinearLayout>
 
             <LinearLayout
@@ -126,8 +121,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:text="Soil Dryness"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textColor="@color/black" />
 
                 <EditText
                     android:id="@+id/soilDryness"
@@ -137,8 +131,7 @@
                     android:gravity="center"
                     android:hint=" 100-999  "
                     android:inputType="number"
-                    android:maxLength="3"
-                    android:textSize="20dp" />
+                    android:maxLength="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -154,8 +147,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:text="Soil Wetness"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textColor="@color/black" />
 
                 <EditText
                     android:id="@+id/soilWetness"
@@ -165,8 +157,7 @@
                     android:gravity="center"
                     android:hint=" 10000-99999 "
                     android:inputType="number"
-                    android:maxLength="5"
-                    android:textSize="20dp" />
+                    android:maxLength="5" />
             </LinearLayout>
 
             <LinearLayout
@@ -182,8 +173,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:text="Motor On Time"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textColor="@color/black" />
 
                 <EditText
                     android:id="@+id/motorOnTime"
@@ -191,8 +181,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:hint="HH:MM"
-                    android:textSize="20dp" />
+                    android:hint="HH:MM" />
             </LinearLayout>
 
             <LinearLayout
@@ -208,8 +197,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:text="Priority"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textColor="@color/black" />
 
                 <EditText
                     android:id="@+id/priority"
@@ -219,8 +207,7 @@
                     android:gravity="center"
                     android:hint=" 1-12  "
                     android:inputType="number"
-                    android:maxLength="2"
-                    android:textSize="20dp" />
+                    android:maxLength="2" />
             </LinearLayout>
 
             <LinearLayout
@@ -236,8 +223,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:text="Cycles"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textColor="@color/black" />
 
                 <EditText
                     android:id="@+id/cycles"
@@ -247,8 +233,7 @@
                     android:gravity="center"
                     android:hint=" 1-9 "
                     android:inputType="number"
-                    android:maxLength="1"
-                    android:textSize="20dp" />
+                    android:maxLength="1" />
             </LinearLayout>
 
             <LinearLayout
@@ -264,8 +249,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:text="Trigger from"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textColor="@color/black" />
 
                 <EditText
                     android:id="@+id/wetPeriod"
@@ -274,8 +258,7 @@
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:hint=" Day-1....Day-7 "
-                    android:maxLength="3"
-                    android:textSize="20dp" />
+                    android:maxLength="3" />
             </LinearLayout>
 
             <Button
@@ -309,8 +292,7 @@
                 android:gravity="center"
                 android:hint="Status "
                 android:textColor="@color/sandcolor"
-                android:textColorHint="@color/sandcolor"
-                android:textSize="20dp" />
+                android:textColorHint="@color/sandcolor" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

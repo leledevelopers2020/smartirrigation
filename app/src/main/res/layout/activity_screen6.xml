@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Screen_6">
+
     <include
         android:id="@+id/include"
         layout="@layout/toolbar" />
@@ -12,62 +13,69 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        android:layout_marginTop="100dp"
         android:orientation="vertical"
-        android:layout_marginTop="100dp">
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_gravity="center"
             android:layout_weight="0.1"
-            android:text="Configure Field Fertigation"
-            android:textSize="20dp"
             android:gravity="center"
-            android:layout_gravity="center"/>
+            android:text="Configure Field Fertigation"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:orientation="horizontal"
             android:padding="5dp">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:text="Select field No."
+                android:gravity="center"
 
-                android:gravity="center"/>
+                android:text="Select field No." />
+
             <Spinner
                 android:id="@+id/fieldNoSpinner6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:gravity="center"/>
+                android:gravity="center" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:orientation="horizontal"
             android:padding="5dp">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:text="Wet Period"
-
                 android:gravity="center"
-                android:textColor="@color/black"/>
+
+                android:text="Wet Period"
+                android:textColor="@color/black" />
+
             <EditText
                 android:id="@+id/wetPeriod"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:maxLength="3"
                 android:hint=" 1-999 (min) "
                 android:inputType="number"
-                 />
+                android:maxLength="3" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -81,64 +89,68 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:text="Inject Period "
-                android:textColor="@color/black"
-                 />
+                android:textColor="@color/black" />
+
             <EditText
                 android:id="@+id/injectPeriod"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:maxLength="3"
                 android:hint=" 1-999 (min) "
                 android:inputType="number"
-                />
+                android:maxLength="3" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:orientation="horizontal"
             android:padding="5dp">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:text="No. of Iterations "
-
                 android:gravity="center"
-                android:textColor="@color/black"/>
+
+                android:text="No. of Iterations "
+                android:textColor="@color/black" />
+
             <EditText
                 android:id="@+id/noOfIterations"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:maxLength="1"
-                android:inputType="number"
                 android:hint=" 1-5 "
-                />
+                android:inputType="number"
+                android:maxLength="1" />
         </LinearLayout>
+
         <Button
             android:id="@+id/enableFieldFertigation6"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="0.1"
             android:layout_gravity="center"
-            android:background="@drawable/button_colours"
-            android:padding="15dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
-            android:text="Enable Fertigation"/>
+            android:layout_weight="0.1"
+            android:background="@drawable/button_colours"
+            android:padding="15dp"
+            android:text="Enable Fertigation" />
+
         <Button
             android:id="@+id/disableFieldFertigation6"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="0.1"
             android:layout_gravity="center"
+            android:layout_weight="0.1"
             android:background="@drawable/button_colours"
             android:padding="15dp"
-            android:text="Disable Fertigation"/>
+            android:text="Disable Fertigation" />
+
         <TextView
             android:id="@+id/screen_6_status"
             android:layout_width="wrap_content"
@@ -148,8 +160,7 @@
             android:gravity="center"
             android:hint="Status"
             android:textColor="@color/sandcolor"
-            android:textColorHint="@color/sandcolor"
-         />
+            android:textColorHint="@color/sandcolor" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

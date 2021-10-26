@@ -108,7 +108,6 @@ public class MainActivity_GSM extends SmsServices {
 
             @Override
             public void checkTime(String time) {
-
                 if (b) {
                     status.setText("System Down");
                 }

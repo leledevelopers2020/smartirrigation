@@ -263,24 +263,20 @@ public class Screen_7 extends SmsServices {
                 System.out.println("getting file "+model.toString());
                 if (model.isEnabled()) {
                     System.out.println("isEnabled " + model.isEnabled());
-
                     filtrationControlUnitNoDelay_1.setText(model.getFcDelay_1() + "");
                     filtrationControlUnitNoDelay_2.setText(model.getFcDelay_2() + "");
                     filtrationControlUnitNoDelay_3.setText(model.getFcDelay_3() + "");
                     filtrationControlUnitOnTime.setText(model.getFcOnTime() + "");
                     filtrationControlUnitSeparation.setText(model.getFcSeperation() + "");
-
                     disableFiltration.setVisibility(View.VISIBLE);
                     enableFiltration.setVisibility(View.INVISIBLE);
                 } else {
                     System.out.println("isEnabled " + model.isEnabled());
-
                     filtrationControlUnitNoDelay_1.setText("");
                     filtrationControlUnitNoDelay_2.setText("");
                     filtrationControlUnitNoDelay_3.setText("");
                     filtrationControlUnitOnTime.setText("");
                     filtrationControlUnitSeparation.setText("");
-
                     disableFiltration.setVisibility(View.INVISIBLE);
                     enableFiltration.setVisibility(View.VISIBLE);
                 }

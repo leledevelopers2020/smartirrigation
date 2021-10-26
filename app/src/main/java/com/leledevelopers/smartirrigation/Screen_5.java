@@ -48,6 +48,16 @@ public class Screen_5 extends SmsServices {
     private BaseConfigureFieldIrrigationModel baseConfigureFieldIrrigationModel = new BaseConfigureFieldIrrigationModel();
     private SmsUtils smsUtils = new SmsUtils();
     private String regex = "\\d+";
+    private int fieldNo;
+    private boolean isEditedValveOnPeriod = false;
+    private boolean isEditedValveOffPeriod = false;
+    private boolean isEditedSoilDryness = false;
+    private boolean isEditedSoilWetness = false;
+    private boolean isEditedMotorOnTime = false;
+    private boolean isEditedPriority = false;
+    private boolean isEditedCycles = false;
+    private boolean isEditedWetPeriod = false;
+    private boolean isInitial = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +74,7 @@ public class Screen_5 extends SmsServices {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (modelList.get(position).isEnabled()) {
                     disableFertigation.setVisibility(View.VISIBLE);
+                    enableFertigation.setVisibility(View.INVISIBLE);
                     model = modelList.get(position);
                     System.out.println(model.toString());
                     valveOnPeriod.setText(model.getValveOnPeriod() + "");
@@ -88,49 +99,105 @@ public class Screen_5 extends SmsServices {
         valveOnPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFertigation.setVisibility(View.VISIBLE);
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (valveOnPeriod.getText().toString().equals(model.getValveOnPeriod() + "")) {
+                    isEditedValveOnPeriod = false;
+
+                } else {
+                    isEditedValveOnPeriod = true;
+                }
+                isAnyViewEdited();
             }
         });
 
         valveOffPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFertigation.setVisibility(View.VISIBLE);
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (valveOffPeriod.getText().toString().equals(model.getValveOffPeriod() + "")) {
+                    isEditedValveOffPeriod = false;
+
+                } else {
+                    isEditedValveOffPeriod = true;
+                }
+                isAnyViewEdited();
             }
         });
 
         soilDryness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFertigation.setVisibility(View.VISIBLE);
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (soilDryness.getText().toString().equals(model.getSoilDryness() + "")) {
+                    isEditedSoilDryness = false;
+
+                } else {
+                    isEditedSoilDryness = true;
+                }
+                isAnyViewEdited();
             }
         });
 
         soilWetness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFertigation.setVisibility(View.VISIBLE);
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (soilWetness.getText().toString().equals(model.getSoilWetness() + "")) {
+                    isEditedSoilWetness = false;
+
+                } else {
+                    isEditedSoilWetness = true;
+                }
+                isAnyViewEdited();
             }
         });
 
         priority.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFertigation.setVisibility(View.VISIBLE);
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (priority.getText().toString().equals(model.getPriority() + "")) {
+                    isEditedPriority = false;
+
+                } else {
+                    isEditedPriority = true;
+                }
+                isAnyViewEdited();
             }
         });
 
         cycles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFertigation.setVisibility(View.VISIBLE);
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (cycles.getText().toString().equals(model.getCycle() + "")) {
+                    isEditedCycles = false;
+
+                } else {
+                    isEditedCycles = true;
+                }
+                isAnyViewEdited();
             }
         });
 
         wetPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFertigation.setVisibility(View.VISIBLE);
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (wetPeriod.getText().toString().equals(model.getTiggerFrom() + "")) {
+                    isEditedWetPeriod = false;
+
+                } else {
+                    isEditedWetPeriod = true;
+                }
+                isAnyViewEdited();
             }
         });
 
@@ -138,7 +205,15 @@ public class Screen_5 extends SmsServices {
         motorOnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableFertigation.setVisibility(View.VISIBLE);
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (motorOnTime.getText().toString().equals(model.getMotorOnTime() + "")) {
+                    isEditedMotorOnTime = false;
+
+                } else {
+                    isEditedMotorOnTime = true;
+                }
+                isAnyViewEdited();
                 TimePickerDialog timePickerDialog = new TimePickerDialog(Screen_5.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         new TimePickerDialog.OnTimeSetListener() {
@@ -189,10 +264,22 @@ public class Screen_5 extends SmsServices {
         model = null;
     }
 
+    private void isAnyViewEdited() {
+        if (isEditedValveOnPeriod || isEditedValveOffPeriod || isEditedCycles || isEditedWetPeriod || isEditedPriority
+                || isEditedSoilDryness || isEditedSoilWetness) {
+            disableFertigation.setVisibility(View.INVISIBLE);
+            enableFertigation.setVisibility(View.VISIBLE);
+        } else {
+            disableFertigation.setVisibility(View.VISIBLE);
+            enableFertigation.setVisibility(View.INVISIBLE);
+        }
+        // return (isEditedDelay_1 || isEditedDelay_2 || isEditedDelay_3 || isEditedOnTime || isEditedSeparation) ? true : false;
+    }
+
     private void updateData_And_SendSMS(String typeOfAction) {
         if (!spinner.getSelectedItem().toString().trim().equals("Pick one")) {
             String smsdata;
-            int fieldNo = Integer.parseInt(spinner.getSelectedItem().toString());
+            fieldNo = Integer.parseInt(spinner.getSelectedItem().toString());
             if (typeOfAction.equals("enable")) {
                 model = modelList.get(fieldNo - 1);
                 model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
@@ -211,28 +298,29 @@ public class Screen_5 extends SmsServices {
                         , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
                         model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
-             /*   enableFertigation.setVisibility(View.INVISIBLE);
-                disableFertigation.setVisibility(View.VISIBLE);*/
             } else {
-                setEmptyData();
-                model = new ConfigureFieldIrrigationModel();
+               /* setEmptyData();
+                model = new ConfigureFieldIrrigationModel();*/
+               // model.setEnabled(false);
                 smsdata = smsUtils.OutSMS_5(fieldNo);
-                baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(-1);
-              /*  enableFertigation.setVisibility(View.VISIBLE);
-                disableFertigation.setVisibility(View.INVISIBLE);*/
+                baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
+
             }
             sendMessage(SmsServices.phoneNumber, smsdata);
             modelList.set(fieldNo - 1, model);
-            baseConfigureFieldIrrigationModel.setModelList(modelList);
+            enableFertigation.setVisibility(View.INVISIBLE);
+            disableFertigation.setVisibility(View.INVISIBLE);
+            /*baseConfigureFieldIrrigationModel.setModelList(modelList);
             try {
                 curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         } else {
             Toast.makeText(Screen_5.this, "Please select the field no", Toast.LENGTH_LONG).show();
             enableFertigation.setVisibility(View.VISIBLE);
         }
+
         initializeModel();
     }
 
@@ -291,10 +379,10 @@ public class Screen_5 extends SmsServices {
         disableFertigation.setVisibility(View.INVISIBLE);
         try {
             if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_IRRIGATION_FILE)) {
-                //modelList = curd_files.getFileData(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
                 baseConfigureFieldIrrigationModel = (BaseConfigureFieldIrrigationModel) curd_files.getFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
                 modelList = baseConfigureFieldIrrigationModel.getModelList();
                 if (baseConfigureFieldIrrigationModel.getLastEnabledFieldNo() != -1) {
+                    isInitial = false;
                     model = modelList.get(baseConfigureFieldIrrigationModel.getLastEnabledFieldNo());
                     Toast.makeText(Screen_5.this, model.toString(), Toast.LENGTH_LONG).show();
                     if (model.isEnabled()) {
@@ -320,7 +408,8 @@ public class Screen_5 extends SmsServices {
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                 }
                 curd_files.createFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
-
+                isInitial = true;
+                disableFertigation.setVisibility(View.INVISIBLE);
             }
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -397,15 +486,17 @@ public class Screen_5 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        switch (message) {
-            case SmsUtils.INSMS_4_1: {
-                status.setText(SmsUtils.INSMS_4_1);
-                break;
+        if(message.contains(SmsUtils.INSMS_4_1)){
+            status.setText(SmsUtils.INSMS_4_1);
+            baseConfigureFieldIrrigationModel.setModelList(modelList);
+            try {
+                curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            case SmsUtils.INSMS_5_1: {
-                status.setText("Valve configuration kept on Hold");
-                break;
-            }
+        } else if(message.contains(SmsUtils.INSMS_5_1)){
+            status.setText("Valve configuration kept on Hold");
         }
+
     }
 }

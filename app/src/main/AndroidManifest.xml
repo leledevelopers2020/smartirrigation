@@ -39,18 +39,22 @@
 
         </activity>
         <activity
+            android:launchMode="singleTask"
             android:name=".MainActivity_GSM"
             android:exported="true" />
         <activity
+            android:launchMode="standard"
             android:name=".registration.Screen_2_1"
             android:exported="true" />
         <activity
+            android:launchMode="standard"
             android:name=".registration.Screen_1"
             android:exported="true" />
         <activity
             android:name=".Screen_4"
             android:exported="true" />
         <activity
+            android:launchMode="standard"
             android:name=".starter.splashScreen"
             android:exported="true">
             <intent-filter>
