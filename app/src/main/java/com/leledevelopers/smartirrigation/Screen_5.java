@@ -381,7 +381,7 @@ public class Screen_5 extends SmsServices {
     }
 
     private void initializeModel() {
-        disableFertigation.setVisibility(View.INVISIBLE);
+
         try {
             if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_IRRIGATION_FILE)) {
                 baseConfigureFieldIrrigationModel = (BaseConfigureFieldIrrigationModel) curd_files.getFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
@@ -401,6 +401,8 @@ public class Screen_5 extends SmsServices {
                         cycles.setText(model.getCycle() + "");
                         wetPeriod.setText(model.getTiggerFrom());
                         getHoursAndMinutes(model.getMotorOnTime());
+                        disableFertigation.setVisibility(View.VISIBLE);
+                        enableFertigation.setVisibility(View.INVISIBLE);
                     }
                 }
             } else {
@@ -411,6 +413,8 @@ public class Screen_5 extends SmsServices {
                     model.setEnabled(false);
                     modelList.add(new ConfigureFieldIrrigationModel());
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                    enableFertigation.setVisibility(View.VISIBLE);
                 }
                 curd_files.createFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                 isInitial = true;
