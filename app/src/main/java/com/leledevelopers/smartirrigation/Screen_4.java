@@ -24,35 +24,57 @@ public class Screen_4 extends SmsServices {
         configureFieldIrrigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status.setText("Navigating to Screen 5");
-                startActivity(new Intent(Screen_4.this, Screen_5.class));
+                status.setText("Configure Field Irrigation");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(Screen_4.this, Screen_5.class));
+                    }
+                },1000);
             }
         });
         configureFieldFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status.setText("Navigating to Screen 6");
-                startActivity(new Intent(Screen_4.this, Screen_6.class));
+                status.setText("Configure field fertigation");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(Screen_4.this, Screen_6.class));
+                    }
+                },1000);
+
             }
         });
         configurePumpFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status.setText("Navigating to Screen 7");
-                startActivity(new Intent(Screen_4.this, Screen_7.class));
+                status.setText("Configure Pump Filtration");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(Screen_4.this, Screen_7.class));
+                    }
+                },1000);
+
             }
         });
         printReportFieldStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status.setText("Navigating to Screen 8");
-                startActivity(new Intent(Screen_4.this, Screen_8.class));
+                status.setText("Print report for field status");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(Screen_4.this, Screen_8.class));
+                    }
+                },1000);
+
             }
         });
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status.setText("Navigating to Screen 9");
                 startActivity(new Intent(Screen_4.this, Screen_9.class));
             }
         });

@@ -25,7 +25,26 @@ public class Screen_1 extends SmsServices {
         gsmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Screen_1.this, Screen_2_1.class));
+                status.setText("GSM Mode Selected");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(Screen_1.this, Screen_2_1.class));
+                    }
+                },1000);
+
+            }
+        });
+        wifiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                status.setText("Wifi Mode Selected");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(Screen_1.this,screen_2_2.class));
+                    }
+                },1000);
             }
         });
     }

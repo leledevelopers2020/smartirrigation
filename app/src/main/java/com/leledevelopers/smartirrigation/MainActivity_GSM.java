@@ -64,9 +64,14 @@ public class MainActivity_GSM extends SmsServices {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        Toast.makeText(MainActivity_GSM.this, "You clicked yes button", Toast.LENGTH_LONG).show();
-                        new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
-                        startActivity(new Intent(MainActivity_GSM.this, Screen_1.class));
+                         new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
+                         status.setText("Reset Successful");
+                         handler.postDelayed(new Runnable() {
+                             @Override
+                             public void run() {
+                                 startActivity(new Intent(MainActivity_GSM.this, Screen_1.class));
+                             }
+                         },1000);
                     }
                 });
 
@@ -133,12 +138,24 @@ public class MainActivity_GSM extends SmsServices {
     public void checkSMS(String message) {
         switch (message) {
             case SmsUtils.INSMS_2_1: {
-                startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
+                status.setText("Connection Successful");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
+                    }
+                },1000);
                 break;
             }
             case SmsUtils.INSMS_2_2: {
                 status.setText("Admin Changed, please reauthenticate device");
-                startActivity(new Intent(MainActivity_GSM.this, Screen_2_1.class));
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(MainActivity_GSM.this, Screen_2_1.class));
+
+                    }
+                },1000);
                 break;
             }
         }

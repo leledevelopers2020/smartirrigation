@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,12 +34,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class Screen_2_1 extends SmsServices {
     private static final String TAG = Screen_2_1.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
 
-    private TextView oldPassword, newPassword, status;
+    private EditText oldPassword, newPassword;
+    private TextView status;
     private Button gsmContact, set;
     private final String fileName = "details.txt";
     private final String filePath = "MyFileDir";
@@ -61,6 +64,7 @@ public class Screen_2_1 extends SmsServices {
             @Override
             public void onClick(View v) {
                 if (checkPermissions()) {
+
                     Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                     intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
                     startActivityForResult(intent, ProjectUtils.PICK_CONTACT);
@@ -76,7 +80,8 @@ public class Screen_2_1 extends SmsServices {
 
                 smsReceiver.waitFor_1_Minute();
                 b = true;
-
+                if(validateInput(oldPassword.getText().toString(),newPassword.getText().toString()))
+                {
                 if (SmsServices.phoneNumber != null && filePassword != null) {
 
                     String smsData=smsUtils.OutSMS_1(oldPassword.getText().toString(),newPassword.getText().toString());
@@ -93,12 +98,18 @@ public class Screen_2_1 extends SmsServices {
                         e.printStackTrace();
                     }
                     sendMessage(SmsServices.phoneNumber,smsData);
+                    status.setText("Message Sent");
 
                     Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(Screen_2_1.this, "PLease select proper GSM number or enter correct otp/old password", Toast.LENGTH_LONG).show();
                 }
             }
+                else
+                {
+                    focus(oldPassword.getText().toString(),newPassword.getText().toString());
+                }
+        }
         });
         checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -124,6 +135,41 @@ public class Screen_2_1 extends SmsServices {
                 }
             }
         });
+    }
+
+
+    private boolean validateInput(String oldPasswordlocal,String newPasswordlocal) {
+        boolean matching=false;
+        String regex = "[0-9]+";
+        Pattern p = Pattern.compile(regex);
+        if(p.matcher(oldPasswordlocal).matches()&& p.matcher(newPasswordlocal).matches()
+                && oldPasswordlocal.length()==6 && newPasswordlocal.length()==6 &&  !(oldPasswordlocal.equals(newPasswordlocal)))
+        {
+            matching=true;
+        }
+        return matching;
+    }
+    private void focus(String oldPasswordlocal,String newPasswordlocal) {
+        String regex = "[0-9]+";
+        Pattern p = Pattern.compile(regex);
+        if((!(p.matcher(oldPasswordlocal).matches() ))|| (oldPasswordlocal.length()!=6))
+        {
+            oldPassword.requestFocus();
+            oldPassword.getText().clear();
+            oldPassword.setError("Enter valid 6 digit password");
+        }
+        if((!(p.matcher(newPasswordlocal).matches() ))|| (newPasswordlocal.length()!=6))
+        {
+            newPassword.requestFocus();
+            newPassword.getText().clear();
+            newPassword.setError("Enter valid 6 digit password");
+        }
+        if(oldPasswordlocal.equals(newPasswordlocal))
+        {
+            oldPassword.getText().clear();
+            newPassword.getText().clear();
+            status.setText("Both Passwords cannot be same");
+        }
     }
 
     private boolean externalStorageIsAvailableForRW() {
@@ -164,11 +210,17 @@ public class Screen_2_1 extends SmsServices {
     public void checkSMS(String message) {
         switch (message) {
             case SmsUtils.INSMS_1_1: {
-                startActivity(new Intent(Screen_2_1.this, Screen_9.class));
+                status.setText("Admin set successfully");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(Screen_2_1.this, Screen_9.class));
+                    }
+                },1000);
                 break;
             }
             case SmsUtils.INSMS_1_2: {
-                Log.d("SmsReceiver", "true");
+               status.setText("Wrong factory Password");
                 oldPassword.requestFocus();
                 break;
             }
@@ -179,7 +231,12 @@ public class Screen_2_1 extends SmsServices {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                startActivity(new Intent(Screen_2_1.this, MainActivity_GSM.class));
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(Screen_2_1.this, MainActivity_GSM.class));
+                    }
+                },1000);
                 break;
             }
         }
@@ -195,7 +252,7 @@ public class Screen_2_1 extends SmsServices {
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
                 System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
-                status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
+             //   status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && isSetClicked) {
                     checkSMS(message);
                 }
@@ -205,7 +262,7 @@ public class Screen_2_1 extends SmsServices {
             public void checkTime(String time) {
                 Log.d("SmsReceiver", "new time " + time);
                 if (b) {
-                    status.setText("System Down");
+                    status.setText("Server Down");
                 }
             }
 
