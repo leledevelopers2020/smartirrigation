@@ -16,7 +16,7 @@ public class BaseConfigureFieldIrrigationModel implements Serializable {
         this.modelList = modelList;
     }
 
-    public int getLastEnabledFieldNo() {
+    public int  getLastEnabledFieldNo() {
         return lastEnabledFieldNo;
     }
 
