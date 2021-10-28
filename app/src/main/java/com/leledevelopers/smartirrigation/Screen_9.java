@@ -34,7 +34,7 @@ public class Screen_9 extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen9);
         initViews();
-        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
+        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.languagesArray, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         save.setOnClickListener(new View.OnClickListener() {
@@ -60,18 +60,22 @@ public class Screen_9 extends SmsServices {
         setSystemTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                smsReceiver.waitFor_1_Minute();
                 Calendar calendar=Calendar.getInstance();
-                String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",calendar.get(Calendar.MONTH+1)+"",
+                String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
                         calendar.get(Calendar.YEAR)+"",calendar.get(Calendar.HOUR_OF_DAY)+""
                         ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");
                 sendMessage(SmsServices.phoneNumber,smsData);
+                status.setText("Message Delivered");
             }
         });
         getSystemTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                smsReceiver.waitFor_1_Minute();
                 String smsData=smsUtils.OutSMS_11;
                 sendMessage(SmsServices.phoneNumber,smsData);
+                status.setText("Message Delivered");
             }
         });
     }

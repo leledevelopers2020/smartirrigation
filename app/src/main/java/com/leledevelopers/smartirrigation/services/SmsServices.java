@@ -3,6 +3,7 @@ package com.leledevelopers.smartirrigation.services;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.telephony.SmsManager;
 import android.widget.Toast;
 
@@ -15,6 +16,8 @@ import com.leledevelopers.smartirrigation.utils.ProjectUtils;
  * @author Narsing Rao.K
  */
 public abstract class SmsServices extends AppCompatActivity {
+    protected Handler handler=new Handler();
+
     protected Context context;
     protected static String phoneNumber;
 

@@ -3,6 +3,8 @@ package com.leledevelopers.smartirrigation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.provider.Telephony;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import com.leledevelopers.smartirrigation.utils.SmsUtils;
 public class Screen_10 extends SmsServices {
     private static final String TAG = Screen_10.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
+    private SmsUtils smsUtils=new SmsUtils();
     private Boolean b;
     EditText noLoadCutoffText, fullLoadCutOffText;
     private Button setMotorLoadThreshold;
@@ -24,6 +27,37 @@ public class Screen_10 extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen10);
         initViews();
+        setMotorLoadThreshold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(validateInput(noLoadCutoffText.getText().toString(),fullLoadCutOffText.getText().toString()))
+                {
+                    String smsData=smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
+                            fullLoadCutOffText.getText().toString());
+                    sendMessage(SmsServices.phoneNumber,smsData);
+                    status.setText("Message Delivered");
+                    smsReceiver.waitFor_1_Minute();
+                }
+            }
+        });
+    }
+
+    private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
+        Boolean validate=true;
+        if(noLoadCutoffTextlocal.length()==0)
+        {
+            noLoadCutoffText.requestFocus();
+            noLoadCutoffText.getText().clear();
+            noLoadCutoffText.setError("Please enter the data");
+            return false;
+        }
+        if(fullLoadCutOffTextlocal.length()==0)
+        {
+            fullLoadCutOffText.requestFocus();
+            fullLoadCutOffText.getText().clear();
+            fullLoadCutOffText.setError("Please enter the data");
+        }
+        return validate;
     }
 
     @Override
@@ -79,4 +113,6 @@ public class Screen_10 extends SmsServices {
             }
         }
     }
+
+    
 }
