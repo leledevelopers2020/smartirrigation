@@ -5,39 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity_GSM">
+    tools:context=".registration.Screen_3_1">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/button_colours"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:layout_constraintTop_toTopOf="parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:text="Smart Irrigation"
-                android:textColor="@color/black"
-                android:gravity="center_vertical"
-                android:textSize="20dp"
-                android:textAllCaps="true"
-                android:layout_marginStart="8dp"/>
-        </LinearLayout>
-
-    </androidx.appcompat.widget.Toolbar>
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/include"
         android:layout_marginTop="50dp">
 
         <TextView
