@@ -6,10 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".registration.Screen_2_1">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar" >
-    </include>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/button_colours"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:text="Smart Irrigation"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:textSize="20dp"
+                android:textAllCaps="true"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
 
 
     <LinearLayout
@@ -17,7 +37,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/include">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <TextView
             android:layout_width="match_parent"

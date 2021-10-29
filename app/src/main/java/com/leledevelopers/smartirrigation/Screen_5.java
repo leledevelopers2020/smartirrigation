@@ -1,6 +1,7 @@
 package com.leledevelopers.smartirrigation;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -40,7 +41,7 @@ public class Screen_5 extends SmsServices {
     private int hour, min;
     EditText valveOnPeriod, valveOffPeriod, soilDryness, soilWetness, motorOnTime, priority, cycles, wetPeriod;
     TextView status;
-    private Button enableFertigation, disableFertigation;
+    private Button enableFertigation, disableFertigation,back_5;
     private Boolean b;
     private ConfigureFieldIrrigationModel model;
     private CURD_Files<ConfigureFieldIrrigationModel> curd_files = new CURD_FilesImpl<ConfigureFieldIrrigationModel>();
@@ -198,6 +199,13 @@ public class Screen_5 extends SmsServices {
                     isEditedWetPeriod = true;
                 }
                 isAnyViewEdited();
+            }
+        });
+        back_5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Screen_5.this,Screen_4.class));
+                finish();
             }
         });
 
@@ -454,6 +462,7 @@ public class Screen_5 extends SmsServices {
         wetPeriod = findViewById(R.id.wetPeriod);
         enableFertigation = findViewById(R.id.enableFieldFertigation5);
         disableFertigation = findViewById(R.id.disableFertigation5);
+        back_5=findViewById(R.id.back_5);
         status = findViewById(R.id.screen_5_status);
     }
 

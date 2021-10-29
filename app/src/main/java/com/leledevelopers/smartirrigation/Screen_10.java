@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.view.View;
@@ -19,7 +20,7 @@ public class Screen_10 extends SmsServices {
     private SmsUtils smsUtils=new SmsUtils();
     private Boolean b;
     EditText noLoadCutoffText, fullLoadCutOffText;
-    private Button setMotorLoadThreshold;
+    private Button setMotorLoadThreshold,back_10;
     private TextView status;
 
     @Override
@@ -38,6 +39,13 @@ public class Screen_10 extends SmsServices {
                     status.setText("Message Delivered");
                     smsReceiver.waitFor_1_Minute();
                 }
+            }
+        });
+        back_10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Screen_10.this,Screen_9.class));
+                finish();
             }
         });
     }
@@ -66,6 +74,7 @@ public class Screen_10 extends SmsServices {
         fullLoadCutOffText = findViewById(R.id.fullLoadCutOffText);
         setMotorLoadThreshold = findViewById(R.id.setMotorLoadThreshold);
         status = findViewById(R.id.screen_10_status);
+        back_10=findViewById(R.id.back_10);
     }
 
     @Override

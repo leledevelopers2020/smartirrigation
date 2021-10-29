@@ -1,5 +1,6 @@
 package com.leledevelopers.smartirrigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,7 +32,7 @@ public class Screen_6 extends SmsServices {
     private Boolean b;
     private Spinner spinner;
     EditText wetPeriod, injectPeriod, noOfIterations;
-    private Button enableFieldFertigation, disableFieldFertigation;
+    private Button enableFieldFertigation, disableFieldFertigation,back_6;
     private ArrayAdapter<CharSequence> adapter;
     private TextView status;
     private ConfigurationFeildFertigationModel model;
@@ -150,6 +151,13 @@ public class Screen_6 extends SmsServices {
                 String smsdata = smsUtils.OutSMS_7(model.getFieldNo());
                 sendMessage(SmsServices.phoneNumber, smsdata);*/
                 updateData_And_SendSMS("disable");
+            }
+        });
+        back_6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Screen_6.this,Screen_4.class));
+                finish();
             }
         });
     }
@@ -277,6 +285,7 @@ public class Screen_6 extends SmsServices {
         noOfIterations = findViewById(R.id.noOfIterations);
         enableFieldFertigation = findViewById(R.id.enableFieldFertigation6);
         disableFieldFertigation = findViewById(R.id.disableFieldFertigation6);
+        back_6=findViewById(R.id.back_6);
         status = findViewById(R.id.screen_6_status);
     }
 
