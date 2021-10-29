@@ -1,5 +1,6 @@
 package com.leledevelopers.smartirrigation;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Screen_8 extends SmsServices {
-    Button fromDate, toDate, printData;
+    Button fromDate, toDate, printData,back_8;
     ArrayAdapter<CharSequence> adapter;
     Spinner spinner;
     String startingDate, endingDate;
@@ -134,6 +135,13 @@ public class Screen_8 extends SmsServices {
                 cursor.close();
             }
         });
+        back_8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Screen_8.this,Screen_4.class));
+                finish();
+            }
+        });
     }
     @Override
     public void initViews() {
@@ -141,6 +149,7 @@ public class Screen_8 extends SmsServices {
         toDate = (Button) findViewById(R.id.toDate);
         spinner = (Spinner) findViewById(R.id.fieldNoSpinner8);
         printData = findViewById(R.id.printData);
+        back_8=findViewById(R.id.back_8);
     }
 }
 

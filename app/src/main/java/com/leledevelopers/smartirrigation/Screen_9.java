@@ -26,7 +26,7 @@ public class Screen_9 extends SmsServices {
     private Boolean b;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> adapter;
-    private Button setSystemTime, getSystemTime, updatePassword, setMotorloadCutoff, save;
+    private Button setSystemTime, getSystemTime, updatePassword, setMotorloadCutoff,back_9, save;
     private TextView status;
 
     @Override
@@ -78,6 +78,13 @@ public class Screen_9 extends SmsServices {
                 status.setText("Message Delivered");
             }
         });
+        back_9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Screen_9.this,Screen_4.class));
+                finish();
+            }
+        });
     }
     @Override
     public void initViews() {
@@ -88,6 +95,7 @@ public class Screen_9 extends SmsServices {
         setMotorloadCutoff = findViewById(R.id.setMotorloadCutoff);
         status = findViewById(R.id.screen_9_status);
         save = findViewById(R.id.save);
+        back_9=findViewById(R.id.back_9);
     }
 
     @Override

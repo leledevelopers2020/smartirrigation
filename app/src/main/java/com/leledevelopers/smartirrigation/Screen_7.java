@@ -1,5 +1,6 @@
 package com.leledevelopers.smartirrigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +25,7 @@ public class Screen_7 extends SmsServices {
     private Boolean b;
     EditText filtrationControlUnitNoDelay_1, filtrationControlUnitNoDelay_2, filtrationControlUnitNoDelay_3;
     EditText filtrationControlUnitOnTime, filtrationControlUnitSeparation;
-    private Button enableFiltration, disableFiltration;
+    private Button enableFiltration, disableFiltration,back_7;
     private TextView status;
     private FiltrationModel model;
     private CURD_Files curd_files = new CURD_FilesImpl();
@@ -136,6 +137,13 @@ public class Screen_7 extends SmsServices {
             @Override
             public void onClick(View v) {
                 updateData_And_SendSMS("disable");
+            }
+        });
+        back_7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Screen_7.this,Screen_4.class));
+                finish();
             }
         });
 
@@ -263,6 +271,7 @@ public class Screen_7 extends SmsServices {
         filtrationControlUnitSeparation = findViewById(R.id.filtrationControlUnitSeparation);
         enableFiltration = findViewById(R.id.enableFiltration7);
         disableFiltration = findViewById(R.id.disableFiltration7);
+        back_7=findViewById(R.id.back_7);
         status = findViewById(R.id.screen_7_status);
     }
 

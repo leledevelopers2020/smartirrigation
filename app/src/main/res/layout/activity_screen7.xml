@@ -7,191 +7,212 @@
     tools:context=".Screen_7">
 
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/button_colours"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/back_7"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:gravity="center_vertical"
+                android:background="@drawable/back_nav"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:text="Smart Irrigation"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:textSize="20dp"
+                android:textAllCaps="true"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/include">
-
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginTop="70dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_gravity="center"
             android:layout_weight="0.1"
-            android:padding="5dp"
             android:text=" Pump Filtration "
+            android:layout_gravity="center"
             android:textColor="@color/black"
-            android:textStyle="bold" />
-
+            android:textSize="30dp"
+            android:padding="5dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:orientation="horizontal"
             android:padding="5dp">
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:gravity="center"
                 android:text="Filtration Control Unit No.1 Delay "
-                android:textColor="@color/black" />
 
+                android:gravity="center"
+                android:textColor="@color/black"/>
             <EditText
                 android:id="@+id/filtrationControlUnitNoDelay_1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:gravity="center"
+                android:maxLength="2"
+                android:inputType="number"
                 android:hint=" 1-60 (min) "
-                android:inputType="number"
-                android:maxLength="2" />
+                 />
         </LinearLayout>
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1"
-            android:orientation="horizontal"
-            android:padding="5dp">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:orientation="horizontal"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Filtration Control Unit No.2 Delay"
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="center"
-
-                android:text="Filtration Control Unit No.2 Delay"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/filtrationControlUnitNoDelay_2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="center"
-                android:hint=" 1-10 (min) "
-                android:inputType="number"
-                android:maxLength="4" />
-        </LinearLayout>
-
+            android:gravity="center"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/filtrationControlUnitNoDelay_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:maxLength="4"
+            android:hint=" 1-10 (min) "
+            android:inputType="number"
+            />
+    </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1"
-            android:orientation="horizontal"
-            android:padding="5dp">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:orientation="horizontal"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Filtration Control Unit No.3 Delay "
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="center"
-
-                android:text="Filtration Control Unit No.3 Delay "
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/filtrationControlUnitNoDelay_3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="center"
-                android:hint=" 1-10 (min) "
-                android:inputType="number"
-                android:maxLength="2" />
-        </LinearLayout>
-
+            android:gravity="center"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/filtrationControlUnitNoDelay_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:maxLength="2"
+            android:hint=" 1-10 (min) "
+            android:inputType="number"
+            />
+    </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1"
-            android:orientation="horizontal"
-            android:padding="5dp">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="center"
-                android:text="Filtration Control Unit On Time "
-                android:textColor="@color/black" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="Filtration Control Unit On Time "
+            android:textColor="@color/black"
+             />
 
-            <EditText
-                android:id="@+id/filtrationControlUnitOnTime"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="center"
-                android:hint=" 1-10 (min)"
-                android:inputType="number"
-                android:maxLength="2" />
-        </LinearLayout>
-
+        <EditText
+            android:id="@+id/filtrationControlUnitOnTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:maxLength="2"
+            android:hint=" 1-10 (min)"
+            android:inputType="number"
+             />
+    </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1"
-            android:orientation="horizontal"
-            android:padding="5dp">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:orientation="horizontal"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Filtration Control Unit Seperation "
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="center"
-
-                android:text="Filtration Control Unit Seperation "
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/filtrationControlUnitSeparation"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="center"
-                android:hint=" 10-240 (min) "
-                android:inputType="number"
-                android:maxLength="3" />
-        </LinearLayout>
-
+            android:gravity="center"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/filtrationControlUnitSeparation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:maxLength="3"
+            android:hint=" 10-240 (min) "
+            android:inputType="number"
+           />
+    </LinearLayout>
         <Button
             android:id="@+id/enableFiltration7"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp"
             android:layout_weight="0.07"
+            android:text="Enable Filtration"
             android:background="@drawable/button_colours"
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center"
             android:padding="10dp"
-            android:text="Enable Filtration" />
-
+            android:textSize="20dp"/>
         <Button
             android:id="@+id/disableFiltration7"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp"
             android:layout_weight="0.07"
+            android:text="Disable Filtration"
             android:background="@drawable/button_colours"
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center"
             android:padding="10dp"
-            android:text="Disable Filtration" />
-
+            android:textSize="20dp"/>
         <TextView
             android:id="@+id/screen_7_status"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_gravity="center"
             android:layout_weight="0.3"
-            android:gravity="center"
             android:text="Status"
-            android:textColor="@color/black" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/black"
+             />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
