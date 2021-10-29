@@ -5,20 +5,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Screen_4">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/button_colours"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:text="Smart Irrigation"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:textSize="20dp"
+                android:textAllCaps="true"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         android:layout_marginTop="100dp">
 
 
         <Button
+            android:id="@+id/screen_4_button1"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -30,6 +52,7 @@
             android:textSize="20dp"
             android:text="Configure field irrigation" />
         <Button
+            android:id="@+id/screen_4_button2"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -42,6 +65,7 @@
             android:text="Configure field fertigation" />
 
         <Button
+            android:id="@+id/screen_4_button3"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -54,6 +78,7 @@
             android:textSize="20dp" />
 
         <Button
+            android:id="@+id/screen_4_button4"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -65,6 +90,7 @@
             android:textSize="20dp"
             android:text="Print report for field status" />
         <Button
+            android:id="@+id/settings"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -76,6 +102,7 @@
             android:textSize="20dp"
             android:text="Settings" />
         <TextView
+            android:id="@+id/screen_4_status"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -83,8 +110,7 @@
             android:gravity="center"
             android:hint="Status"
             android:textColor="@color/sandcolor"
-            android:textColorHint="@color/sandcolor"
-            android:textSize="20dp" />
+            android:textColorHint="@color/sandcolor" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

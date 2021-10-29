@@ -7,17 +7,37 @@
     android:layout_height="match_parent"
     tools:context=".registration.Screen_1">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/button_colours"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:text="Smart Irrigation"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:textSize="20dp"
+                android:textAllCaps="true"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         android:layout_marginTop="100dp">
 
         <TextView
@@ -31,32 +51,35 @@
             android:textSize="30dp" />
 
         <Button
+            android:id="@+id/screen_1_gsm_button"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="0.07"
             android:background="@drawable/button_colours"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="10dp"
             android:textSize="20dp"
             android:text="GSM/Phone Number" />
         <Button
+            android:id="@+id/screen_1_wifi_button"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="0.07"
-            android:layout_margin="7dp"
+            android:layout_margin="20dp"
             android:background="@drawable/button_colours"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="10dp"
             android:textSize="20dp"
             android:text="Wi-Fi" />
 
         <TextView
+            android:id="@+id/screen_1_status"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_weight="0.4"
+            android:layout_weight="0.3"
             android:gravity="center"
             android:hint="Status"
             android:textColor="@color/sandcolor"

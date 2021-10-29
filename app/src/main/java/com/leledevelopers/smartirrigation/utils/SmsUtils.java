@@ -1,23 +1,27 @@
 package com.leledevelopers.smartirrigation.utils;
-
+/**
+ *
+ * @author Shivam Z
+ * This is class containes all constants and methods for Sending and Recevive SMS.
+ */
 public class SmsUtils {
     // SMS responses from controller
     public static final String INSMS_1_1="Admin set successfully";
     public static final String INSMS_1_2="Wrong factory Password";
-    public static final String INSMS_1_3="";
+    public static final String INSMS_1_3="You are no more Admin now.";
     public static final String INSMS_2_1="Hooked";
     public static final String INSMS_2_2="Not Authenticated";
     public static final String INSMS_3_1="Password updated successfully";
     public static final String INSMS_4_1="Valve Set for field no.";
     public static final String INSMS_5_1="Valve kept on Hold";
-    public static final String INSMS_6_1="Fertigation enabled for field no. ";
-    public static final String INSMS_6_2="";
+    public static final String INSMS_6_1="Fertigation enabled for field no.";
+    public static final String INSMS_6_2="In correct values.";
     public static final String INSMS_7_1="Fertigation disabled";
     public static final String INSMS_8_1="Pump Filtration Activated";
     public static final String INSMS_9_1="Pump Filtration Deactivated";
     public static final String INSMS_10_1="RTC Set to current Timestamp";
     public static final String INSMS_10_2="Incorrect Time stamp found";
-    public static final String INSMS_11_1="";
+    public static final String INSMS_11_1="Current Time:";
     public static final String INSMS_12_1="Motor Load Threshold Set Sucessfully.";
 
 
@@ -39,28 +43,28 @@ public class SmsUtils {
     }
 
     //Configure field irrigation valve
-    public String OutSMS_4(String fieldNo , String valveOnPeriod , String valveOffPeriod ,String motorOnTimeHr ,
-                           String motorOnTimeMins ,String soilDryness,String soilWetness,String priority,
-                           String cycle,String triggerFrom)
+    public String OutSMS_4(int fieldNo , int valveOnPeriod , int valveOffPeriod ,int motorOnTimeHr ,
+                           int motorOnTimeMins ,int soilDryness,int soilWetness,int priority,
+                           int cycle,String triggerFrom)
     {
         return "SET"+fieldNo+" "+valveOnPeriod+" "+valveOffPeriod+" "+motorOnTimeHr+" "+motorOnTimeMins+" "+soilDryness
                 +" "+soilWetness+" "+priority+" "+cycle+" "+triggerFrom+" ";
     }
 
     //Disable Field Irrigation valve
-    public String OutSMS_5(String fieldNo)
+    public String OutSMS_5(int fieldNo)
     {
         return "HOLD"+fieldNo;
     }
 
     //Configure field fertigation
-    public String OutSMS_6(String fieldNo, String wetPeriod,String injectPeriod, String noIterations)
+    public String OutSMS_6(int fieldNo, int wetPeriod,int injectPeriod, int noIterations)
     {
         return "ENABLE"+fieldNo+" "+wetPeriod+" "+injectPeriod+" "+noIterations+" ";
     }
 
     //Disable field fertigation
-    public String OutSMS_7(String fieldNo)
+    public String OutSMS_7(int fieldNo)
     {
         return "DISABLE"+fieldNo;
     }
