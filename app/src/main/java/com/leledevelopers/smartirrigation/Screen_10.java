@@ -18,7 +18,7 @@ public class Screen_10 extends SmsServices {
     private static final String TAG = Screen_10.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private SmsUtils smsUtils=new SmsUtils();
-    private Boolean b;
+    private Boolean b,systemDown = false;
     EditText noLoadCutoffText, fullLoadCutOffText;
     private Button setMotorLoadThreshold,back_10;
     private TextView status;
@@ -31,13 +31,14 @@ public class Screen_10 extends SmsServices {
         setMotorLoadThreshold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateInput(noLoadCutoffText.getText().toString(),fullLoadCutOffText.getText().toString()))
+                if(validateInput(noLoadCutoffText.getText().toString(),fullLoadCutOffText.getText().toString()) && !systemDown)
                 {
                     String smsData=smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
                     sendMessage(SmsServices.phoneNumber,smsData);
-                    status.setText("Message Delivered");
                     smsReceiver.waitFor_1_Minute();
+                    b = true;
+                    status.setText("Message Delivered");
                 }
             }
         });
@@ -86,7 +87,7 @@ public class Screen_10 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                 }
             }
@@ -94,6 +95,8 @@ public class Screen_10 extends SmsServices {
             @Override
             public void checkTime(String time) {
                 if (b) {
+                    systemDown = true;
+                    smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
                 }
             }

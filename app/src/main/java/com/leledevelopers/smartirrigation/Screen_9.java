@@ -23,7 +23,7 @@ public class Screen_9 extends SmsServices {
     private static final String TAG = Screen_9.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private SmsUtils smsUtils=new SmsUtils();
-    private Boolean b;
+    private Boolean b,systemDown = false;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> adapter;
     private Button setSystemTime, getSystemTime, updatePassword, setMotorloadCutoff,back_9, save;
@@ -61,6 +61,7 @@ public class Screen_9 extends SmsServices {
             @Override
             public void onClick(View v) {
                 smsReceiver.waitFor_1_Minute();
+                b = true;
                 Calendar calendar=Calendar.getInstance();
                 String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
                         calendar.get(Calendar.YEAR)+"",calendar.get(Calendar.HOUR_OF_DAY)+""
@@ -73,6 +74,7 @@ public class Screen_9 extends SmsServices {
             @Override
             public void onClick(View v) {
                 smsReceiver.waitFor_1_Minute();
+                b = true;
                 String smsData=smsUtils.OutSMS_11;
                 sendMessage(SmsServices.phoneNumber,smsData);
                 status.setText("Message Delivered");
@@ -107,7 +109,7 @@ public class Screen_9 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                 }
             }
@@ -115,6 +117,8 @@ public class Screen_9 extends SmsServices {
             @Override
             public void checkTime(String time) {
                 if (b) {
+                    systemDown = true;
+                    smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
                 }
             }
@@ -136,19 +140,12 @@ public class Screen_9 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        switch (message) {
-            case SmsUtils.INSMS_10_1: {
-                status.setText("System time set to current time");
-                break;
-            }
-            case SmsUtils.INSMS_10_2: {
-                status.setText("System time set failed ");
-                break;
-            }
-            case SmsUtils.INSMS_11_1: {
-                status.setText("Current Time:" + message);
-                break;
-            }
+        if(message.contains(SmsUtils.INSMS_10_1)){
+            status.setText("System time set to current time");
+        } else if(message.contains(SmsUtils.INSMS_10_2)){
+            status.setText("System time set failed ");
+        } else if(message.contains(SmsUtils.INSMS_11_1)){
+            status.setText(message);
         }
     }
 }
