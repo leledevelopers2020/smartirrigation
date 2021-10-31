@@ -27,12 +27,15 @@ import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
+import com.leledevelopers.smartirrigation.starter.splashScreen;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -47,10 +50,10 @@ public class Screen_2_1 extends SmsServices {
     private final String filePath = "MyFileDir";
     String filePhoneNumber = "9912473753";
     String filePassword = "psw";
-    private Boolean b;
-    SmsUtils smsUtils=new SmsUtils();
+    private Boolean b, systemDown = false;
+    SmsUtils smsUtils = new SmsUtils();
     private boolean isSetClicked = false;
-    private CheckBox checkbox1,checkbox2;
+    private CheckBox checkbox1, checkbox2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,39 +80,37 @@ public class Screen_2_1 extends SmsServices {
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!systemDown) {
+                    smsReceiver.waitFor_1_Minute();
+                    b = true;
+                    if (validateInput(oldPassword.getText().toString(), newPassword.getText().toString())) {
+                        if (SmsServices.phoneNumber != null && filePassword != null) {
 
-                smsReceiver.waitFor_1_Minute();
-                b = true;
-                if(validateInput(oldPassword.getText().toString(),newPassword.getText().toString()))
-                {
-                if (SmsServices.phoneNumber != null && filePassword != null) {
+                            String smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
+                            File myExternalFile = new File(getExternalFilesDir(ProjectUtils.DIRECTORY_PATH), ProjectUtils.FILE_NAME);
+                            FileOutputStream fos = null;
+                            try {
+                                fos = new FileOutputStream(myExternalFile);
+                                String data = SmsServices.phoneNumber + "#" + filePassword;
+                                fos.write(data.getBytes());
+                                isSetClicked = true;
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            sendMessage(SmsServices.phoneNumber, smsData);
+                            status.setText("Message Sent");
 
-                    String smsData=smsUtils.OutSMS_1(oldPassword.getText().toString(),newPassword.getText().toString());
-                    File myExternalFile = new File(getExternalFilesDir(ProjectUtils.DIRECTORY_PATH), ProjectUtils.FILE_NAME);
-                    FileOutputStream fos = null;
-                    try {
-                        fos = new FileOutputStream(myExternalFile);
-                        String data = SmsServices.phoneNumber + "#" + filePassword;
-                        fos.write(data.getBytes());
-                        isSetClicked = true;
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                            Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Screen_2_1.this, "PLease select proper GSM number or enter correct otp/old password", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        focus(oldPassword.getText().toString(), newPassword.getText().toString());
                     }
-                    sendMessage(SmsServices.phoneNumber,smsData);
-                    status.setText("Message Sent");
-
-                    Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(Screen_2_1.this, "PLease select proper GSM number or enter correct otp/old password", Toast.LENGTH_LONG).show();
                 }
             }
-                else
-                {
-                    focus(oldPassword.getText().toString(),newPassword.getText().toString());
-                }
-        }
         });
         checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -138,34 +139,31 @@ public class Screen_2_1 extends SmsServices {
     }
 
 
-    private boolean validateInput(String oldPasswordlocal,String newPasswordlocal) {
-        boolean matching=false;
+    private boolean validateInput(String oldPasswordlocal, String newPasswordlocal) {
+        boolean matching = false;
         String regex = "[0-9]+";
         Pattern p = Pattern.compile(regex);
-        if(p.matcher(oldPasswordlocal).matches()&& p.matcher(newPasswordlocal).matches()
-                && oldPasswordlocal.length()==6 && newPasswordlocal.length()==6 &&  !(oldPasswordlocal.equals(newPasswordlocal)))
-        {
-            matching=true;
+        if (p.matcher(oldPasswordlocal).matches() && p.matcher(newPasswordlocal).matches()
+                && oldPasswordlocal.length() == 6 && newPasswordlocal.length() == 6 && !(oldPasswordlocal.equals(newPasswordlocal))) {
+            matching = true;
         }
         return matching;
     }
-    private void focus(String oldPasswordlocal,String newPasswordlocal) {
+
+    private void focus(String oldPasswordlocal, String newPasswordlocal) {
         String regex = "[0-9]+";
         Pattern p = Pattern.compile(regex);
-        if((!(p.matcher(oldPasswordlocal).matches() ))|| (oldPasswordlocal.length()!=6))
-        {
+        if ((!(p.matcher(oldPasswordlocal).matches())) || (oldPasswordlocal.length() != 6)) {
             oldPassword.requestFocus();
             oldPassword.getText().clear();
             oldPassword.setError("Enter valid 6 digit password");
         }
-        if((!(p.matcher(newPasswordlocal).matches() ))|| (newPasswordlocal.length()!=6))
-        {
+        if ((!(p.matcher(newPasswordlocal).matches())) || (newPasswordlocal.length() != 6)) {
             newPassword.requestFocus();
             newPassword.getText().clear();
             newPassword.setError("Enter valid 6 digit password");
         }
-        if(oldPasswordlocal.equals(newPasswordlocal))
-        {
+        if (oldPasswordlocal.equals(newPasswordlocal)) {
             oldPassword.getText().clear();
             newPassword.getText().clear();
             status.setText("Both Passwords cannot be same");
@@ -188,8 +186,12 @@ public class Screen_2_1 extends SmsServices {
         newPassword = findViewById(R.id.screen_2_1_edittext_2);
         set = findViewById(R.id.screen_2_1_button_2);
         status = findViewById(R.id.screen_2_1_status);
-        checkbox1=findViewById(R.id.checkbox1);
-        checkbox2=findViewById(R.id.checkbox2);
+        checkbox1 = findViewById(R.id.checkbox1);
+        checkbox2 = findViewById(R.id.checkbox2);
+        File file = new File(Screen_2_1.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
+        if (file.exists()) {
+            gsmContact.setText(SmsServices.phoneNumber);
+        }
     }
 
     @Override
@@ -216,11 +218,11 @@ public class Screen_2_1 extends SmsServices {
                     public void run() {
                         startActivity(new Intent(Screen_2_1.this, Screen_9.class));
                     }
-                },1000);
+                }, 1000);
                 break;
             }
             case SmsUtils.INSMS_1_2: {
-               status.setText("Wrong factory Password");
+                status.setText("Wrong factory Password");
                 oldPassword.requestFocus();
                 break;
             }
@@ -236,7 +238,7 @@ public class Screen_2_1 extends SmsServices {
                     public void run() {
                         startActivity(new Intent(Screen_2_1.this, MainActivity_GSM.class));
                     }
-                },1000);
+                }, 1000);
                 break;
             }
         }
@@ -252,17 +254,18 @@ public class Screen_2_1 extends SmsServices {
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
                 System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
-             //   status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
-                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && isSetClicked) {
+                //   status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && isSetClicked && !systemDown) {
                     checkSMS(message);
                 }
             }
 
             @Override
             public void checkTime(String time) {
-                Log.d("SmsReceiver", "new time " + time);
                 if (b) {
-                    status.setText("Server Down");
+                    systemDown = true;
+                    smsReceiver.unRegisterBroadCasts();
+                    status.setText("System Down");
                 }
             }
 

@@ -28,7 +28,7 @@ public class MainActivity_GSM extends SmsServices {
     private SmsReceiver smsReceiver = new SmsReceiver();
     private TextView smsLabel, status;
     private Button connect, resetConnection;
-    private Boolean b;
+    private Boolean b,systemDown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +42,12 @@ public class MainActivity_GSM extends SmsServices {
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                smsReceiver.waitFor_1_Minute();
-                b = true;
-                sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2);
-                status.setText(SmsUtils.OutSMS_2 + " delivery");
+                if (!systemDown){
+                    smsReceiver.waitFor_1_Minute();
+                    b = true;
+                    sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2);
+                    status.setText(SmsUtils.OutSMS_2 + " delivery");
+                }
             }
         });
 
@@ -104,9 +106,7 @@ public class MainActivity_GSM extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-
-                status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
-                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                 }
             }
@@ -114,6 +114,8 @@ public class MainActivity_GSM extends SmsServices {
             @Override
             public void checkTime(String time) {
                 if (b) {
+                    systemDown = true;
+                    smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
                 }
             }
