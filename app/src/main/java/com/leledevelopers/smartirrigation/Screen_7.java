@@ -22,7 +22,7 @@ import java.io.IOException;
 public class Screen_7 extends SmsServices {
     private static final String TAG = Screen_7.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
-    private Boolean b;
+    private Boolean b,systemDown = false;
     EditText filtrationControlUnitNoDelay_1, filtrationControlUnitNoDelay_2, filtrationControlUnitNoDelay_3;
     EditText filtrationControlUnitOnTime, filtrationControlUnitSeparation;
     private Button enableFiltration, disableFiltration,back_7;
@@ -128,15 +128,21 @@ public class Screen_7 extends SmsServices {
         enableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInput()) {
+                if (validateInput() && !systemDown) {
                     updateData_And_SendSMS("enable");
+                    smsReceiver.waitFor_1_Minute();
+                    b = true;
                 }
             }
         });
         disableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateData_And_SendSMS("disable");
+                if(!systemDown){
+                    updateData_And_SendSMS("disable");
+                    smsReceiver.waitFor_1_Minute();
+                    b = true;
+                }
             }
         });
         back_7.setOnClickListener(new View.OnClickListener() {
@@ -284,7 +290,7 @@ public class Screen_7 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                 }
             }
@@ -292,6 +298,8 @@ public class Screen_7 extends SmsServices {
             @Override
             public void checkTime(String time) {
                 if (b) {
+                    systemDown = true;
+                    smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
                 }
             }
