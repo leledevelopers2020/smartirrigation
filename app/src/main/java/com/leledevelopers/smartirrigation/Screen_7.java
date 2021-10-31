@@ -22,10 +22,10 @@ import java.io.IOException;
 public class Screen_7 extends SmsServices {
     private static final String TAG = Screen_7.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
-    private Boolean b,systemDown = false;
+    private Boolean b, systemDown = false;
     EditText filtrationControlUnitNoDelay_1, filtrationControlUnitNoDelay_2, filtrationControlUnitNoDelay_3;
     EditText filtrationControlUnitOnTime, filtrationControlUnitSeparation;
-    private Button enableFiltration, disableFiltration,back_7;
+    private Button enableFiltration, disableFiltration, back_7;
     private TextView status;
     private FiltrationModel model;
     private CURD_Files curd_files = new CURD_FilesImpl();
@@ -138,17 +138,18 @@ public class Screen_7 extends SmsServices {
         disableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!systemDown){
+                if (!systemDown) {
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
-                    b = true;
+                    b = false;
+                    status.setText("Disabled");
                 }
             }
         });
         back_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Screen_7.this,Screen_4.class));
+                startActivity(new Intent(Screen_7.this, Screen_4.class));
                 finish();
             }
         });
@@ -168,25 +169,28 @@ public class Screen_7 extends SmsServices {
             smsData = smsUtils.OutSMS_8(model.getFcDelay_1() + "", model.getFcDelay_2() + ""
                     , model.getFcDelay_3() + "", model.getFcOnTime() + "",
                     model.getFcSeperation() + "");
+            enableFiltration.setVisibility(View.INVISIBLE);
+            disableFiltration.setVisibility(View.INVISIBLE);
         } else {
             smsData = smsUtils.OutSMS_9;
+            enableFiltration.setVisibility(View.VISIBLE);
+            disableFiltration.setVisibility(View.INVISIBLE);
         }
+        sendMessage(SmsServices.phoneNumber, smsData);
         isEditedDelay_1 = false;
         isEditedDelay_2 = false;
         isEditedDelay_3 = false;
         isEditedSeparation = false;
         isEditedOnTime = false;
-        sendMessage(SmsServices.phoneNumber, smsData);
-        initializeModel();
     }
 
     private void isAnyViewEdited() {
         if (isEditedDelay_1 || isEditedDelay_2 || isEditedDelay_3 || isEditedOnTime || isEditedSeparation) {
-            disableFiltration.setVisibility(View.INVISIBLE);
-            enableFiltration.setVisibility(View.VISIBLE);
-        } else {
             disableFiltration.setVisibility(View.VISIBLE);
             enableFiltration.setVisibility(View.INVISIBLE);
+        } else {
+            disableFiltration.setVisibility(View.INVISIBLE);
+            enableFiltration.setVisibility(View.VISIBLE);
         }
         // return (isEditedDelay_1 || isEditedDelay_2 || isEditedDelay_3 || isEditedOnTime || isEditedSeparation) ? true : false;
     }
@@ -235,7 +239,7 @@ public class Screen_7 extends SmsServices {
             try {
                 isInitial = false;
                 model = (FiltrationModel) curd_files.getFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE);
-                System.out.println("getting file "+model.toString());
+                System.out.println("getting file " + model.toString());
                 if (model.isEnabled()) {
                     System.out.println("isEnabled " + model.isEnabled());
                     filtrationControlUnitNoDelay_1.setText(model.getFcDelay_1() + "");
@@ -277,7 +281,7 @@ public class Screen_7 extends SmsServices {
         filtrationControlUnitSeparation = findViewById(R.id.filtrationControlUnitSeparation);
         enableFiltration = findViewById(R.id.enableFiltration7);
         disableFiltration = findViewById(R.id.disableFiltration7);
-        back_7=findViewById(R.id.back_7);
+        back_7 = findViewById(R.id.back_7);
         status = findViewById(R.id.screen_7_status);
     }
 
@@ -325,7 +329,7 @@ public class Screen_7 extends SmsServices {
             case SmsUtils.INSMS_8_1: {
                 status.setText("Pump Filtration Activated");
                 try {
-                    System.out.println("pushing to file "+model.toString());
+                    System.out.println("pushing to file " + model.toString());
                     curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -337,5 +341,6 @@ public class Screen_7 extends SmsServices {
                 break;
             }
         }
+        initializeModel();
     }
 }

@@ -70,8 +70,8 @@ public class splashScreen extends SmsServices {
                 while ((line = reader.readLine())!= null){
                     text.append(line);
                 }
-                String[] s = text.toString().split("[#]");
-                SmsServices.phoneNumber = s[0];
+                //String[] s = text.toString().split("[#]");
+                SmsServices.phoneNumber = text.toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }
