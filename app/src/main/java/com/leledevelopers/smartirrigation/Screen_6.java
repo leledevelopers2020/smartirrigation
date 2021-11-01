@@ -140,7 +140,8 @@ public class Screen_6 extends SmsServices {
                 if(!systemDown) {
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
-                    b = true;
+                    b = false;
+                    status.setText("Field No "+fieldNo+ " was disabled");
                 }
             }
         });
@@ -216,16 +217,15 @@ public class Screen_6 extends SmsServices {
             } else {
                 Toast.makeText(Screen_6.this, "NO data", Toast.LENGTH_LONG).show();
                 for (int i = 0; i < 12; i++) {
-                    model = new ConfigurationFeildFertigationModel();
-                    model.setFieldNo(i);
-                    model.setEnabled(false);
-                    modelList.add(new ConfigurationFeildFertigationModel());
+                    ConfigurationFeildFertigationModel modelData = new ConfigurationFeildFertigationModel();
+                    modelData.setFieldNo(i);
+                    modelData.setEnabled(false);
+                    modelList.add(modelData);
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
-                    disableFieldFertigation.setVisibility(View.INVISIBLE);
-                    enableFieldFertigation.setVisibility(View.VISIBLE);
                 }
                 curd_files.createFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
-
+                isInitial = true;
+                setEmptyData();
             }
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -257,15 +257,18 @@ public class Screen_6 extends SmsServices {
                         model.getInjectPeriod(), model.getNoIterations());
                 System.out.println("fieldNo = " +fieldNo);
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
+                enableFieldFertigation.setVisibility(View.INVISIBLE);
+                disableFieldFertigation.setVisibility(View.INVISIBLE);
                 isInitial = false;
             } else {
                 smsdata = smsUtils.OutSMS_7(model.getFieldNo());
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
+                enableFieldFertigation.setVisibility(View.VISIBLE);
+                disableFieldFertigation.setVisibility(View.INVISIBLE);
             }
             sendMessage(SmsServices.phoneNumber, smsdata);
             modelList.set(fieldNo - 1, model);
-            enableFieldFertigation.setVisibility(View.INVISIBLE);
-            disableFieldFertigation.setVisibility(View.VISIBLE);
+
             isEditedInjectPeriod = false;
             isEditedNoOfIterations = false;
             isEditedWetPeriod = false;
@@ -298,9 +301,10 @@ public class Screen_6 extends SmsServices {
                 b = false;
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
+                    System.out.println("phoneNumber1 = " + phoneNumber);
+                    System.out.println("phoneNumber2 = " + SmsServices.phoneNumber.trim());
                 }
-                System.out.println("phoneNumber1 = " + phoneNumber);
-                System.out.println("phoneNumber2 = " + SmsServices.phoneNumber.trim());
+
             }
 
             @Override

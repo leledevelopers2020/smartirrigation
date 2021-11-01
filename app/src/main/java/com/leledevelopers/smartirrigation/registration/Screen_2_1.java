@@ -48,12 +48,13 @@ public class Screen_2_1 extends SmsServices {
     private Button gsmContact, set;
     private final String fileName = "details.txt";
     private final String filePath = "MyFileDir";
-    String filePhoneNumber = "9912473753";
-    String filePassword = "psw";
+    /*String filePhoneNumber = "9912473753";
+    String filePassword = "psw";*/
     private Boolean b, systemDown = false;
     SmsUtils smsUtils = new SmsUtils();
-    private boolean isSetClicked = false;
+    private boolean isSetClicked = false, isGSMSelected = false;
     private CheckBox checkbox1, checkbox2;
+    private String smsData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class Screen_2_1 extends SmsServices {
             @Override
             public void onClick(View v) {
                 if (checkPermissions()) {
-
+                    isGSMSelected = false;
                     Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                     intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
                     startActivityForResult(intent, ProjectUtils.PICK_CONTACT);
@@ -80,35 +81,22 @@ public class Screen_2_1 extends SmsServices {
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!systemDown) {
-                    smsReceiver.waitFor_1_Minute();
-                    b = true;
-                    if (validateInput(oldPassword.getText().toString(), newPassword.getText().toString())) {
-                        if (SmsServices.phoneNumber != null && filePassword != null) {
-
-                            String smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
-                            File myExternalFile = new File(getExternalFilesDir(ProjectUtils.DIRECTORY_PATH), ProjectUtils.FILE_NAME);
-                            FileOutputStream fos = null;
-                            try {
-                                fos = new FileOutputStream(myExternalFile);
-                                String data = SmsServices.phoneNumber + "#" + filePassword;
-                                fos.write(data.getBytes());
-                                isSetClicked = true;
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                if (isGSMSelected) {
+                    if (!systemDown) {
+                        if (validateInput(oldPassword.getText().toString(), newPassword.getText().toString())) {
+                            smsReceiver.waitFor_1_Minute();
+                            b = true;
+                            isSetClicked = true;
+                            smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
                             sendMessage(SmsServices.phoneNumber, smsData);
                             status.setText("Message Sent");
-
                             Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(Screen_2_1.this, "PLease select proper GSM number or enter correct otp/old password", Toast.LENGTH_LONG).show();
+                            focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
-                    } else {
-                        focus(oldPassword.getText().toString(), newPassword.getText().toString());
                     }
+                } else {
+                    Toast.makeText(Screen_2_1.this, "Please select the phone number!!", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -205,6 +193,7 @@ public class Screen_2_1 extends SmsServices {
                 String contactNumber = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 SmsServices.phoneNumber = contactNumber;
                 gsmContact.setText(contactNumberName + " - " + contactNumber);
+                isGSMSelected = true;
             }
         }
     }
@@ -229,6 +218,7 @@ public class Screen_2_1 extends SmsServices {
             case SmsUtils.INSMS_3_1: {
                 status.setText("Password Updated successfully");
                 try {
+                    saveFileDetails();
                     createConfgFiles();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -247,15 +237,28 @@ public class Screen_2_1 extends SmsServices {
     @Override
     protected void onStart() {
         super.onStart();
+        if (!SmsServices.phoneNumber.equals("")) {
+            System.out.println("has phone number = "+SmsServices.phoneNumber);
+            isGSMSelected = true;
+        } else {
+            System.out.println("phone number = " + SmsServices.phoneNumber);
+        }
         smsReceiver.setContext(getApplicationContext());
         smsReceiver.startBroadcastReceiver();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        smsReceiver.registerBroadCasts();
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
+                System.out.println("isSetClicked  = " + isSetClicked + "\n systemDown : " + systemDown);
                 //   status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && isSetClicked && !systemDown) {
+                    System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                     checkSMS(message);
                 }
             }
@@ -270,13 +273,6 @@ public class Screen_2_1 extends SmsServices {
             }
 
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        smsReceiver.registerBroadCasts();
-
     }
 
     @Override
@@ -295,6 +291,24 @@ public class Screen_2_1 extends SmsServices {
         }
         if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FILTRATION_NAME)) {
             curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FILTRATION_NAME);
+        }
+    }
+
+    private void saveFileDetails() {
+        if (!SmsServices.phoneNumber.equals("")) {
+            File myExternalFile = new File(getExternalFilesDir(ProjectUtils.DIRECTORY_PATH), ProjectUtils.FILE_NAME);
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(myExternalFile);
+                String data = SmsServices.phoneNumber;
+                fos.write(data.getBytes());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(Screen_2_1.this, "PLease select proper GSM number or enter correct otp/old password", Toast.LENGTH_LONG).show();
         }
     }
 
