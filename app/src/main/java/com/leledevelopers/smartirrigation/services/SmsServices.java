@@ -19,7 +19,7 @@ public abstract class SmsServices extends AppCompatActivity {
     protected Handler handler=new Handler();
 
     protected Context context;
-    protected static String phoneNumber;
+    protected static String phoneNumber = "";
 
     /**
      * This method should contain the code send SMS
