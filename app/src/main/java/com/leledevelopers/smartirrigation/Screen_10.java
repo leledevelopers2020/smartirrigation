@@ -33,6 +33,7 @@ public class Screen_10 extends SmsServices {
             public void onClick(View v) {
                 if(validateInput(noLoadCutoffText.getText().toString(),fullLoadCutOffText.getText().toString()) && !systemDown)
                 {
+                    cursorVisibility();
                     String smsData=smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
                     sendMessage(SmsServices.phoneNumber,smsData);
@@ -49,18 +50,32 @@ public class Screen_10 extends SmsServices {
                 finish();
             }
         });
+        noLoadCutoffText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noLoadCutoffText.setCursorVisible(true);
+            }
+        });
+        fullLoadCutOffText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fullLoadCutOffText.setCursorVisible(true);
+            }
+        });
     }
+
+
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
         Boolean validate=true;
-        if(noLoadCutoffTextlocal.length()==0)
+        if(noLoadCutoffTextlocal.length()==0 && validateRange(0,1024,Integer.parseInt(noLoadCutoffTextlocal)) )
         {
             noLoadCutoffText.requestFocus();
             noLoadCutoffText.getText().clear();
             noLoadCutoffText.setError("Please enter the data");
             return false;
         }
-        if(fullLoadCutOffTextlocal.length()==0)
+        if(fullLoadCutOffTextlocal.length()==0 && validateRange(0,1024,Integer.parseInt(fullLoadCutOffTextlocal)))
         {
             fullLoadCutOffText.requestFocus();
             fullLoadCutOffText.getText().clear();
@@ -68,7 +83,23 @@ public class Screen_10 extends SmsServices {
         }
         return validate;
     }
+    private boolean validateRange(int min, int max, int inputValue) {
+        if(inputValue>=min && inputValue <=max)
+        {
+            return true;
+        }
+        return false;
+    }
 
+    private void cursorVisibility() {
+        try {
+            noLoadCutoffText.setCursorVisible(false);
+            fullLoadCutOffText.setCursorVisible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     @Override
     public void initViews() {
         noLoadCutoffText = findViewById(R.id.noLoadCutoffText);

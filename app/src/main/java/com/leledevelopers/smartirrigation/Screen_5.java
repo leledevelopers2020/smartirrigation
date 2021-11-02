@@ -28,6 +28,7 @@ import com.leledevelopers.smartirrigation.utils.SmsUtils;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -36,10 +37,10 @@ import java.util.Locale;
 public class Screen_5 extends SmsServices {
     private static final String TAG = Screen_5.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
-    ArrayAdapter<CharSequence> adapter;
-    private Spinner spinner;
+    ArrayAdapter<CharSequence> fieldNoArray,triggerFrom;
+    private Spinner spinner,wetPeriod;
     private int hour, min;
-    EditText valveOnPeriod, valveOffPeriod, soilDryness, soilWetness, priority, cycles, wetPeriod;
+    EditText valveOnPeriod, valveOffPeriod, soilDryness, soilWetness, priority, cycles;
     TextView status;
     private Button enableFertigation, disableFertigation, back_5, motorOnTime;
     private Boolean b, systemDown = false;
@@ -66,9 +67,11 @@ public class Screen_5 extends SmsServices {
         setContentView(R.layout.activity_screen5);
         initViews();
         // spinner of field no
-        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        fieldNoArray = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
+        fieldNoArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(fieldNoArray);
+        triggerFrom=ArrayAdapter.createFromResource(getApplicationContext(),R.array.triggerfrom, android.R.layout.simple_spinner_dropdown_item);
+        wetPeriod.setAdapter(triggerFrom);
         initializeModel();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -83,7 +86,7 @@ public class Screen_5 extends SmsServices {
                     motorOnTime.setText(model.getMotorOnTime());
                     priority.setText(model.getPriority() + "");
                     cycles.setText(model.getCycle() + "");
-                    wetPeriod.setText(model.getTiggerFrom());
+                    wetPeriod.setSelection(spinnerIntValue(model.getTiggerFrom()));
                     getHoursAndMinutes(model.getMotorOnTime());
                     disableFertigation.setVisibility(View.VISIBLE);
                     enableFertigation.setVisibility(View.INVISIBLE);
@@ -98,9 +101,24 @@ public class Screen_5 extends SmsServices {
 
             }
         });
+        wetPeriod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (wetPeriod.getSelectedItem().toString().equals(model.getTiggerFrom() + "")) {
+                    isEditedWetPeriod = false;
+
+                } else {
+                    isEditedWetPeriod = true;
+                }
+                isAnyViewEdited();
+            }
+        });
         valveOnPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                valveOnPeriod.setCursorVisible(true);
                 System.out.println("-->1 " + valveOnPeriod.getText().toString());
                 // System.out.println("-->1 "+model.getValveOnPeriod());
                 if (isInitial) {
@@ -114,12 +132,14 @@ public class Screen_5 extends SmsServices {
                     System.out.println("-->1 " + true);
                 }
                 isAnyViewEdited();
+
             }
         });
 
         valveOffPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                valveOffPeriod.setCursorVisible(true);
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
                 } else if (valveOffPeriod.getText().toString().equals(model.getValveOffPeriod() + "")) {
@@ -135,6 +155,7 @@ public class Screen_5 extends SmsServices {
         soilDryness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soilDryness.setCursorVisible(true);
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
                 } else if (soilDryness.getText().toString().equals(model.getSoilDryness() + "")) {
@@ -150,6 +171,7 @@ public class Screen_5 extends SmsServices {
         soilWetness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                soilWetness.setCursorVisible(true);
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
                 } else if (soilWetness.getText().toString().equals(model.getSoilWetness() + "")) {
@@ -165,6 +187,7 @@ public class Screen_5 extends SmsServices {
         priority.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                priority.setCursorVisible(true);
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
                 } else if (priority.getText().toString().equals(model.getPriority() + "")) {
@@ -180,6 +203,7 @@ public class Screen_5 extends SmsServices {
         cycles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cycles.setCursorVisible(true);
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
                 } else if (cycles.getText().toString().equals(model.getCycle() + "")) {
@@ -192,20 +216,7 @@ public class Screen_5 extends SmsServices {
             }
         });
 
-        wetPeriod.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (wetPeriod.getText().toString().equals(model.getTiggerFrom() + "")) {
-                    isEditedWetPeriod = false;
 
-                } else {
-                    isEditedWetPeriod = true;
-                }
-                isAnyViewEdited();
-            }
-        });
         back_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -253,6 +264,7 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
                 if (validateInput() && !systemDown) {
+                    cursorVisibility();
                     updateData_And_SendSMS("enable");
                     smsReceiver.waitFor_1_Minute();
                     b = true;
@@ -272,7 +284,18 @@ public class Screen_5 extends SmsServices {
                 }
             }
         });
+
     }
+    private void cursorVisibility() {
+        valveOnPeriod.setCursorVisible(false);
+        valveOffPeriod.setCursorVisible(false);
+        soilDryness.setCursorVisible(false);
+        soilWetness.setCursorVisible(false);
+        priority.setCursorVisible(false);
+        cycles.setCursorVisible(false);
+
+    }
+
 
     private void setEmptyData() {
         disableFertigation.setVisibility(View.INVISIBLE);
@@ -284,7 +307,6 @@ public class Screen_5 extends SmsServices {
         motorOnTime.setText("");
         priority.setText("");
         cycles.setText("");
-        wetPeriod.setText("");
         model = null;
     }
 
@@ -316,25 +338,33 @@ public class Screen_5 extends SmsServices {
             spinner.requestFocus();
             return false;
         }
-        if (!(valveOnPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length() >= 2)) {
+        if (!(//valveOnPeriod.getText().toString().matches(regex)
+               // && valveOnPeriod.getText().toString().length() >= 2&&
+                validateRange(10,999,Integer.parseInt(valveOnPeriod.getText().toString())))) {
             valveOnPeriod.requestFocus();
             valveOnPeriod.getText().clear();
             valveOnPeriod.setError("please enter a valid value");
             return false;
         }
-        if (!(valveOffPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length() >= 1)) {
+        if (!(//valveOffPeriod.getText().toString().matches(regex)
+               // && valveOnPeriod.getText().toString().length() >= 1&&
+                validateRange(1,99,Integer.parseInt(valveOffPeriod.getText().toString())))) {
             valveOnPeriod.requestFocus();
             valveOnPeriod.getText().clear();
             valveOnPeriod.setError("please enter a valid value");
             return false;
         }
-        if (!(soilDryness.getText().toString().matches(regex)) && soilDryness.getText().toString().length() >= 3) {
+        if (!(//soilDryness.getText().toString().matches(regex))
+              //  && soilDryness.getText().toString().length() >= 3
+                 validateRange(100,999,Integer.parseInt(soilDryness.getText().toString())))) {
             soilDryness.requestFocus();
             soilDryness.getText().clear();
             soilDryness.setError("please enter a valid value");
             return false;
         }
-        if (!(soilWetness.getText().toString().matches(regex) && soilWetness.getText().toString().length() == 5)) {
+        if (!(//soilWetness.getText().toString().matches(regex)
+                //&& soilWetness.getText().toString().length() == 5
+                     validateRange(10000,99999,Integer.parseInt(soilWetness.getText().toString())))) {
             soilWetness.requestFocus();
             soilWetness.setError("please enter a valid value");
             soilWetness.getText().clear();
@@ -346,13 +376,16 @@ public class Screen_5 extends SmsServices {
             motorOnTime.setError("please enter a valid value");
             return false;
         }
-        if (!(priority.getText().toString().matches(regex) && priority.getText().toString().length() >= 1)) {
+        if (!(//priority.getText().toString().matches(regex) &&
+               // priority.getText().toString().length() >= 1
+                 validateRange(1,9,Integer.parseInt(priority.getText().toString())))) {
             priority.requestFocus();
             priority.setError("please enter a valid value");
             priority.getText().clear();
             return false;
         }
-        if (!(cycles.getText().toString().matches(regex) && cycles.getText().toString().length() == 1)) {
+        if (!(//cycles.getText().toString().matches(regex) &&
+                cycles.getText().toString().length() == 1)) {
             cycles.requestFocus();
             cycles.getText().clear();
             cycles.setError("please enter a valid value");
@@ -360,6 +393,17 @@ public class Screen_5 extends SmsServices {
         }
         return true;
     }
+
+    private boolean validateRange(int min, int max, int inputValue) {
+        if(inputValue>=min && inputValue <=max)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+
 
     private void initializeModel() {
         try {
@@ -381,7 +425,7 @@ public class Screen_5 extends SmsServices {
                         motorOnTime.setText(model.getMotorOnTime());
                         priority.setText(model.getPriority() + "");
                         cycles.setText(model.getCycle() + "");
-                        wetPeriod.setText(model.getTiggerFrom());
+                        wetPeriod.setSelection(spinnerIntValue(model.getTiggerFrom()));
                         getHoursAndMinutes(model.getMotorOnTime());
                         disableFertigation.setVisibility(View.VISIBLE);
                         enableFertigation.setVisibility(View.INVISIBLE);
@@ -446,13 +490,13 @@ public class Screen_5 extends SmsServices {
                 model.setMotorOnTime(motorOnTime.getText().toString());
                 model.setPriority(Integer.parseInt(priority.getText().toString()));
                 model.setCycle(Integer.parseInt(cycles.getText().toString()));
-                model.setTiggerFrom(wetPeriod.getText().toString());
+                model.setTiggerFrom( (wetPeriod.getSelectedItem().toString()));
                 getHoursAndMinutes(model.getMotorOnTime());
                 model.setEnabled(true);
                 System.out.println("after set " + model.toString());
                 smsdata = smsUtils.OutSMS_4(model.getFieldNo(), model.getValveOnPeriod(), model.getValveOffPeriod()
                         , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
-                        model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
+                        model.getSoilWetness(), model.getPriority(), model.getCycle(), spinnerIntValue(model.getTiggerFrom()));
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
                 enableFertigation.setVisibility(View.INVISIBLE);
                 disableFertigation.setVisibility(View.INVISIBLE);
@@ -478,6 +522,40 @@ public class Screen_5 extends SmsServices {
             enableFertigation.setVisibility(View.VISIBLE);
         }
     }
+    private int spinnerIntValue(String value)
+    {
+        int val=0;
+        switch (value)
+        {
+            case "Today" :
+                val=0;
+                break;
+            case "Day+1":
+                val= 1;
+                break;
+            case "Day+2":
+                val= 2;
+                break;
+            case "Day+3":
+                val= 3;
+                break;
+            case "Day+4":
+                val= 4;
+                break;
+            case "Day+5":
+                val= 5;
+                break;
+            case "Day+6":
+                val= 6;
+                break;
+            case "Day+7":
+                val= 7;
+                break;
+            default:
+                System.out.println("");
+        }
+        return val;
+    }
 
     @Override
     public void initViews() {
@@ -495,6 +573,8 @@ public class Screen_5 extends SmsServices {
         back_5 = findViewById(R.id.back_5);
         status = findViewById(R.id.screen_5_status);
     }
+
+
 
     @Override
     protected void onStart() {

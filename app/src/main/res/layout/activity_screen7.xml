@@ -85,7 +85,8 @@
                 android:gravity="center"
                 android:hint=" 1-60 (min) "
                 android:inputType="number"
-                android:maxLength="2" />
+                android:maxLength="2"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -113,7 +114,8 @@
                 android:gravity="center"
                 android:hint=" 1-10 (min) "
                 android:inputType="number"
-                android:maxLength="4" />
+                android:maxLength="4"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -141,7 +143,8 @@
                 android:gravity="center"
                 android:hint=" 1-10 (min) "
                 android:inputType="number"
-                android:maxLength="2" />
+                android:maxLength="2"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -169,7 +172,8 @@
                 android:gravity="center"
                 android:hint=" 1-10 (min)"
                 android:inputType="number"
-                android:maxLength="2" />
+                android:maxLength="2"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -197,7 +201,8 @@
                 android:gravity="center"
                 android:hint=" 10-240 (min) "
                 android:inputType="number"
-                android:maxLength="3" />
+                android:maxLength="3"
+                 />
         </LinearLayout>
 
         <Button

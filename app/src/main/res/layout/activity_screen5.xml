@@ -111,7 +111,8 @@
                     android:gravity="center"
                     android:hint=" 10-999 (min) "
                     android:inputType="number"
-                    android:maxLength="3" />
+                    android:maxLength="3"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -138,7 +139,8 @@
                     android:gravity="center"
                     android:hint=" 1-99 (days) "
                     android:inputType="number"
-                    android:maxLength="2" />
+                    android:maxLength="2"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -165,7 +167,8 @@
                     android:gravity="center"
                     android:hint=" 100-999  "
                     android:inputType="number"
-                    android:maxLength="3" />
+                    android:maxLength="3"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -192,7 +195,8 @@
                     android:gravity="center"
                     android:hint=" 10000-99999 "
                     android:inputType="number"
-                    android:maxLength="5" />
+                    android:maxLength="5"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -244,7 +248,8 @@
                     android:gravity="center"
                     android:hint=" 1-12  "
                     android:inputType="number"
-                    android:maxLength="2" />
+                    android:maxLength="2"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -271,7 +276,8 @@
                     android:gravity="center"
                     android:hint=" 1-9 "
                     android:inputType="number"
-                    android:maxLength="1" />
+                    android:maxLength="1"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -290,14 +296,15 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/wetPeriod"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:hint=" Day-1....Day-7 "
-                    android:maxLength="3" />
+                    android:maxLength="3"
+                    />
             </LinearLayout>
 
             <Button

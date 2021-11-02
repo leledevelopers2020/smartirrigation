@@ -82,7 +82,8 @@
                 android:gravity="center"
                 android:hint="  0 - 1024 "
                 android:inputType="number"
-                android:maxLength="4" />
+                android:maxLength="4"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -109,7 +110,8 @@
                 android:gravity="center"
                 android:hint=" 0 - 1024 "
                 android:inputType="number"
-                android:maxLength="4" />
+                android:maxLength="4"
+                />
         </LinearLayout>
 
         <Button

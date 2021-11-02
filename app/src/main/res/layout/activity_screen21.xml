@@ -79,7 +79,7 @@
                 android:inputType="textPassword"
                 android:padding="5dp"
                 android:textAlignment="center"
-
+                
                 android:textColor="@color/black" />
 
             <LinearLayout
@@ -127,6 +127,7 @@
                 android:inputType="textPassword"
                 android:padding="5dp"
                 android:textAlignment="center"
+                
                 android:textColor="@color/black" />
 
             <LinearLayout

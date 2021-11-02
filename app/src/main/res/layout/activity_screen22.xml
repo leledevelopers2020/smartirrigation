@@ -71,7 +71,8 @@
             android:hint="factory password"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            />
 
 
 

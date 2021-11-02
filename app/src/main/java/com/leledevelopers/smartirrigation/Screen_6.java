@@ -82,6 +82,7 @@ public class Screen_6 extends SmsServices {
         wetPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                wetPeriod.setCursorVisible(true);
                 if (isInitial) {
                     disableFieldFertigation.setVisibility(View.INVISIBLE);
                 } else if (wetPeriod.getText().toString().equals(model.getWetPeriod() + "")) {
@@ -98,6 +99,7 @@ public class Screen_6 extends SmsServices {
         injectPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                injectPeriod.setCursorVisible(true);
                 if (isInitial) {
                     disableFieldFertigation.setVisibility(View.INVISIBLE);
                 } else if (injectPeriod.getText().toString().equals(model.getInjectPeriod() + "")) {
@@ -112,6 +114,7 @@ public class Screen_6 extends SmsServices {
         noOfIterations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                noOfIterations.setCursorVisible(true);
                 if (isInitial) {
                     disableFieldFertigation.setVisibility(View.INVISIBLE);
                 } else if (noOfIterations.getText().toString().equals(model.getNoIterations() + "")) {
@@ -127,6 +130,7 @@ public class Screen_6 extends SmsServices {
             @Override
             public void onClick(View v) {
                 if (validateInput() && !systemDown) {
+                    cursorVisibility();
                     updateData_And_SendSMS("enable");
                     smsReceiver.waitFor_1_Minute();
                     b = true;
@@ -155,6 +159,7 @@ public class Screen_6 extends SmsServices {
     }
 
 
+
     private void isAnyViewEdited() {
         if (isEditedNoOfIterations || isEditedInjectPeriod || isEditedWetPeriod) {
             enableFieldFertigation.setVisibility(View.VISIBLE);
@@ -169,25 +174,38 @@ public class Screen_6 extends SmsServices {
         if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
             spinner.requestFocus();
         }
-        if (!(wetPeriod.getText().toString().matches(regex) && wetPeriod.getText().toString().length() >= 1)) {
+        if (!(wetPeriod.getText().toString().matches(regex)
+                && wetPeriod.getText().toString().length() >= 1
+                && validateRange(1,999,Integer.parseInt(wetPeriod.getText().toString())) )) {
             wetPeriod.requestFocus();
             wetPeriod.getText().clear();
             wetPeriod.setError("please enter a valid value");
             return false;
         }
-        if (!(injectPeriod.getText().toString().matches(regex) && injectPeriod.getText().toString().length() >= 1)) {
+        if (!(injectPeriod.getText().toString().matches(regex)
+                && injectPeriod.getText().toString().length() >= 1
+                && validateRange(1,999,Integer.parseInt(injectPeriod.getText().toString())))) {
             injectPeriod.requestFocus();
             injectPeriod.getText().clear();
             injectPeriod.setError("please enter a valid value");
             return false;
         }
-        if (!(noOfIterations.getText().toString().matches(regex)) && noOfIterations.getText().toString().length() == 1) {
+        if (!(noOfIterations.getText().toString().matches(regex))
+                && noOfIterations.getText().toString().length() == 1
+                && validateRange(1,5,Integer.parseInt(noOfIterations.getText().toString()))) {
             noOfIterations.requestFocus();
             noOfIterations.getText().clear();
             noOfIterations.setError("please enter a valid value");
             return false;
         }
         return true;
+    }
+    private boolean validateRange(int min, int max, int inputValue) {
+        if(inputValue>=min && inputValue <=max)
+        {
+            return true;
+        }
+        return false;
     }
 
     private void initializeModel() {
@@ -277,6 +295,17 @@ public class Screen_6 extends SmsServices {
             enableFieldFertigation.setVisibility(View.VISIBLE);
         }
     }
+    private void cursorVisibility() {
+        try {
+            wetPeriod.setCursorVisible(false);
+            injectPeriod.setCursorVisible(false);
+            noOfIterations.setCursorVisible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     @Override
     public void initViews() {
