@@ -120,6 +120,8 @@ public class Screen_10 extends SmsServices {
                 b = false;
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
+                } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
+                    checkSMS(message);
                 }
             }
 

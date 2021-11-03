@@ -54,12 +54,13 @@ public class Screen_7 extends SmsServices {
                 } else if (filtrationControlUnitNoDelay_1.getText().toString().equals(model.getFcDelay_1() + "")) {
                     System.out.println("--->++---> " + "yes");
                     isEditedDelay_1 = false;
-
+                    isAnyViewEdited();
                 } else {
                     System.out.println("--->++---> " + "No");
                     isEditedDelay_1 = true;
+                    isAnyViewEdited();
                 }
-                isAnyViewEdited();
+
             }
         });
         filtrationControlUnitNoDelay_2.setOnClickListener(new View.OnClickListener() {
@@ -72,11 +73,13 @@ public class Screen_7 extends SmsServices {
                 } else if (filtrationControlUnitNoDelay_2.getText().toString().equals(model.getFcDelay_2() + "")) {
                     System.out.println("--->++---> " + "yes");
                     isEditedDelay_2 = false;
+                    isAnyViewEdited();
                 } else {
                     System.out.println("--->++---> " + "No");
                     isEditedDelay_2 = true;
+                    isAnyViewEdited();
                 }
-                isAnyViewEdited();
+
             }
         });
         filtrationControlUnitNoDelay_3.setOnClickListener(new View.OnClickListener() {
@@ -89,11 +92,13 @@ public class Screen_7 extends SmsServices {
                 } else if (filtrationControlUnitNoDelay_3.getText().toString().equals(model.getFcDelay_3() + "")) {
                     System.out.println("--->++---> " + "yes");
                     isEditedDelay_3 = false;
+                    isAnyViewEdited();
                 } else {
                     System.out.println("--->++---> " + "No");
                     isEditedDelay_3 = true;
+                    isAnyViewEdited();
                 }
-                isAnyViewEdited();
+
             }
         });
         filtrationControlUnitOnTime.setOnClickListener(new View.OnClickListener() {
@@ -105,12 +110,11 @@ public class Screen_7 extends SmsServices {
                     disableFiltration.setVisibility(View.INVISIBLE);
                 } else if (filtrationControlUnitOnTime.getText().toString().equals(model.getFcOnTime() + "")) {
                     System.out.println("--->++---> " + "yes");
-                    isEditedOnTime = false;
+                    isEditedOnTime = false; isAnyViewEdited();
                 } else {
                     System.out.println("--->++---> " + "No");
-                    isEditedOnTime = true;
+                    isEditedOnTime = true; isAnyViewEdited();
                 }
-                isAnyViewEdited();
             }
         });
         filtrationControlUnitSeparation.setOnClickListener(new View.OnClickListener() {
@@ -122,12 +126,11 @@ public class Screen_7 extends SmsServices {
                     disableFiltration.setVisibility(View.INVISIBLE);
                 } else if (filtrationControlUnitSeparation.getText().toString().equals(model.getFcSeperation() + "")) {
                     System.out.println("--->++---> " + "yes");
-                    isEditedSeparation = false;
+                    isEditedSeparation = false; isAnyViewEdited();
                 } else {
                     System.out.println("--->++---> " + "No");
-                    isEditedSeparation = true;
+                    isEditedSeparation = true; isAnyViewEdited();
                 }
-                isAnyViewEdited();
             }
         });
         enableFiltration.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +166,6 @@ public class Screen_7 extends SmsServices {
     }
 
 
-
     private void updateData_And_SendSMS(String typeOfAction) {
         String smsData;
         if (typeOfAction.equals("enable")) {
@@ -194,11 +196,11 @@ public class Screen_7 extends SmsServices {
 
     private void isAnyViewEdited() {
         if (isEditedDelay_1 || isEditedDelay_2 || isEditedDelay_3 || isEditedOnTime || isEditedSeparation) {
+            enableFiltration.setVisibility(View.VISIBLE);
+            disableFiltration.setVisibility(View.INVISIBLE);
+        } else {
             disableFiltration.setVisibility(View.VISIBLE);
             enableFiltration.setVisibility(View.INVISIBLE);
-        } else {
-            disableFiltration.setVisibility(View.INVISIBLE);
-            enableFiltration.setVisibility(View.VISIBLE);
         }
         // return (isEditedDelay_1 || isEditedDelay_2 || isEditedDelay_3 || isEditedOnTime || isEditedSeparation) ? true : false;
     }
@@ -206,7 +208,7 @@ public class Screen_7 extends SmsServices {
     private boolean validateInput() {
         if (!(filtrationControlUnitNoDelay_1.getText().toString().matches(regex) &&
                 filtrationControlUnitNoDelay_1.getText().toString().length() >= 1)
-                &&validateRange(1,60,Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()))) {
+                && validateRange(1, 60, Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()))) {
             filtrationControlUnitNoDelay_1.requestFocus();
             filtrationControlUnitNoDelay_1.getText().clear();
             filtrationControlUnitNoDelay_1.setError("please enter a valid value");
@@ -214,7 +216,7 @@ public class Screen_7 extends SmsServices {
         }
         if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
                 filtrationControlUnitNoDelay_2.getText().toString().length() >= 1
-                && validateRange(1,10,Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
+                && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
             filtrationControlUnitNoDelay_2.requestFocus();
             filtrationControlUnitNoDelay_2.getText().clear();
             filtrationControlUnitNoDelay_2.setError("please enter a valid value");
@@ -222,7 +224,7 @@ public class Screen_7 extends SmsServices {
         }
         if (!(filtrationControlUnitNoDelay_3.getText().toString().matches(regex) &&
                 filtrationControlUnitNoDelay_3.getText().toString().length() >= 1
-                && validateRange(1,10,Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString())))) {
+                && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString())))) {
             filtrationControlUnitNoDelay_3.requestFocus();
             filtrationControlUnitNoDelay_3.getText().clear();
             filtrationControlUnitNoDelay_3.setError("please enter a valid value");
@@ -230,7 +232,7 @@ public class Screen_7 extends SmsServices {
         }
         if (!(filtrationControlUnitOnTime.getText().toString().matches(regex) &&
                 filtrationControlUnitOnTime.getText().toString().length() >= 1
-                && validateRange(1,10,Integer.parseInt(filtrationControlUnitOnTime.getText().toString())))) {
+                && validateRange(1, 10, Integer.parseInt(filtrationControlUnitOnTime.getText().toString())))) {
             filtrationControlUnitOnTime.requestFocus();
             filtrationControlUnitOnTime.getText().clear();
             filtrationControlUnitOnTime.setError("please enter a valid value");
@@ -238,7 +240,7 @@ public class Screen_7 extends SmsServices {
         }
         if (!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
                 filtrationControlUnitSeparation.getText().toString().length() >= 2
-                 && validateRange(10,240,Integer.parseInt(filtrationControlUnitSeparation.getText().toString())))) {
+                && validateRange(10, 240, Integer.parseInt(filtrationControlUnitSeparation.getText().toString())))) {
             filtrationControlUnitSeparation.requestFocus();
             filtrationControlUnitSeparation.getText().clear();
             filtrationControlUnitSeparation.setError("please enter a valid value");
@@ -246,9 +248,9 @@ public class Screen_7 extends SmsServices {
         }
         return true;
     }
+
     private boolean validateRange(int min, int max, int inputValue) {
-        if(inputValue>=min && inputValue <=max)
-        {
+        if (inputValue >= min && inputValue <= max) {
             return true;
         }
         return false;
@@ -292,6 +294,7 @@ public class Screen_7 extends SmsServices {
             disableFiltration.setVisibility(View.INVISIBLE);
         }
     }
+
     private void cursorVisibility() {
 
         try {
@@ -328,6 +331,8 @@ public class Screen_7 extends SmsServices {
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
+                    checkSMS(message);
+                } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                 }
             }

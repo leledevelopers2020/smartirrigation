@@ -60,13 +60,14 @@ public class Screen_6 extends SmsServices {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (modelList.get(position).isEnabled()) {
-                    disableFieldFertigation.setVisibility(View.VISIBLE);
-                    enableFieldFertigation.setVisibility(View.INVISIBLE);
                     model = modelList.get(position);
                     System.out.println(model.toString());
                     wetPeriod.setText(model.getWetPeriod() + "");
                     injectPeriod.setText(model.getInjectPeriod() + "");
                     noOfIterations.setText(model.getNoIterations() + "");
+                    disableFieldFertigation.setVisibility(View.VISIBLE);
+                    enableFieldFertigation.setVisibility(View.INVISIBLE);
+                    isInitial = false;
                 } else {
                     isInitial = true;
                     setEmptyData();
@@ -88,11 +89,13 @@ public class Screen_6 extends SmsServices {
                 } else if (wetPeriod.getText().toString().equals(model.getWetPeriod() + "")) {
                     System.out.println();
                     isEditedWetPeriod = false;
+                    isAnyViewEdited();
                 } else {
                     System.out.println("wetPeriod "+model.getWetPeriod());
                     isEditedWetPeriod = true;
+                    isAnyViewEdited();
                 }
-                isAnyViewEdited();
+
             }
         });
 
@@ -104,9 +107,10 @@ public class Screen_6 extends SmsServices {
                     disableFieldFertigation.setVisibility(View.INVISIBLE);
                 } else if (injectPeriod.getText().toString().equals(model.getInjectPeriod() + "")) {
                     isEditedInjectPeriod = false;
-
+                    isAnyViewEdited();
                 } else {
                     isEditedInjectPeriod = true;
+                    isAnyViewEdited();
                 }
             }
         });
@@ -119,9 +123,10 @@ public class Screen_6 extends SmsServices {
                     disableFieldFertigation.setVisibility(View.INVISIBLE);
                 } else if (noOfIterations.getText().toString().equals(model.getNoIterations() + "")) {
                     isEditedNoOfIterations = false;
-
+                    isAnyViewEdited();
                 } else {
                     isEditedNoOfIterations = true;
+                    isAnyViewEdited();
                 }
             }
         });
@@ -168,6 +173,17 @@ public class Screen_6 extends SmsServices {
             disableFieldFertigation.setVisibility(View.VISIBLE);
             enableFieldFertigation.setVisibility(View.INVISIBLE);
         }
+        System.out.println(toString());
+    }
+
+    @Override
+    public String toString() {
+        return "Screen_6{" +
+                "isEditedInjectPeriod=" + isEditedInjectPeriod +
+                ", isEditedNoOfIterations=" + isEditedNoOfIterations +
+                ", isEditedWetPeriod=" + isEditedWetPeriod +
+                ", isInitial=" + isInitial +
+                '}';
     }
 
     private boolean validateInput() {
@@ -228,9 +244,13 @@ public class Screen_6 extends SmsServices {
                         enableFieldFertigation.setVisibility(View.INVISIBLE);
                     } else {
                         isInitial = true;
+                        disableFieldFertigation.setVisibility(View.INVISIBLE);
+                        enableFieldFertigation.setVisibility(View.VISIBLE);
                     }
                 } else {
                     isInitial = true;
+                    disableFieldFertigation.setVisibility(View.INVISIBLE);
+                    enableFieldFertigation.setVisibility(View.VISIBLE);
                 }
             } else {
                 Toast.makeText(Screen_6.this, "NO data", Toast.LENGTH_LONG).show();
@@ -286,7 +306,6 @@ public class Screen_6 extends SmsServices {
             }
             sendMessage(SmsServices.phoneNumber, smsdata);
             modelList.set(fieldNo - 1, model);
-
             isEditedInjectPeriod = false;
             isEditedNoOfIterations = false;
             isEditedWetPeriod = false;
@@ -332,6 +351,9 @@ public class Screen_6 extends SmsServices {
                     checkSMS(message);
                     System.out.println("phoneNumber1 = " + phoneNumber);
                     System.out.println("phoneNumber2 = " + SmsServices.phoneNumber.trim());
+                } else if(phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s",""))  && !systemDown) {
+                    // System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
+                    checkSMS(message);
                 }
 
             }
@@ -371,11 +393,13 @@ public class Screen_6 extends SmsServices {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            initializeModel();
         } else if (message.contains(SmsUtils.INSMS_6_2)) {
             status.setText("Wrong Fertigation time send, fertigation is not enabled");
         } else if (message.contains(SmsUtils.INSMS_7_1)) {
             status.setText("Fertigation Disabled");
         }
-        initializeModel();
+
+
     }
 }

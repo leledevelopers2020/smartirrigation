@@ -103,7 +103,7 @@ public class Screen_2_1 extends SmsServices {
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
                             sendMessage(SmsServices.phoneNumber, smsData);
                             status.setText("Message Sent");
-                            Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
                         } else {
                             focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
@@ -224,6 +224,7 @@ public class Screen_2_1 extends SmsServices {
     }
 
     public void checkSMS(String message) {
+        System.out.println("message--> " +message);
         switch (message) {
             case SmsUtils.INSMS_1_1: {
                 status.setText("Admin set successfully");
@@ -280,9 +281,12 @@ public class Screen_2_1 extends SmsServices {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
-                System.out.println("isSetClicked  = " + isSetClicked + "\n systemDown : " + systemDown);
+                System.out.println("isSetClicked  = " + isSetClicked + "\n systemDown : " + systemDown +" SmsServices.phoneNumber "+SmsServices.phoneNumber + " phoneNumber "+phoneNumber);
                 //   status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && isSetClicked && !systemDown) {
+                    System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
+                    checkSMS(message);
+                } else if(phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s","")) && isSetClicked && !systemDown) {
                     System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                     checkSMS(message);
                 }
