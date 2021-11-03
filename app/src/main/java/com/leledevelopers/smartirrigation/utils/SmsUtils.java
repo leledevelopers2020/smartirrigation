@@ -45,7 +45,7 @@ public class SmsUtils {
     //Configure field irrigation valve
     public String OutSMS_4(int fieldNo , int valveOnPeriod , int valveOffPeriod ,int motorOnTimeHr ,
                            int motorOnTimeMins ,int soilDryness,int soilWetness,int priority,
-                           int cycle,String triggerFrom)
+                           int cycle,int triggerFrom)
     {
         return "SET"+fieldNo+" "+valveOnPeriod+" "+valveOffPeriod+" "+motorOnTimeHr+" "+motorOnTimeMins+" "+soilDryness
                 +" "+soilWetness+" "+priority+" "+cycle+" "+triggerFrom+" ";

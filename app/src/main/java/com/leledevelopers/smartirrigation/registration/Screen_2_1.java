@@ -78,6 +78,18 @@ public class Screen_2_1 extends SmsServices {
         if (!externalStorageIsAvailableForRW()) {
             set.setEnabled(false);
         }
+        oldPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                oldPassword.setCursorVisible(true);
+            }
+        });
+        newPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newPassword.setCursorVisible(true);
+            }
+        });
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +99,7 @@ public class Screen_2_1 extends SmsServices {
                             smsReceiver.waitFor_1_Minute();
                             b = true;
                             isSetClicked = true;
+                            cursorVisibility();
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
                             sendMessage(SmsServices.phoneNumber, smsData);
                             status.setText("Message Sent");
@@ -125,6 +138,7 @@ public class Screen_2_1 extends SmsServices {
             }
         });
     }
+
 
 
     private boolean validateInput(String oldPasswordlocal, String newPasswordlocal) {
@@ -181,6 +195,17 @@ public class Screen_2_1 extends SmsServices {
             gsmContact.setText(SmsServices.phoneNumber);
         }
     }
+    private void cursorVisibility() {
+        try{
+            oldPassword.setCursorVisible(false);
+            newPassword.setCursorVisible(false);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
