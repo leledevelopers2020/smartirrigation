@@ -108,6 +108,9 @@ public class MainActivity_GSM extends SmsServices {
                 b = false;
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
+                } else if(phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s",""))  && !systemDown) {
+                   // System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
+                    checkSMS(message);
                 }
             }
 
