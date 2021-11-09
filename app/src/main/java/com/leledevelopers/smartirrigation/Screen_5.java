@@ -518,7 +518,7 @@ public class Screen_5 extends SmsServices {
                 getHoursAndMinutes(model.getMotorOnTime());
                 model.setEnabled(true);
                 System.out.println("after set " + model.toString());
-                smsdata = smsUtils.OutSMS_4(model.getFieldNo(), model.getValveOnPeriod(), model.getValveOffPeriod()
+                smsdata = smsUtils.OutSMS_4((model.getFieldNo()<10? String.format("%03d", model.getFieldNo()):model.getFieldNo()+""), model.getValveOnPeriod(), model.getValveOffPeriod()
                         , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
                         model.getSoilWetness(), model.getPriority(), model.getCycle(), spinnerIntValue(model.getTiggerFrom()));
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
@@ -526,7 +526,7 @@ public class Screen_5 extends SmsServices {
                 disableFertigation.setVisibility(View.INVISIBLE);
                 isInitial = false;
             } else {
-                smsdata = smsUtils.OutSMS_5(fieldNo);
+                smsdata = smsUtils.OutSMS_5((fieldNo<10? String.format("%02d", fieldNo):fieldNo+""));
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
                 enableFertigation.setVisibility(View.VISIBLE);
                 disableFertigation.setVisibility(View.INVISIBLE);
@@ -625,7 +625,6 @@ public class Screen_5 extends SmsServices {
                     status.setText("System Down");
                 }
             }
-
         });
     }
 

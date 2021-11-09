@@ -6,7 +6,7 @@ package com.leledevelopers.smartirrigation.utils;
  */
 public class SmsUtils {
     // SMS responses from controller
-    public static final String INSMS_1_1="Admin set successfully";
+    public static final String INSMS_1_1= "Admin set successfully";
     public static final String INSMS_1_2="Wrong factory Password";
     public static final String INSMS_1_3="You are no more Admin now.";
     public static final String INSMS_2_1="Hooked";
@@ -43,7 +43,7 @@ public class SmsUtils {
     }
 
     //Configure field irrigation valve
-    public String OutSMS_4(int fieldNo , int valveOnPeriod , int valveOffPeriod ,int motorOnTimeHr ,
+    public String OutSMS_4(String fieldNo , int valveOnPeriod , int valveOffPeriod ,int motorOnTimeHr ,
                            int motorOnTimeMins ,int soilDryness,int soilWetness,int priority,
                            int cycle,int triggerFrom)
     {
@@ -52,19 +52,19 @@ public class SmsUtils {
     }
 
     //Disable Field Irrigation valve
-    public String OutSMS_5(int fieldNo)
+    public String OutSMS_5(String fieldNo)
     {
         return "HOLD"+fieldNo;
     }
 
     //Configure field fertigation
-    public String OutSMS_6(int fieldNo, int wetPeriod,int injectPeriod, int noIterations)
+    public String OutSMS_6(String fieldNo, int wetPeriod,int injectPeriod, int noIterations)
     {
         return "ENABLE"+fieldNo+" "+wetPeriod+" "+injectPeriod+" "+noIterations+" ";
     }
 
     //Disable field fertigation
-    public String OutSMS_7(int fieldNo)
+    public String OutSMS_7(String fieldNo)
     {
         return "DISABLE"+fieldNo;
     }
