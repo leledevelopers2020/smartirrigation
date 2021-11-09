@@ -70,9 +70,9 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
+                android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="2dp"
                 android:text="Filtration Control Unit No.1 Delay "
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -81,7 +81,7 @@
                 android:id="@+id/filtrationControlUnitNoDelay_1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.4"
+                android:layout_weight="0.3"
                 android:gravity="center"
                 android:hint=" 1-60 (min) "
                 android:inputType="number"
@@ -99,9 +99,9 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
+                android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="2dp"
                 android:text="Filtration Control Unit No.2 Delay"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -110,7 +110,7 @@
                 android:id="@+id/filtrationControlUnitNoDelay_2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.4"
+                android:layout_weight="0.3"
                 android:gravity="center"
                 android:hint=" 1-10 (min) "
                 android:inputType="number"
@@ -128,9 +128,9 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
+                android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="2dp"
                 android:text="Filtration Control Unit No.3 Delay "
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -139,7 +139,7 @@
                 android:id="@+id/filtrationControlUnitNoDelay_3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.4"
+                android:layout_weight="0.3"
                 android:gravity="center"
                 android:hint=" 1-10 (min) "
                 android:inputType="number"
@@ -152,14 +152,14 @@
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="2dp">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
+                android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="2dp"
                 android:text="Filtration Control Unit On Time "
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -168,7 +168,7 @@
                 android:id="@+id/filtrationControlUnitOnTime"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.4"
+                android:layout_weight="0.3"
                 android:gravity="center"
                 android:hint=" 1-10 (min)"
                 android:inputType="number"
@@ -186,9 +186,9 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
+                android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="2dp"
                 android:text="Filtration Control Unit Seperation "
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -197,7 +197,7 @@
                 android:id="@+id/filtrationControlUnitSeparation"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.4"
+                android:layout_weight="0.3"
                 android:gravity="center"
                 android:hint=" 10-240 (min) "
                 android:inputType="number"
