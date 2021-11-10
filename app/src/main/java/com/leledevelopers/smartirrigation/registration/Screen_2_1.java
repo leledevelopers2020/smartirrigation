@@ -103,7 +103,7 @@ public class Screen_2_1 extends SmsServices {
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
                             sendMessage(SmsServices.phoneNumber, smsData);
                             status.setText("Message Sent");
-                           // Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
                         } else {
                             focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
