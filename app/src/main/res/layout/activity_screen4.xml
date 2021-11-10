@@ -49,7 +49,7 @@
             android:layout_weight="0.07"
             android:background="@drawable/button_colours"
             android:gravity="center"
-            android:padding="15dp"
+            android:padding="5dp"
             android:text="Configure field irrigation" />
 
         <Button
@@ -61,7 +61,7 @@
             android:layout_weight="0.07"
             android:background="@drawable/button_colours"
             android:gravity="center"
-            android:padding="15dp"
+            android:padding="5dp"
             android:text="Configure field fertigation" />
 
         <Button
@@ -73,7 +73,7 @@
             android:layout_weight="0.07"
             android:background="@drawable/button_colours"
             android:gravity="center"
-            android:padding="15dp"
+            android:padding="5dp"
             android:text="Configure Pump Filtration" />
 
         <Button
@@ -85,7 +85,7 @@
             android:layout_weight="0.07"
             android:background="@drawable/button_colours"
             android:gravity="center"
-            android:padding="15dp"
+            android:padding="5dp"
             android:text="Print report for field status" />
 
         <Button
@@ -97,7 +97,7 @@
             android:layout_weight="0.07"
             android:background="@drawable/button_colours"
             android:gravity="center"
-            android:padding="15dp"
+            android:padding="5dp"
             android:text="Settings" />
 
         <TextView

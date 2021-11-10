@@ -78,9 +78,7 @@
                 android:gravity="center"
                 android:hint="factory/ old password"
                 android:inputType="number"
-
                 android:textAlignment="center"
-                
                 android:textColor="@color/black" />
 
             <LinearLayout
@@ -127,7 +125,6 @@
                 android:gravity="center"
                 android:hint="New password"
                 android:inputType="number"
-
                 android:textAlignment="center"
                 android:textColor="@color/black" />
 
@@ -152,7 +149,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.9"
-
                     android:text="Show Password" />
             </LinearLayout>
         </LinearLayout>
