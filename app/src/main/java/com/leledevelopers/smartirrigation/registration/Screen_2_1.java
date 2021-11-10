@@ -52,7 +52,7 @@ public class Screen_2_1 extends SmsServices {
     String filePassword = "psw";*/
     private Boolean b, systemDown = false;
     SmsUtils smsUtils = new SmsUtils();
-    private boolean isSetClicked = false, isGSMSelected = false;
+    private boolean isSetClicked = false, isGSMSelected = false, isPasswordSaved = false;
     private CheckBox checkbox1, checkbox2;
     private String smsData;
 
@@ -231,6 +231,7 @@ public class Screen_2_1 extends SmsServices {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        isPasswordSaved = true;
                         startActivity(new Intent(Screen_2_1.this, Screen_9.class));
                     }
                 }, 1000);
@@ -243,6 +244,7 @@ public class Screen_2_1 extends SmsServices {
             }
             case SmsUtils.INSMS_3_1: {
                 status.setText("Password Updated successfully");
+                isPasswordSaved = true;
                 try {
                     saveFileDetails();
                     createConfgFiles();
@@ -282,7 +284,6 @@ public class Screen_2_1 extends SmsServices {
             public void onReceiveSms(String phoneNumber, String message) {
                 b = false;
                 System.out.println("isSetClicked  = " + isSetClicked + "\n systemDown : " + systemDown +" SmsServices.phoneNumber "+SmsServices.phoneNumber + " phoneNumber "+phoneNumber);
-                //   status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && isSetClicked && !systemDown) {
                     System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                     checkSMS(message);
@@ -321,6 +322,9 @@ public class Screen_2_1 extends SmsServices {
         if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FILTRATION_NAME)) {
             curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_FILTRATION_NAME);
         }
+        if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.DIRECTORY_PATH, ProjectUtils.MESSAGES_FILE)) {
+            curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.DIRECTORY_PATH, ProjectUtils.MESSAGES_FILE);
+        }
     }
 
     private void saveFileDetails() {
@@ -341,4 +345,14 @@ public class Screen_2_1 extends SmsServices {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!isPasswordSaved){
+            SmsServices.phoneNumber = "";
+            isSetClicked = false;
+            isGSMSelected = false;
+            isPasswordSaved = false;
+        }
+    }
 }

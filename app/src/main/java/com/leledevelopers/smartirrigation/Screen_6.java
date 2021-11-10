@@ -294,7 +294,7 @@ public class Screen_6 extends SmsServices {
                 model.setNoIterations(Integer.parseInt(noOfIterations.getText().toString()));
                 model.setEnabled(true);
                 System.out.println("after set " + model.toString());
-                smsdata = smsUtils.OutSMS_6(model.getFieldNo(), model.getWetPeriod(),
+                smsdata = smsUtils.OutSMS_6((model.getFieldNo()<10? String.format("%02d", model.getFieldNo()):model.getFieldNo()+""), model.getWetPeriod(),
                         model.getInjectPeriod(), model.getNoIterations());
                 System.out.println("fieldNo = " +fieldNo);
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
@@ -302,7 +302,7 @@ public class Screen_6 extends SmsServices {
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
                 isInitial = false;
             } else {
-                smsdata = smsUtils.OutSMS_7(model.getFieldNo());
+                smsdata = smsUtils.OutSMS_7((fieldNo<10? String.format("%02d", fieldNo):fieldNo+""));
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
                 enableFieldFertigation.setVisibility(View.VISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
