@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -207,14 +208,14 @@ public class Screen_7 extends SmsServices {
 
     private boolean validateInput() {
         if (!(filtrationControlUnitNoDelay_1.getText().toString().matches(regex) &&
-                filtrationControlUnitNoDelay_1.getText().toString().length() >= 1)
-                && validateRange(1, 60, Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()))) {
+                filtrationControlUnitNoDelay_1.getText().toString().length() >= 1
+                && validateRange(1, 60, Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString())))) {
             filtrationControlUnitNoDelay_1.requestFocus();
             filtrationControlUnitNoDelay_1.getText().clear();
             filtrationControlUnitNoDelay_1.setError("please enter a valid value");
             return false;
         }
-        if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
+     /*   if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
                 filtrationControlUnitNoDelay_2.getText().toString().length() >= 1
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
             filtrationControlUnitNoDelay_2.requestFocus();
@@ -245,11 +246,13 @@ public class Screen_7 extends SmsServices {
             filtrationControlUnitSeparation.getText().clear();
             filtrationControlUnitSeparation.setError("please enter a valid value");
             return false;
-        }
+        }*/
         return true;
     }
 
     private boolean validateRange(int min, int max, int inputValue) {
+        Log.d("tag","Validate range min : " +min+" validate range max : "+max +" validate range input val : "+inputValue);
+
         if (inputValue >= min && inputValue <= max) {
             return true;
         }

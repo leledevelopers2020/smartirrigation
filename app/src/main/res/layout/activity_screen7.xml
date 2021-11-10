@@ -53,7 +53,6 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
             android:layout_weight="0.1"
             android:padding="15dp"
             android:text=" Pump Filtration "
@@ -64,15 +63,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="2dp"
                 android:text="Filtration Control Unit No.1 Delay "
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -93,15 +90,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="2dp"
                 android:text="Filtration Control Unit No.2 Delay"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -114,23 +109,20 @@
                 android:gravity="center"
                 android:hint=" 1-10 (min) "
                 android:inputType="number"
-                android:maxLength="4"
-                />
+                android:maxLength="4" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="2dp"
                 android:text="Filtration Control Unit No.3 Delay "
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -151,15 +143,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:orientation="horizontal"
-            android:padding="2dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="2dp"
                 android:text="Filtration Control Unit On Time "
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -180,15 +170,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
                 android:gravity="center"
-                android:padding="2dp"
                 android:text="Filtration Control Unit Seperation "
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -201,8 +189,7 @@
                 android:gravity="center"
                 android:hint=" 10-240 (min) "
                 android:inputType="number"
-                android:maxLength="3"
-                 />
+                android:maxLength="3" />
         </LinearLayout>
 
         <Button
