@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -190,6 +191,7 @@ public class Screen_6 extends SmsServices {
         if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
             spinner.requestFocus();
         }
+
         if (!(wetPeriod.getText().toString().matches(regex)
                 && wetPeriod.getText().toString().length() >= 1
                 && validateRange(1,999,Integer.parseInt(wetPeriod.getText().toString())) )) {
@@ -217,6 +219,7 @@ public class Screen_6 extends SmsServices {
         return true;
     }
     private boolean validateRange(int min, int max, int inputValue) {
+        Log.d("tag","Validate range min : " +min+" validate range max : "+max +" validate range input val : "+inputValue);
         if(inputValue>=min && inputValue <=max)
         {
             return true;
