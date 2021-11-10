@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +36,7 @@ public class splashScreen extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        this.context = getApplicationContext();
         File file = new File(splashScreen.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
         if (file.exists()) {
             this.context = getApplicationContext();
@@ -83,82 +85,14 @@ public class splashScreen extends SmsServices {
                 while ((line = reader.readLine()) != null) {
                     text.append(line);
                 }
-                //String[] s = text.toString().split("[#]");
                 SmsServices.phoneNumber = text.toString();
                 if (!SmsServices.phoneNumber.equals("")) {
-                    readMessages();
+                    readAllMessages();
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 System.out.println(e.fillInStackTrace());
             }
         }
-    }
-
-    private void readMessages() throws IOException, ClassNotFoundException {
-        CURD_Files<Message> curd_files = new CURD_FilesImpl<Message>();
-        List<Message> messageList;
-        BaseMessages baseMessages;
-
-        if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.MESSAGES_PATH)) {
-            System.out.println("Has Data");
-            baseMessages = (BaseMessages) curd_files.getFile(splashScreen.this, ProjectUtils.MESSAGES_PATH);
-            if(!baseMessages.getLastAccessedDate().equals("")){
-                messageList = baseMessages.getMessages();
-                System.out.println("messageList.size() = "+messageList.size());
-                System.out.println(baseMessages.getLastAccessedDate());
-
-                /*messageList = getMessages(messageList,baseMessages);
-                baseMessages.setMessages(messageList);
-                String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-                baseMessages.setLastAccessedDate(date);
-                curd_files.createFile(splashScreen.this, ProjectUtils.MESSAGES_PATH, baseMessages);*/
-            }
-        } else {
-            System.out.println("Has Empty Data");
-            messageList = new ArrayList<Message>();
-            baseMessages = new BaseMessages();
-            messageList = getMessages(messageList,baseMessages);
-            System.out.println("messageList.size()--> "+messageList.size());
-
-            baseMessages.setMessages(messageList);
-            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-            baseMessages.setLastAccessedDate(date);
-            curd_files.createFile(splashScreen.this, ProjectUtils.MESSAGES_PATH, baseMessages);
-            System.out.println("baseMessages.toString()--> "+baseMessages.toString());
-        }
-    }
-
-    private List<Message> getMessages(List<Message> messages, BaseMessages baseMessages){
-        Cursor cursor = null;
-        String ownerNumber = SmsServices.phoneNumber.replaceAll("\\s", "");
-        final Uri SMS_INBOX = Uri.parse("content://sms/inbox");
-
-        if(baseMessages.getLastAccessedDate().equals("")){
-            cursor = getContentResolver().query(SMS_INBOX, null, null, null, null);
-        } else {
-
-        }
-
-
-        while (cursor.moveToNext()) {
-            Message message = new Message();
-            // Convert date to a readable format.
-            Calendar calendar = Calendar.getInstance();
-            String date = cursor.getString(cursor.getColumnIndex("date"));
-            System.out.println("date---> "+date);
-            Long timestamp = Long.parseLong(date);
-            calendar.setTimeInMillis(timestamp);
-            Date finaldate = calendar.getTime();
-            String smsDate = finaldate.toString();
-            String smsBody = cursor.getString(cursor.getColumnIndex("body"));
-            String phoneNumber = cursor.getString(cursor.getColumnIndex("address"));
-            if (ownerNumber.equals(phoneNumber) && smsBody.contains("field no")) {
-                message.setAction(smsBody);
-                message.setDate(smsDate);
-                messages.add(message);
-            }
-        }
-        return messages;
     }
 }

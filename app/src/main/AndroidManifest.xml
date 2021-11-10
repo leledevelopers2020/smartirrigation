@@ -24,7 +24,7 @@
             android:exported="true" />
         <activity
             android:name=".Screen_8"
-            android:exported="true" >
+            android:exported="true">
 
         </activity>
         <activity
@@ -32,43 +32,41 @@
             android:exported="true" />
         <activity
             android:name=".Screen_6"
-            android:exported="true" >
+            android:exported="true"></activity>
+
+        <activity
+            android:name=".Screen_5"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".MainActivity_GSM"
+            android:exported="true"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".registration.Screen_2_1"
+            android:exported="true"
+            android:launchMode="standard" />
+        <activity
+            android:name=".registration.Screen_1"
+            android:exported="true"
+            android:launchMode="standard" />
+        <activity
+            android:name=".registration.screen_2_2"
+            android:exported="true"
+            android:launchMode="standard" />
+        <activity
+            android:name=".Screen_4"
+            android:exported="true" />
+        <activity
+            android:name=".starter.splashScreen"
+            android:exported="true"
+            android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".Screen_5"
-            android:exported="true" >
-
-        </activity>
-        <activity
-            android:launchMode="singleTask"
-            android:name=".MainActivity_GSM"
-            android:exported="true" />
-        <activity
-            android:launchMode="standard"
-            android:name=".registration.Screen_2_1"
-            android:exported="true" />
-        <activity
-            android:launchMode="standard"
-            android:name=".registration.Screen_1"
-            android:exported="true" />
-        <activity
-            android:launchMode="standard"
-            android:name=".registration.screen_2_2"
-            android:exported="true" />
-        <activity
-            android:name=".Screen_4"
-            android:exported="true" />
-        <activity
-            android:launchMode="standard"
-            android:name=".starter.splashScreen"
-            android:exported="true">
-
         </activity>
     </application>
 

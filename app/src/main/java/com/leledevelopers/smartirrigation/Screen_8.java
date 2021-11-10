@@ -11,9 +11,11 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.leledevelopers.smartirrigation.models.Message;
 import com.leledevelopers.smartirrigation.services.CalendarService;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Screen_8 extends SmsServices {
-    Button fromDate, toDate, printData,back_8;
+    Button fromDate, toDate, printData, back_8;
     ArrayAdapter<CharSequence> adapter;
     Spinner spinner;
     String startingDate, endingDate;
@@ -49,6 +51,7 @@ public class Screen_8 extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen8);
         initViews();
+        this.context = getApplicationContext();
         adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -68,6 +71,8 @@ public class Screen_8 extends SmsServices {
             }
         });
 
+        printSms();
+
         toDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +82,7 @@ public class Screen_8 extends SmsServices {
                     @Override
                     public void onClickOk(String date) {
                         setEndingDate(date);
-                        System.out.println("fromDate = " +getEndingDate());
+                        System.out.println("fromDate = " + getEndingDate());
                     }
                 });
             }
@@ -93,8 +98,8 @@ public class Screen_8 extends SmsServices {
                 Date dateStart = null;
                 Date dateEnd = null;
                 try {
-                    dateStart = formatter.parse(getStartingDate()+ "T00:00:00");
-                    dateEnd = formatter.parse(getEndingDate()+ "T23:59:59");
+                    dateStart = formatter.parse(getStartingDate() + "T00:00:00");
+                    dateEnd = formatter.parse(getEndingDate() + "T23:59:59");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -108,29 +113,29 @@ public class Screen_8 extends SmsServices {
                 Cursor cursor = getContentResolver().query(SMS_INBOX, null, filter, null, null);
                 List<String> items = new ArrayList<String>();
 
-                while(cursor.moveToNext()) {
+                while (cursor.moveToNext()) {
 
                     // Convert date to a readable format.
                     Calendar calendar = Calendar.getInstance();
-                    String date =  cursor.getString(cursor.getColumnIndex("date"));
+                    String date = cursor.getString(cursor.getColumnIndex("date"));
                     Long timestamp = Long.parseLong(date);
                     calendar.setTimeInMillis(timestamp);
                     Date finaldate = calendar.getTime();
-                    String smsDate = finaldate.toString();
+                    String smsDate = formatter.format(finaldate);
                     String smsBody = cursor.getString(cursor.getColumnIndex("body"));
 
                     String phoneNumber = cursor.getString(cursor.getColumnIndex("address"));
-                    if(ownerNumber.equals(phoneNumber) && smsBody.contains("field no"+fieldNo)){
+                    if (ownerNumber.equals(phoneNumber) && smsBody.contains("field no" + fieldNo)) {
                         //if(phoneNumber.equals("+919014425331")){
-                        System.out.println("---> "+/*"919014425331"*/ownerNumber+ " , "+phoneNumber);
-                        items.add("From : " + ownerNumber +  phoneNumber + "\n" +
-                                "Date Sent: " +    smsDate + "\n" +
+                        System.out.println("---> " +/*"919014425331"*/ownerNumber + " , " + phoneNumber);
+                        items.add("From : " + ownerNumber + phoneNumber + "\n" +
+                                "Date Sent: " + smsDate + "\n" +
                                 "Message : " + smsBody + "\n");
                     }
 
                 }
-                System.out.println("SMs data "+items);
-                System.out.println("SMs count "+items.size());
+                System.out.println("SMs data " + items);
+                System.out.println("SMs count " + items.size());
 
                 cursor.close();
             }
@@ -138,18 +143,32 @@ public class Screen_8 extends SmsServices {
         back_8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Screen_8.this,Screen_4.class));
+                startActivity(new Intent(Screen_8.this, Screen_4.class));
                 finish();
             }
         });
     }
+
+    private void printSms() {
+        try {
+            List<Message> messages = getSMS();
+            for (Message message : messages) {
+                System.out.println(message.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void initViews() {
         fromDate = (Button) findViewById(R.id.fromDate);
         toDate = (Button) findViewById(R.id.toDate);
         spinner = (Spinner) findViewById(R.id.fieldNoSpinner8);
         printData = findViewById(R.id.printData);
-        back_8=findViewById(R.id.back_8);
+        back_8 = findViewById(R.id.back_8);
     }
 }
 
