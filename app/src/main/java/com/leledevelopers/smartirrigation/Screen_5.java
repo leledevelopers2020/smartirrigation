@@ -522,7 +522,7 @@ public class Screen_5 extends SmsServices {
                 getHoursAndMinutes(model.getMotorOnTime());
                 model.setEnabled(true);
                 System.out.println("after set " + model.toString());
-                smsdata = smsUtils.OutSMS_4((model.getFieldNo()<10? String.format("%03d", model.getFieldNo()):model.getFieldNo()+""), model.getValveOnPeriod(), model.getValveOffPeriod()
+                smsdata = smsUtils.OutSMS_4((model.getFieldNo()<10? String.format("%02d", model.getFieldNo()):model.getFieldNo()+""), model.getValveOnPeriod(), model.getValveOffPeriod()
                         , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
                         model.getSoilWetness(), model.getPriority(), model.getCycle(), spinnerIntValue(model.getTiggerFrom()));
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
