@@ -11,6 +11,7 @@ public class screen_2_2 extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen22);
+
     }
 
     /**

@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Screen_9">
+    tools:context=".Screen_9"
+    android:background="@drawable/screen_background">
 
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/button_colours"
+        android:background="@drawable/title_bar_bg"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -71,6 +72,8 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:text="Change Language"
+                android:layout_marginRight="10dp"
+
                 android:textStyle="bold" />
 
             <Spinner
@@ -78,7 +81,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:gravity="center" />
+                android:background="@drawable/underline"
+                android:gravity="center"
+                />
         </LinearLayout>
 
         <Button
@@ -88,7 +93,7 @@
             android:layout_gravity="center"
             android:layout_margin="7dp"
             android:layout_weight="0.09"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
             android:padding="15dp"
             android:text="Set System Time" />
 
@@ -98,7 +103,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="0.09"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
             android:padding="15dp"
             android:text="Get System Time" />
 
@@ -109,7 +114,7 @@
             android:layout_gravity="center"
             android:layout_margin="7dp"
             android:layout_weight="0.09"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
             android:padding="15dp"
             android:text="Update Password" />
 
@@ -119,7 +124,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="0.09"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
             android:padding="15dp"
             android:text="Set Motor Load Cutoff" />
 
@@ -140,7 +145,7 @@
             android:layout_gravity="center"
             android:layout_margin="7dp"
             android:layout_weight="0.1"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
             android:padding="10dp"
             android:text="Save" />
 

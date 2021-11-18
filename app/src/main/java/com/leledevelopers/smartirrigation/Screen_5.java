@@ -249,6 +249,10 @@ public class Screen_5 extends SmsServices {
         motorOnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                    motorOnTime.clearFocus();
+
+
                 System.out.println("-->2 " + motorOnTime.getText().toString());
                 // System.out.println("-->2 "+model.getMotorOnTime());
                 if (isInitial) {
@@ -381,9 +385,9 @@ public class Screen_5 extends SmsServices {
             valveOnPeriod.setError("please enter a valid value");
             return false;
         }
-        if (!(soilDryness.getText().toString().matches(regex))
+        if (!(soilDryness.getText().toString().matches(regex)
                  && soilDryness.getText().toString().length() >= 3 &&
-                validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString()))) {
+                validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
             soilDryness.requestFocus();
             soilDryness.getText().clear();
             soilDryness.setError("please enter a valid value");
@@ -412,7 +416,7 @@ public class Screen_5 extends SmsServices {
             return false;
         }
         if (!(cycles.getText().toString().matches(regex) &&
-                cycles.getText().toString().length() == 1)) {
+                cycles.getText().toString().length() == 1 && validateRange(1,9,Integer.parseInt(cycles.getText().toString())))) {
             cycles.requestFocus();
             cycles.getText().clear();
             cycles.setError("please enter a valid value");
@@ -518,7 +522,7 @@ public class Screen_5 extends SmsServices {
                 getHoursAndMinutes(model.getMotorOnTime());
                 model.setEnabled(true);
                 System.out.println("after set " + model.toString());
-                smsdata = smsUtils.OutSMS_4(model.getFieldNo(), model.getValveOnPeriod(), model.getValveOffPeriod()
+                smsdata = smsUtils.OutSMS_4((model.getFieldNo()<10? String.format("%02d", model.getFieldNo()):model.getFieldNo()+""), model.getValveOnPeriod(), model.getValveOffPeriod()
                         , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
                         model.getSoilWetness(), model.getPriority(), model.getCycle(), spinnerIntValue(model.getTiggerFrom()));
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
@@ -526,7 +530,7 @@ public class Screen_5 extends SmsServices {
                 disableFertigation.setVisibility(View.INVISIBLE);
                 isInitial = false;
             } else {
-                smsdata = smsUtils.OutSMS_5(fieldNo);
+                smsdata = smsUtils.OutSMS_5((fieldNo<10? String.format("%02d", fieldNo):fieldNo+""));
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
                 enableFertigation.setVisibility(View.VISIBLE);
                 disableFertigation.setVisibility(View.INVISIBLE);
@@ -625,7 +629,6 @@ public class Screen_5 extends SmsServices {
                     status.setText("System Down");
                 }
             }
-
         });
     }
 

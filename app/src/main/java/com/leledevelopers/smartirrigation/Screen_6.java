@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -190,6 +191,7 @@ public class Screen_6 extends SmsServices {
         if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
             spinner.requestFocus();
         }
+
         if (!(wetPeriod.getText().toString().matches(regex)
                 && wetPeriod.getText().toString().length() >= 1
                 && validateRange(1,999,Integer.parseInt(wetPeriod.getText().toString())) )) {
@@ -206,9 +208,7 @@ public class Screen_6 extends SmsServices {
             injectPeriod.setError("please enter a valid value");
             return false;
         }
-        if (!(noOfIterations.getText().toString().matches(regex))
-                && noOfIterations.getText().toString().length() == 1
-                && validateRange(1,5,Integer.parseInt(noOfIterations.getText().toString()))) {
+        if (!validateRange(1,5,Integer.parseInt(noOfIterations.getText().toString()))) {
             noOfIterations.requestFocus();
             noOfIterations.getText().clear();
             noOfIterations.setError("please enter a valid value");
@@ -217,6 +217,7 @@ public class Screen_6 extends SmsServices {
         return true;
     }
     private boolean validateRange(int min, int max, int inputValue) {
+        Log.d("tag","Validate range min : " +min+" validate range max : "+max +" validate range input val : "+inputValue);
         if(inputValue>=min && inputValue <=max)
         {
             return true;
@@ -291,7 +292,7 @@ public class Screen_6 extends SmsServices {
                 model.setNoIterations(Integer.parseInt(noOfIterations.getText().toString()));
                 model.setEnabled(true);
                 System.out.println("after set " + model.toString());
-                smsdata = smsUtils.OutSMS_6(model.getFieldNo(), model.getWetPeriod(),
+                smsdata = smsUtils.OutSMS_6((model.getFieldNo()<10? String.format("%02d", model.getFieldNo()):model.getFieldNo()+""), model.getWetPeriod(),
                         model.getInjectPeriod(), model.getNoIterations());
                 System.out.println("fieldNo = " +fieldNo);
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
@@ -299,7 +300,7 @@ public class Screen_6 extends SmsServices {
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
                 isInitial = false;
             } else {
-                smsdata = smsUtils.OutSMS_7(model.getFieldNo());
+                smsdata = smsUtils.OutSMS_7((fieldNo<10? String.format("%02d", fieldNo):fieldNo+""));
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
                 enableFieldFertigation.setVisibility(View.VISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);

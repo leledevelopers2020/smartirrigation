@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".registration.Screen_2_1">
+    android:background="@drawable/screen_background"
+    tools:context=".registration.screen_2_2">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/button_colours"
+        android:background="@drawable/title_bar_bg"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintTop_toTopOf="parent">
         <LinearLayout
@@ -56,7 +57,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="0.07"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
             android:gravity="center"
             android:padding="5dp"
             android:textSize="20dp"
@@ -72,6 +73,7 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20dp"
+            android:background="@drawable/underline"
             />
 
 
@@ -82,9 +84,10 @@
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="0.07"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
             android:gravity="center"
             android:padding="5dp"
+            android:layout_marginTop="15dp"
             android:textSize="20dp"
             android:text="Set" />
 
@@ -93,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_weight="0.4"
+            android:layout_weight="0.3"
             android:gravity="center"
             android:hint="Status"
             android:textColor="@color/sandcolor"

@@ -1,19 +1,33 @@
 package com.leledevelopers.smartirrigation.starter;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.leledevelopers.smartirrigation.R;
+import com.leledevelopers.smartirrigation.Screen_5;
+import com.leledevelopers.smartirrigation.models.BaseMessages;
+import com.leledevelopers.smartirrigation.models.Message;
 import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.MainActivity_GSM;
+import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsServices;
+import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class splashScreen extends SmsServices {
     boolean registered; ///this value is based on database if available it is set to true or else set to false;
@@ -22,6 +36,7 @@ public class splashScreen extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        this.context = getApplicationContext();
         File file = new File(splashScreen.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
         if (file.exists()) {
             this.context = getApplicationContext();
@@ -67,13 +82,16 @@ public class splashScreen extends SmsServices {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(file));
                 String line;
-                while ((line = reader.readLine())!= null){
+                while ((line = reader.readLine()) != null) {
                     text.append(line);
                 }
-                //String[] s = text.toString().split("[#]");
                 SmsServices.phoneNumber = text.toString();
-            } catch (IOException e) {
+                if (!SmsServices.phoneNumber.equals("")) {
+                    readAllMessages();
+                }
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
+                System.out.println(e.fillInStackTrace());
             }
         }
     }
