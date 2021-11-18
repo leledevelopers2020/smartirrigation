@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/screen_background"
     tools:context=".registration.Screen_1">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/button_colours"
+        android:background="@drawable/title_bar_bg"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -38,6 +39,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:orientation="vertical"
+
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <TextView
@@ -58,7 +60,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="0.04"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
             android:gravity="center"
             android:padding="10dp"
             android:text="GSM/Phone Number" />
@@ -70,7 +72,7 @@
             android:layout_gravity="center"
             android:layout_margin="20dp"
             android:layout_weight="0.04"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
             android:gravity="center"
             android:padding="10dp"
             android:text="Wi-Fi" />
@@ -83,6 +85,7 @@
             android:layout_weight="0.3"
             android:gravity="center"
             android:hint="Status"
+
             android:textColor="@color/sandcolor"
             android:textColorHint="@color/sandcolor"
             android:textStyle="bold" />

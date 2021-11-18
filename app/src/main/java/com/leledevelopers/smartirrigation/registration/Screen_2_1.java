@@ -137,6 +137,15 @@ public class Screen_2_1 extends SmsServices {
                 }
             }
         });
+        newPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    Toast.makeText(Screen_2_1.this,"hello",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 

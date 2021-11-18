@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/screen_background"
     tools:context=".Screen_4">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/button_colours"
+        android:background="@drawable/title_bar_bg"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -47,7 +48,7 @@
             android:layout_gravity="center"
             android:layout_margin="7dp"
             android:layout_weight="0.07"
-            android:background="@drawable/button_colours"
+           android:background="@drawable/square_black_border"
             android:gravity="center"
             android:padding="5dp"
             android:text="Configure field irrigation" />
@@ -59,7 +60,7 @@
             android:layout_gravity="center"
             android:layout_margin="7dp"
             android:layout_weight="0.07"
-            android:background="@drawable/button_colours"
+           android:background="@drawable/square_black_border"
             android:gravity="center"
             android:padding="5dp"
             android:text="Configure field fertigation" />
@@ -71,7 +72,7 @@
             android:layout_gravity="center"
             android:layout_margin="7dp"
             android:layout_weight="0.07"
-            android:background="@drawable/button_colours"
+           android:background="@drawable/square_black_border"
             android:gravity="center"
             android:padding="5dp"
             android:text="Configure Pump Filtration" />
@@ -83,7 +84,7 @@
             android:layout_gravity="center"
             android:layout_margin="7dp"
             android:layout_weight="0.07"
-            android:background="@drawable/button_colours"
+           android:background="@drawable/square_black_border"
             android:gravity="center"
             android:padding="5dp"
             android:text="Print report for field status" />
@@ -95,7 +96,7 @@
             android:layout_gravity="center"
             android:layout_margin="7dp"
             android:layout_weight="0.07"
-            android:background="@drawable/button_colours"
+           android:background="@drawable/square_black_border"
             android:gravity="center"
             android:padding="5dp"
             android:text="Settings" />

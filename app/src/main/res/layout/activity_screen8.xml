@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/screen_background"
     tools:context=".Screen_8">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/button_colours"
+        android:background="@drawable/title_bar_bg"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,7 +22,7 @@
             <Button
                 android:id="@+id/back_8"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="35dp"
                 android:layout_weight="0.1"
                 android:background="@drawable/back_nav"
                 android:gravity="center_vertical" />
@@ -64,38 +65,37 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="0.5"
-                android:padding="15dp"
+                android:layout_marginRight="10dp"
                 android:text="Select field no."
+                android:gravity="center_vertical"
                 android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/fieldNoSpinner8"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:layout_height="match_parent"
                 android:layout_weight="0.5"
+                android:gravity="center"
                 android:padding="5dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.02">
+
 
 
             <Button
                 android:id="@+id/printFieldSMM"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:background="@drawable/button_colours"
+                android:layout_weight="0.02"
+                android:background="@drawable/square_black_border"
                 android:padding="15dp"
+                android:layout_gravity="center_horizontal"
                 android:text="Print Field Data: " />
-        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,17 +104,18 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:padding="15dp"
+                android:padding="5dp"
+                android:layout_marginRight="10dp"
                 android:text="Select Date: "
+                android:gravity="center_vertical"
                 android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/fieldDateSpinner8"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="0.5"
                 android:padding="5dp" />
@@ -127,7 +128,8 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:layout_weight="0.02"
-            android:background="@drawable/button_colours"
+            android:background="@drawable/square_black_border"
+
             android:padding="12dp"
             android:text="Print Data" />
 
@@ -135,6 +137,8 @@
             android:id="@+id/displaySMS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:padding="10dp"
             android:layout_weight="0.05">
 
         </androidx.recyclerview.widget.RecyclerView>
