@@ -383,6 +383,12 @@ public class Screen_6 extends SmsServices {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(Screen_6.this,MainActivity_GSM.class));
+        finish();
+    }
 
     public void checkSMS(String message) {
         if (message.contains(SmsUtils.INSMS_6_1)) {

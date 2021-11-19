@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -137,6 +138,12 @@ public class Screen_7 extends SmsServices {
         enableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 cursorVisibility();
                 if (validateInput() && !systemDown) {
                     updateData_And_SendSMS("enable");
@@ -148,6 +155,12 @@ public class Screen_7 extends SmsServices {
         disableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 if (!systemDown) {
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
@@ -159,6 +172,12 @@ public class Screen_7 extends SmsServices {
         back_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 startActivity(new Intent(Screen_7.this, Screen_4.class));
                 finish();
             }
@@ -215,7 +234,7 @@ public class Screen_7 extends SmsServices {
             filtrationControlUnitNoDelay_1.setError("please enter a valid value");
             return false;
         }
-     /*   if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
+         if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
                 filtrationControlUnitNoDelay_2.getText().toString().length() >= 1
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
             filtrationControlUnitNoDelay_2.requestFocus();
@@ -246,7 +265,7 @@ public class Screen_7 extends SmsServices {
             filtrationControlUnitSeparation.getText().clear();
             filtrationControlUnitSeparation.setError("please enter a valid value");
             return false;
-        }*/
+        }
         return true;
     }
 
@@ -363,6 +382,12 @@ public class Screen_7 extends SmsServices {
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(Screen_7.this,MainActivity_GSM.class));
+        finish();
     }
 
     public void checkSMS(String message) {

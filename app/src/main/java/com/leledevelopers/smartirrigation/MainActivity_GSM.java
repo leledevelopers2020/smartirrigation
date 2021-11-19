@@ -54,6 +54,7 @@ public class MainActivity_GSM extends SmsServices {
         resetConnection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 openDialog();
             }
         });
@@ -147,6 +148,7 @@ public class MainActivity_GSM extends SmsServices {
                     @Override
                     public void run() {
                         startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
+                        finish();
                     }
                 },1000);
                 break;
@@ -157,7 +159,7 @@ public class MainActivity_GSM extends SmsServices {
                     @Override
                     public void run() {
                         startActivity(new Intent(MainActivity_GSM.this, Screen_2_1.class));
-
+                        finish();
                     }
                 },1000);
                 break;

@@ -3,6 +3,7 @@ package com.leledevelopers.smartirrigation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -40,6 +41,12 @@ public class Screen_8 extends SmsServices {
         back_8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 startActivity(new Intent(Screen_8.this, Screen_4.class));
                 finish();
             }
@@ -66,6 +73,12 @@ public class Screen_8 extends SmsServices {
         printFieldSMS = findViewById(R.id.printFieldSMM);
         printAllSMM = findViewById(R.id.printAllSMM);
         recyclerView = findViewById(R.id.displaySMS);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(Screen_8.this,MainActivity_GSM.class));
+        finish();
     }
 }
 

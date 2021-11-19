@@ -55,8 +55,10 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20dp"
             android:layout_weight="0.1"
-            android:padding="15dp"
+            android:padding="5dp"
             android:text=" Pump Filtration "
             android:textColor="@color/black"
             android:textStyle="bold" />
@@ -226,7 +228,7 @@
             android:layout_weight="0.10"
             android:background="@drawable/square_black_border"
             android:padding="15dp"
-            android:text="Enable Filtration" />
+            android:text="Enable Pump Filtration" />
 
         <Button
             android:id="@+id/disableFiltration7"
@@ -237,7 +239,7 @@
             android:layout_weight="0.10"
             android:background="@drawable/square_black_border"
             android:padding="15dp"
-            android:text="Disable Filtration" />
+            android:text="Disable Pump Filtration" />
 
         <TextView
             android:id="@+id/screen_7_status"
