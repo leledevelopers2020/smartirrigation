@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -40,6 +41,12 @@ public class Screen_9 extends SmsServices {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 startActivity(new Intent(Screen_9.this,MainActivity_GSM.class));
                 finish();
             }
@@ -64,7 +71,7 @@ public class Screen_9 extends SmsServices {
                 b = true;
                 Calendar calendar=Calendar.getInstance();
                 String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
-                        calendar.get(Calendar.YEAR)+"",calendar.get(Calendar.HOUR_OF_DAY)+""
+                        (calendar.get(Calendar.YEAR))%100+"",calendar.get(Calendar.HOUR_OF_DAY)+""
                         ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");
                 sendMessage(SmsServices.phoneNumber,smsData);
                 status.setText("Message Delivered");
@@ -83,11 +90,23 @@ public class Screen_9 extends SmsServices {
         back_9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 startActivity(new Intent(Screen_9.this,Screen_4.class));
                 finish();
             }
         });
     }
+
+    private String lastTwoDigits(int year) {
+
+         return year%100+"";
+    }
+
     @Override
     public void initViews() {
         spinner = (Spinner) findViewById(R.id.language_spinner);
@@ -139,6 +158,12 @@ public class Screen_9 extends SmsServices {
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(Screen_9.this,MainActivity_GSM.class));
+        finish();
     }
 
     public void checkSMS(String message) {

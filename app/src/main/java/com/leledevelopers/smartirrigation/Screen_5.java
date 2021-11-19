@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -240,6 +241,12 @@ public class Screen_5 extends SmsServices {
         back_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 startActivity(new Intent(Screen_5.this, Screen_4.class));
                 finish();
             }
@@ -252,9 +259,6 @@ public class Screen_5 extends SmsServices {
 
                     motorOnTime.clearFocus();
 
-
-                System.out.println("-->2 " + motorOnTime.getText().toString());
-                // System.out.println("-->2 "+model.getMotorOnTime());
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
                 } else if (motorOnTime.getText().toString().equals(model.getMotorOnTime() + "")) {
@@ -273,9 +277,9 @@ public class Screen_5 extends SmsServices {
                                 min = minute;
                                 Calendar cal = Calendar.getInstance();
                                 cal.set(0, 0, 0, hour, min);
-                                motorOnTime.setText(DateFormat.format("hh:mm aa", cal));
+                                motorOnTime.setText(DateFormat.format("HH:mm", cal));
                             }
-                        }, 12, 0, false);
+                        }, 24, 0, true);
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 timePickerDialog.updateTime(hour, min);
                 timePickerDialog.show();
@@ -286,6 +290,12 @@ public class Screen_5 extends SmsServices {
         enableFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 if (validateInput() && !systemDown) {
                     cursorVisibility();
                     updateData_And_SendSMS("enable");
@@ -299,6 +309,12 @@ public class Screen_5 extends SmsServices {
         disableFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 if (!systemDown) {
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
@@ -307,7 +323,51 @@ public class Screen_5 extends SmsServices {
                 }
             }
         });
+        valveOnPeriod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                    {
 
+                    }
+            }
+        });
+        valveOffPeriod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+
+                }
+            }
+        });
+        soilDryness.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+
+                }
+            }
+        });
+
+
+    }
+    @Override
+    public void initViews() {
+        spinner = (Spinner) findViewById(R.id.fieldNoSpinner5);
+        valveOnPeriod = findViewById(R.id.valveOnPeriod);
+        valveOffPeriod = findViewById(R.id.valveOffPeriod);
+        soilDryness = findViewById(R.id.soilDryness);
+        soilWetness = findViewById(R.id.soilWetness);
+        motorOnTime = findViewById(R.id.motorOnTime);
+        priority = findViewById(R.id.priority);
+        cycles = findViewById(R.id.cycles);
+        wetPeriod = findViewById(R.id.wetPeriod);
+        enableFertigation = findViewById(R.id.enableFieldFertigation5);
+        disableFertigation = findViewById(R.id.disableFertigation5);
+        back_5 = findViewById(R.id.back_5);
+        status = findViewById(R.id.screen_5_status);
     }
 
     private void cursorVisibility() {
@@ -489,7 +549,7 @@ public class Screen_5 extends SmsServices {
     }
 
     private void getHoursAndMinutes(String motorOnTime) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm aa", Locale.ENGLISH);
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
         try {
             Calendar c = Calendar.getInstance();
             c.setTime(dateFormatter.parse(motorOnTime));
@@ -584,22 +644,7 @@ public class Screen_5 extends SmsServices {
         return val;
     }
 
-    @Override
-    public void initViews() {
-        spinner = (Spinner) findViewById(R.id.fieldNoSpinner5);
-        valveOnPeriod = findViewById(R.id.valveOnPeriod);
-        valveOffPeriod = findViewById(R.id.valveOffPeriod);
-        soilDryness = findViewById(R.id.soilDryness);
-        soilWetness = findViewById(R.id.soilWetness);
-        motorOnTime = findViewById(R.id.motorOnTime);
-        priority = findViewById(R.id.priority);
-        cycles = findViewById(R.id.cycles);
-        wetPeriod = findViewById(R.id.wetPeriod);
-        enableFertigation = findViewById(R.id.enableFieldFertigation5);
-        disableFertigation = findViewById(R.id.disableFertigation5);
-        back_5 = findViewById(R.id.back_5);
-        status = findViewById(R.id.screen_5_status);
-    }
+
 
 
     @Override
@@ -643,6 +688,13 @@ public class Screen_5 extends SmsServices {
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(Screen_5.this,MainActivity_GSM.class));
+        finish();
     }
 
     public void checkSMS(String message) {

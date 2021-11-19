@@ -11,6 +11,7 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -93,8 +94,15 @@ public class Screen_2_1 extends SmsServices {
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 if (isGSMSelected) {
                     if (!systemDown) {
+
                         if (validateInput(oldPassword.getText().toString(), newPassword.getText().toString())) {
                             smsReceiver.waitFor_1_Minute();
                             b = true;
@@ -103,8 +111,7 @@ public class Screen_2_1 extends SmsServices {
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
                             sendMessage(SmsServices.phoneNumber, smsData);
                             status.setText("Message Sent");
-                            // Toast.makeText(Screen_2_1.this, "Your data has been stored successfully", Toast.LENGTH_SHORT).show();
-                        } else {
+                         } else {
                             focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
                     }
@@ -113,6 +120,7 @@ public class Screen_2_1 extends SmsServices {
                 }
             }
         });
+
         checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -137,12 +145,23 @@ public class Screen_2_1 extends SmsServices {
                 }
             }
         });
-        newPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+      newPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
                 {
-                    Toast.makeText(Screen_2_1.this,"hello",Toast.LENGTH_LONG).show();
+                    validate(newPassword.getText().toString(),"Newpassword");
+
+                }
+            }
+        });
+      oldPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    validate(oldPassword.getText().toString(),"Oldpassword");
+
                 }
             }
         });
@@ -160,20 +179,47 @@ public class Screen_2_1 extends SmsServices {
         }
         return matching;
     }
+    private void validate(String input,String editTextField )
+    {
+        String regex = "[0-9]+";
+        Pattern p = Pattern.compile(regex);
+        if (!(p.matcher(input).matches() && input.length() == 6))
+        {
+            switchFocus(editTextField);
+        }
+
+    }
+
+    private void switchFocus(String editTextField) {
+        switch (editTextField)
+        {
+            case "Oldpassword": {
+                oldPassword.requestFocus();
+                oldPassword.getText().clear();
+                oldPassword.setError("Enter valid 6 digit password");
+            }
+                break;
+            case "Newpassword":
+            {
+                newPassword.requestFocus();
+                newPassword.getText().clear();
+                newPassword.setError("Enter valid 6 digit password");
+            }
+            break;
+            case "Same":
+            {
+                oldPassword.getText().clear();
+                newPassword.getText().clear();
+                status.setText("Both Passwords cannot be same");
+            }
+            break;
+        }
+    }
 
     private void focus(String oldPasswordlocal, String newPasswordlocal) {
         String regex = "[0-9]+";
-        Pattern p = Pattern.compile(regex);
-        if ((!(p.matcher(oldPasswordlocal).matches())) || (oldPasswordlocal.length() != 6)) {
-            oldPassword.requestFocus();
-            oldPassword.getText().clear();
-            oldPassword.setError("Enter valid 6 digit password");
-        }
-        if ((!(p.matcher(newPasswordlocal).matches())) || (newPasswordlocal.length() != 6)) {
-            newPassword.requestFocus();
-            newPassword.getText().clear();
-            newPassword.setError("Enter valid 6 digit password");
-        }
+
+
         if (oldPasswordlocal.equals(newPasswordlocal)) {
             oldPassword.getText().clear();
             newPassword.getText().clear();
@@ -242,6 +288,7 @@ public class Screen_2_1 extends SmsServices {
                     public void run() {
                         isPasswordSaved = true;
                         startActivity(new Intent(Screen_2_1.this, Screen_9.class));
+                        finish();
                     }
                 }, 1000);
                 break;
@@ -264,6 +311,7 @@ public class Screen_2_1 extends SmsServices {
                     @Override
                     public void run() {
                         startActivity(new Intent(Screen_2_1.this, MainActivity_GSM.class));
+                        finish();
                     }
                 }, 1000);
                 break;
