@@ -30,6 +30,16 @@
         <item>Day+6</item>
         <item>Day+7</item>
     </string-array>
+
+    <string-array name="messgesFrom">
+        <item>Today</item>
+        <item>Yesterday</item>
+        <item>Day-2</item>
+        <item>Day-3</item>
+        <item>Day-4</item>
+        <item>Day-5</item>
+        <item>Day-6</item>
+    </string-array>
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>

@@ -52,95 +52,99 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_weight="0.02"
+            android:layout_weight="0.1"
             android:gravity="center"
             android:padding="5dp"
             android:text="Report of Field Status"
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/layoutContent"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.02">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="0.2">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="0.5"
-                android:layout_marginRight="10dp"
-                android:text="Select field no."
-                android:gravity="center_vertical"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.02">
 
-            <Spinner
-                android:id="@+id/fieldNoSpinner8"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:gravity="center"
-                android:padding="5dp" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center_vertical"
+                    android:text="Select field no."
+                    android:textStyle="bold" />
 
-
-
+                <Spinner
+                    android:id="@+id/fieldNoSpinner8"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:padding="5dp" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/printFieldSMM"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginRight="10dp"
                 android:layout_weight="0.02"
                 android:background="@drawable/square_black_border"
                 android:padding="15dp"
-                android:layout_gravity="center_horizontal"
                 android:text="Print Field Data: " />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.02">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.02">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:text="Select Date: "
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:padding="5dp"
-                android:layout_marginRight="10dp"
-                android:text="Select Date: "
-                android:gravity="center_vertical"
-                android:textStyle="bold" />
+                <Spinner
+                    android:id="@+id/fieldDateSpinner8"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.5"
+                    android:padding="5dp" />
+            </LinearLayout>
 
-            <Spinner
-                android:id="@+id/fieldDateSpinner8"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:padding="5dp" />
+            <Button
+                android:id="@+id/printAllSMM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="0.02"
+                android:background="@drawable/square_black_border"
+
+                android:padding="12dp"
+                android:text="Print Data" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/printAllSMM"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="0.02"
-            android:background="@drawable/square_black_border"
-
-            android:padding="12dp"
-            android:text="Print Data" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/displaySMS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:padding="10dp"
-            android:layout_weight="0.05">
-
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:padding="10dp">
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

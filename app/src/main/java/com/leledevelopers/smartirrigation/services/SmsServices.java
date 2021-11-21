@@ -150,11 +150,12 @@ public abstract class SmsServices extends AppCompatActivity {
             String smsTime = timeFormat.format(finaldate);
             String smsBody = cursor.getString(cursor.getColumnIndex("body"));
             String phoneNumber = cursor.getString(cursor.getColumnIndex("address"));
-            if (ownerNumber.equals(phoneNumber)) {
+            if (phoneNumber.contains(ownerNumber)) {
                 message.setAction(smsBody);
                 message.setDate(smsDate);
                 message.setTime(smsTime);
                 messages.add(message);
+                System.out.println("message --> "+message.toString());
             }
         }
         return messages;
