@@ -162,7 +162,7 @@ public class Screen_9 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(Screen_9.this,MainActivity_GSM.class));
+        startActivity(new Intent(Screen_9.this,Screen_4.class));
         finish();
     }
 

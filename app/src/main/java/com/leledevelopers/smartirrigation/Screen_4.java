@@ -29,6 +29,7 @@ public class Screen_4 extends SmsServices {
                     @Override
                     public void run() {
                         startActivity(new Intent(Screen_4.this, Screen_5.class));
+                        finish();
                     }
                 },1000);
             }
@@ -41,6 +42,7 @@ public class Screen_4 extends SmsServices {
                     @Override
                     public void run() {
                         startActivity(new Intent(Screen_4.this, Screen_6.class));
+                        finish();
                     }
                 },1000);
 
@@ -54,6 +56,7 @@ public class Screen_4 extends SmsServices {
                     @Override
                     public void run() {
                         startActivity(new Intent(Screen_4.this, Screen_7.class));
+                        finish();
                     }
                 },1000);
 
@@ -67,6 +70,7 @@ public class Screen_4 extends SmsServices {
                     @Override
                     public void run() {
                         startActivity(new Intent(Screen_4.this, Screen_8.class));
+                        finish();
                     }
                 },1000);
 
@@ -76,6 +80,7 @@ public class Screen_4 extends SmsServices {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Screen_4.this, Screen_9.class));
+                finish();
             }
         });
     }

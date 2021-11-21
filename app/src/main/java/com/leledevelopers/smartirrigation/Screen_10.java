@@ -75,24 +75,57 @@ public class Screen_10 extends SmsServices {
                 fullLoadCutOffText.setCursorVisible(true);
             }
         });
+        noLoadCutoffText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    if(noLoadCutoffText.getText().toString().length()==0 &&
+                            validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) )
+                    {
+                        noLoadCutoffText.getText().clear();
+                        noLoadCutoffText.setError("Please enter the data");
+
+                    }
+                }
+            }
+        });
+        fullLoadCutOffText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+
+                    if(fullLoadCutOffText.getText().toString().length()==0 &&
+                            validateRange(0,1024,Integer.parseInt(fullLoadCutOffText.getText().toString())))
+                    {
+
+                        fullLoadCutOffText.getText().clear();
+                        fullLoadCutOffText.setError("Please enter the data");
+                    }
+                }
+            }
+        });
     }
 
 
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
         Boolean validate=true;
-        if(noLoadCutoffTextlocal.length()==0 && validateRange(0,1024,Integer.parseInt(noLoadCutoffTextlocal)) )
+        if(noLoadCutoffText.getText().toString().length()==0 &&
+                validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) )
         {
-            noLoadCutoffText.requestFocus();
             noLoadCutoffText.getText().clear();
             noLoadCutoffText.setError("Please enter the data");
             return false;
         }
-        if(fullLoadCutOffTextlocal.length()==0 && validateRange(0,1024,Integer.parseInt(fullLoadCutOffTextlocal)))
+        if(fullLoadCutOffText.getText().toString().length()==0 &&
+                validateRange(0,1024,Integer.parseInt(fullLoadCutOffText.getText().toString())))
         {
-            fullLoadCutOffText.requestFocus();
+
             fullLoadCutOffText.getText().clear();
             fullLoadCutOffText.setError("Please enter the data");
+            return false;
         }
         return validate;
     }

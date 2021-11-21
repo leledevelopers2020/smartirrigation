@@ -258,6 +258,7 @@ public class Screen_5 extends SmsServices {
             public void onClick(View v) {
 
                     motorOnTime.clearFocus();
+                    motorOnTime.setError(null);
 
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
@@ -296,6 +297,16 @@ public class Screen_5 extends SmsServices {
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
+                try {
+                    valveOnPeriod.clearFocus();
+                    valveOffPeriod.clearFocus();
+                    soilDryness.clearFocus();
+                    soilWetness.clearFocus();
+                    priority.clearFocus();
+                    cycles.clearFocus();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if (validateInput() && !systemDown) {
                     cursorVisibility();
                     updateData_And_SendSMS("enable");
@@ -328,7 +339,13 @@ public class Screen_5 extends SmsServices {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
                     {
+                        if (!(valveOnPeriod.getText().toString().matches(regex)
+                                && valveOnPeriod.getText().toString().length() >= 2 &&
+                                validateRange(10, 999, Integer.parseInt(valveOnPeriod.getText().toString())))) {
 
+                            valveOnPeriod.getText().clear();
+                            valveOnPeriod.setError("please enter a valid value");
+                        }
                     }
             }
         });
@@ -337,7 +354,13 @@ public class Screen_5 extends SmsServices {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
                 {
+                    if (!(valveOffPeriod.getText().toString().matches(regex)
+                            && valveOffPeriod.getText().toString().length() >= 1 &&
+                            validateRange(1, 99, Integer.parseInt(valveOffPeriod.getText().toString())))) {
+                         valveOffPeriod.getText().clear();
+                        valveOffPeriod.setError("please enter a valid value");
 
+                    }
                 }
             }
         });
@@ -346,12 +369,130 @@ public class Screen_5 extends SmsServices {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
                 {
+                    if (!(soilDryness.getText().toString().matches(regex)
+                            && soilDryness.getText().toString().length() >= 3 &&
+                            validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
+                         soilDryness.getText().clear();
+                        soilDryness.setError("please enter a valid value");
 
+                    }
+                }
+            }
+        });
+        soilWetness.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    if (!(soilWetness.getText().toString().matches(regex)
+                            && soilWetness.getText().toString().length() == 5 &&
+                            validateRange(10000, 99999, Integer.parseInt(soilWetness.getText().toString())))) {
+                         soilWetness.setError("please enter a valid value");
+                        soilWetness.getText().clear();
+
+                    }
+                }
+            }
+        });
+        priority.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    if (!(priority.getText().toString().matches(regex) &&
+                            priority.getText().toString().length() >= 1 &&
+                            validateRange(1, 9, Integer.parseInt(priority.getText().toString())))) {
+                         priority.setError("please enter a valid value");
+                        priority.getText().clear();
+
+                    }
+                }
+            }
+        });
+        cycles.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+
+                    if (!(cycles.getText().toString().matches(regex) &&
+                            cycles.getText().toString().length() == 1 && validateRange(1,9,Integer.parseInt(cycles.getText().toString())))) {
+
+                        cycles.getText().clear();
+                        cycles.setError("please enter a valid value");
+
+                    }
                 }
             }
         });
 
 
+    }
+    private boolean validateInput() {
+
+        if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
+
+            return false;
+        }
+        if (!(valveOnPeriod.getText().toString().matches(regex)
+                && valveOnPeriod.getText().toString().length() >= 2 &&
+                validateRange(10, 999, Integer.parseInt(valveOnPeriod.getText().toString())))) {
+
+            valveOnPeriod.getText().clear();
+            valveOnPeriod.setError("please enter a valid value");
+            return false;
+        }
+
+        if (!(valveOffPeriod.getText().toString().matches(regex)
+                && valveOffPeriod.getText().toString().length() >= 1 &&
+                validateRange(1, 99, Integer.parseInt(valveOffPeriod.getText().toString())))) {
+            valveOffPeriod.getText().clear();
+            valveOffPeriod.setError("please enter a valid value");
+            return false;
+
+        }
+        if (!(soilDryness.getText().toString().matches(regex)
+                && soilDryness.getText().toString().length() >= 3 &&
+                validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
+            soilDryness.getText().clear();
+            soilDryness.setError("please enter a valid value");
+            return false;
+
+        }
+        if (!(soilWetness.getText().toString().matches(regex)
+                && soilWetness.getText().toString().length() == 5 &&
+                validateRange(10000, 99999, Integer.parseInt(soilWetness.getText().toString())))) {
+            soilWetness.setError("please enter a valid value");
+            soilWetness.getText().clear();
+            return false;
+
+        }
+
+        if (motorOnTime.getText().toString() == "")  /// motor time validation is to be checked
+        {
+
+            motorOnTime.setError("please enter a valid value");
+            return false;
+        }
+        if (!(priority.getText().toString().matches(regex) &&
+                priority.getText().toString().length() >= 1 &&
+                validateRange(1, 12, Integer.parseInt(priority.getText().toString())))) {
+            priority.setError("please enter a valid value");
+            priority.getText().clear();
+            return false;
+
+        }
+
+        if (!(cycles.getText().toString().matches(regex) &&
+                cycles.getText().toString().length() == 1 && validateRange(1,9,Integer.parseInt(cycles.getText().toString())))) {
+
+            cycles.getText().clear();
+            cycles.setError("please enter a valid value");
+            return false;
+
+        }
+
+        return true;
     }
     @Override
     public void initViews() {
@@ -423,67 +564,7 @@ public class Screen_5 extends SmsServices {
     }
 
 
-    private boolean validateInput() {
 
-        if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
-            spinner.requestFocus();
-            return false;
-        }
-        if (!(valveOnPeriod.getText().toString().matches(regex)
-                 && valveOnPeriod.getText().toString().length() >= 2 &&
-                validateRange(10, 999, Integer.parseInt(valveOnPeriod.getText().toString())))) {
-            valveOnPeriod.requestFocus();
-            valveOnPeriod.getText().clear();
-            valveOnPeriod.setError("please enter a valid value");
-            return false;
-        }
-        if (!(valveOffPeriod.getText().toString().matches(regex)
-                 && valveOnPeriod.getText().toString().length() >= 1 &&
-                validateRange(1, 99, Integer.parseInt(valveOffPeriod.getText().toString())))) {
-            valveOnPeriod.requestFocus();
-            valveOnPeriod.getText().clear();
-            valveOnPeriod.setError("please enter a valid value");
-            return false;
-        }
-        if (!(soilDryness.getText().toString().matches(regex)
-                 && soilDryness.getText().toString().length() >= 3 &&
-                validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
-            soilDryness.requestFocus();
-            soilDryness.getText().clear();
-            soilDryness.setError("please enter a valid value");
-            return false;
-        }
-        if (!(soilWetness.getText().toString().matches(regex)
-                && soilWetness.getText().toString().length() == 5 &&
-                validateRange(10000, 99999, Integer.parseInt(soilWetness.getText().toString())))) {
-            soilWetness.requestFocus();
-            soilWetness.setError("please enter a valid value");
-            soilWetness.getText().clear();
-            return false;
-        }
-        if (motorOnTime.getText().toString() == "")  /// motor time validation is to be checked
-        {
-            motorOnTime.requestFocus();
-            motorOnTime.setError("please enter a valid value");
-            return false;
-        }
-        if (!(priority.getText().toString().matches(regex) &&
-                 priority.getText().toString().length() >= 1 &&
-                validateRange(1, 9, Integer.parseInt(priority.getText().toString())))) {
-            priority.requestFocus();
-            priority.setError("please enter a valid value");
-            priority.getText().clear();
-            return false;
-        }
-        if (!(cycles.getText().toString().matches(regex) &&
-                cycles.getText().toString().length() == 1 && validateRange(1,9,Integer.parseInt(cycles.getText().toString())))) {
-            cycles.requestFocus();
-            cycles.getText().clear();
-            cycles.setError("please enter a valid value");
-            return false;
-        }
-        return true;
-    }
 
     private boolean validateRange(int min, int max, int inputValue) {
         if (inputValue >= min && inputValue <= max) {
@@ -693,7 +774,7 @@ public class Screen_5 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(Screen_5.this,MainActivity_GSM.class));
+        startActivity(new Intent(Screen_5.this,Screen_4.class));
         finish();
     }
 

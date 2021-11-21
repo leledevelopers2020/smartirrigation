@@ -42,7 +42,9 @@
         <activity
             android:name=".MainActivity_GSM"
             android:exported="true"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" >
+
+        </activity>
         <activity
             android:name=".registration.Screen_2_1"
             android:exported="true"
@@ -57,16 +59,18 @@
             android:launchMode="standard" />
         <activity
             android:name=".Screen_4"
-            android:exported="true" />
-        <activity
-            android:name=".starter.splashScreen"
-            android:exported="true"
-            android:launchMode="standard">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".starter.splashScreen"
+            android:exported="true"
+            android:launchMode="standard">
+
         </activity>
     </application>
 

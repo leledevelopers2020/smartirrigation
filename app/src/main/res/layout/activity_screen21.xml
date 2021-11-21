@@ -59,6 +59,7 @@
             android:layout_weight="0.08"
             android:background="@drawable/square_black_border"
             android:gravity="center"
+            android:imeOptions="actionNext"
             android:text=" Select Gsm no." />
 
         <LinearLayout
@@ -81,6 +82,7 @@
                 android:inputType="numberPassword"
                 android:textAlignment="center"
                 android:maxLength="6"
+                android:imeOptions="actionNext"
                 android:textColor="@color/black" />
 
             <LinearLayout
@@ -129,6 +131,7 @@
                 android:textAlignment="center"
                 android:maxLength="6"
                 android:textColor="@color/black"
+                android:imeOptions="actionNext"
                 android:background="@drawable/underline"/>
 
             <LinearLayout

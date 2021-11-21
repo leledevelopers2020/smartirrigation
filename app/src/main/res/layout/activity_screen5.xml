@@ -127,7 +127,8 @@
                 android:gravity="center"
                 android:hint=" 10-999 (min) "
                 android:inputType="number"
-                android:maxLength="3" />
+                android:maxLength="3"
+                android:imeOptions="actionNext"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -158,7 +159,8 @@
                 android:gravity="center"
                 android:hint=" 1-99 (days) "
                 android:inputType="number"
-                android:maxLength="2" />
+                android:maxLength="2"
+                android:imeOptions="actionNext"/>
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -192,7 +194,8 @@
                 android:inputType="number"
                 android:maxLength="3"
                 app:layout_constraintTop_toBottomOf="@+id/valveOffPeriod"
-                tools:layout_editor_absoluteX="289dp" />
+                tools:layout_editor_absoluteX="289dp"
+                android:imeOptions="actionNext"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -227,7 +230,8 @@
                 android:inputType="number"
                 android:maxLength="5"
                 app:layout_constraintTop_toBottomOf="@+id/soilDryness"
-                tools:layout_editor_absoluteX="254dp" />
+                tools:layout_editor_absoluteX="254dp"
+                android:imeOptions="actionNext"/>
             </LinearLayout>
 
 
@@ -258,7 +262,8 @@
                 android:layout_marginTop="3dp"
                 android:gravity="center"
                 android:background="@drawable/square_black_border"
-                android:hint="HH:MM" />
+                android:hint="HH:MM"
+             />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -287,7 +292,8 @@
                 android:hint=" 1-12  "
                 android:layout_weight="0.5"
                 android:inputType="number"
-                android:maxLength="2" />
+                android:maxLength="2"
+                android:imeOptions="actionNext"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -310,16 +316,16 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"  />
 
-            <EditText
-                android:id="@+id/cycles"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:layout_height="match_parent"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:hint=" 1-9 "
-                android:inputType="number"
-                android:maxLength="1" />
+                <EditText
+                    android:id="@+id/cycles"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:hint=" 1-9 "
+                    android:inputType="number"
+                    android:maxLength="1" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -404,6 +410,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:padding="10dp"
+                android:textSize="20dp"
                 android:hint="Status "
                 android:textColor="@color/sandcolor"
                 android:textColorHint="@color/sandcolor"

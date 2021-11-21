@@ -23,7 +23,7 @@
             <Button
                 android:id="@+id/back_9"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="35dp"
                 android:layout_weight="0.1"
                 android:background="@drawable/back_nav"
                 android:gravity="center_vertical" />
@@ -41,6 +41,7 @@
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
+
 
     <LinearLayout
         android:layout_width="match_parent"
