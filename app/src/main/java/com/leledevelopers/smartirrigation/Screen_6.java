@@ -162,6 +162,60 @@ public class Screen_6 extends SmsServices {
                 finish();
             }
         });
+        wetPeriod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    if (!(wetPeriod.getText().toString().matches(regex)
+                            && wetPeriod.getText().toString().length() >= 1
+                            && validateRange(1,999,Integer.parseInt(wetPeriod.getText().toString())) )) {
+                        wetPeriod.getText().clear();
+                        wetPeriod.setError("please enter a valid value");
+                    }
+                }
+            }
+        });
+        injectPeriod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    if (!(injectPeriod.getText().toString().matches(regex)
+                            && injectPeriod.getText().toString().length() >= 1
+                            && validateRange(1,999,Integer.parseInt(injectPeriod.getText().toString())))) {
+                        injectPeriod.getText().clear();
+                        injectPeriod.setError("please enter a valid value");
+
+                    }
+                }
+            }
+        });
+        noOfIterations.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    if (!(noOfIterations.getText().toString().matches(regex)
+                            && noOfIterations.getText().toString().length() == 1
+                            &&validateRange(1,5,Integer.parseInt(noOfIterations.getText().toString())))) {
+                        noOfIterations.getText().clear();
+                        noOfIterations.setError("please enter a valid value");
+                    }
+                }
+            }
+        });
+    }
+    @Override
+    public void initViews() {
+        spinner = (Spinner) findViewById(R.id.fieldNoSpinner6);
+        wetPeriod = findViewById(R.id.wetPeriod);
+        injectPeriod = findViewById(R.id.injectPeriod);
+        noOfIterations = findViewById(R.id.noOfIterations);
+        enableFieldFertigation = findViewById(R.id.enableFieldFertigation6);
+        disableFieldFertigation = findViewById(R.id.disableFieldFertigation6);
+        back_6=findViewById(R.id.back_6);
+        status = findViewById(R.id.screen_6_status);
     }
 
 
@@ -189,13 +243,12 @@ public class Screen_6 extends SmsServices {
 
     private boolean validateInput() {
         if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
-            spinner.requestFocus();
-        }
 
+            return false;
+        }
         if (!(wetPeriod.getText().toString().matches(regex)
                 && wetPeriod.getText().toString().length() >= 1
                 && validateRange(1,999,Integer.parseInt(wetPeriod.getText().toString())) )) {
-            wetPeriod.requestFocus();
             wetPeriod.getText().clear();
             wetPeriod.setError("please enter a valid value");
             return false;
@@ -203,17 +256,17 @@ public class Screen_6 extends SmsServices {
         if (!(injectPeriod.getText().toString().matches(regex)
                 && injectPeriod.getText().toString().length() >= 1
                 && validateRange(1,999,Integer.parseInt(injectPeriod.getText().toString())))) {
-            injectPeriod.requestFocus();
             injectPeriod.getText().clear();
             injectPeriod.setError("please enter a valid value");
-            return false;
+            return  false;
         }
         if (!validateRange(1,5,Integer.parseInt(noOfIterations.getText().toString()))) {
-            noOfIterations.requestFocus();
             noOfIterations.getText().clear();
             noOfIterations.setError("please enter a valid value");
-            return false;
+            return  false;
         }
+
+
         return true;
     }
     private boolean validateRange(int min, int max, int inputValue) {
@@ -327,17 +380,7 @@ public class Screen_6 extends SmsServices {
     }
 
 
-    @Override
-    public void initViews() {
-        spinner = (Spinner) findViewById(R.id.fieldNoSpinner6);
-        wetPeriod = findViewById(R.id.wetPeriod);
-        injectPeriod = findViewById(R.id.injectPeriod);
-        noOfIterations = findViewById(R.id.noOfIterations);
-        enableFieldFertigation = findViewById(R.id.enableFieldFertigation6);
-        disableFieldFertigation = findViewById(R.id.disableFieldFertigation6);
-        back_6=findViewById(R.id.back_6);
-        status = findViewById(R.id.screen_6_status);
-    }
+
 
     @Override
     protected void onStart() {
@@ -386,7 +429,7 @@ public class Screen_6 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(Screen_6.this,MainActivity_GSM.class));
+        startActivity(new Intent(Screen_6.this,Screen_4.class));
         finish();
     }
 

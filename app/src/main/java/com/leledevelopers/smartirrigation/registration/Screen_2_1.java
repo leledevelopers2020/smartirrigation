@@ -94,11 +94,19 @@ public class Screen_2_1 extends SmsServices {
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 try {
+
                     InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
+                }
+                try {
+                    oldPassword.clearFocus();
+                    newPassword.clearFocus();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 if (isGSMSelected) {
                     if (!systemDown) {
@@ -194,22 +202,22 @@ public class Screen_2_1 extends SmsServices {
         switch (editTextField)
         {
             case "Oldpassword": {
-                oldPassword.requestFocus();
+
                 oldPassword.getText().clear();
                 oldPassword.setError("Enter valid 6 digit password");
+                status.setText("Enter valid Old/Factory password");
             }
                 break;
             case "Newpassword":
             {
-                newPassword.requestFocus();
+
                 newPassword.getText().clear();
                 newPassword.setError("Enter valid 6 digit password");
+                status.setText("Enter valid new password");
             }
             break;
             case "Same":
-            {
-                oldPassword.getText().clear();
-                newPassword.getText().clear();
+            {   
                 status.setText("Both Passwords cannot be same");
             }
             break;
@@ -219,7 +227,18 @@ public class Screen_2_1 extends SmsServices {
     private void focus(String oldPasswordlocal, String newPasswordlocal) {
         String regex = "[0-9]+";
 
-
+        if(oldPasswordlocal.length()!=6 && !(oldPasswordlocal.matches(regex)))
+        {
+            oldPassword.getText().clear();
+            oldPassword.setError("Enter valid 6 digit password");
+            status.setText("Enter valid Old/Factory password");
+        }
+        if(newPasswordlocal.length()!=6 &&!(newPasswordlocal.matches(regex)))
+        {
+            newPassword.getText().clear();
+            newPassword.setError("Enter valid 6 digit password");
+            status.setText("Enter valid new password");
+        }
         if (oldPasswordlocal.equals(newPasswordlocal)) {
             oldPassword.getText().clear();
             newPassword.getText().clear();

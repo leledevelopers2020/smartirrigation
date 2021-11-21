@@ -182,9 +182,98 @@ public class Screen_7 extends SmsServices {
                 finish();
             }
         });
+        filtrationControlUnitNoDelay_1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    if (!(filtrationControlUnitNoDelay_1.getText().toString().matches(regex) &&
+                            filtrationControlUnitNoDelay_1.getText().toString().length() >= 1
+                            && validateRange(1, 60, Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString())))) {
+
+                        filtrationControlUnitNoDelay_1.getText().clear();
+                        filtrationControlUnitNoDelay_1.setError("please enter a valid value");
+                    }
+                }
+            }
+        });
+        filtrationControlUnitNoDelay_2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    if(!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
+                            filtrationControlUnitNoDelay_2.getText().toString().length() >= 1
+                            && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
+
+                    filtrationControlUnitNoDelay_2.getText().clear();
+                    filtrationControlUnitNoDelay_2.setError("please enter a valid value");
+
+                }
+                }
+            }
+        });
+        filtrationControlUnitNoDelay_3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+
+                    if (!(filtrationControlUnitNoDelay_3.getText().toString().matches(regex) &&
+                            filtrationControlUnitNoDelay_3.getText().toString().length() >= 1
+                            && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString())))) {
+
+                        filtrationControlUnitNoDelay_3.getText().clear();
+                        filtrationControlUnitNoDelay_3.setError("please enter a valid value");
+
+                    }
+                }
+            }
+        });
+        filtrationControlUnitOnTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    if (!(filtrationControlUnitOnTime.getText().toString().matches(regex) &&
+                            filtrationControlUnitOnTime.getText().toString().length() >= 1
+                            && validateRange(1, 10, Integer.parseInt(filtrationControlUnitOnTime.getText().toString())))) {
+                        filtrationControlUnitOnTime.getText().clear();
+                        filtrationControlUnitOnTime.setError("please enter a valid value");
+                    }
+                }
+            }
+        });
+        filtrationControlUnitSeparation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+
+                    if (!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
+                            filtrationControlUnitSeparation.getText().toString().length() >= 2
+                            && validateRange(10, 240, Integer.parseInt(filtrationControlUnitSeparation.getText().toString())))) {
+                        filtrationControlUnitSeparation.requestFocus();
+                        filtrationControlUnitSeparation.getText().clear();
+                        filtrationControlUnitSeparation.setError("please enter a valid value");
+                    }
+                }
+            }
+        });
 
     }
-
+    @Override
+    public void initViews() {
+        filtrationControlUnitNoDelay_1 = findViewById(R.id.filtrationControlUnitNoDelay_1);
+        filtrationControlUnitNoDelay_2 = findViewById(R.id.filtrationControlUnitNoDelay_2);
+        filtrationControlUnitNoDelay_3 = findViewById(R.id.filtrationControlUnitNoDelay_3);
+        filtrationControlUnitOnTime = findViewById(R.id.filtrationControlUnitOnTime);
+        filtrationControlUnitSeparation = findViewById(R.id.filtrationControlUnitSeparation);
+        enableFiltration = findViewById(R.id.enableFiltration7);
+        disableFiltration = findViewById(R.id.disableFiltration7);
+        back_7 = findViewById(R.id.back_7);
+        status = findViewById(R.id.screen_7_status);
+    }
 
     private void updateData_And_SendSMS(String typeOfAction) {
         String smsData;
@@ -229,35 +318,37 @@ public class Screen_7 extends SmsServices {
         if (!(filtrationControlUnitNoDelay_1.getText().toString().matches(regex) &&
                 filtrationControlUnitNoDelay_1.getText().toString().length() >= 1
                 && validateRange(1, 60, Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString())))) {
-            filtrationControlUnitNoDelay_1.requestFocus();
+
             filtrationControlUnitNoDelay_1.getText().clear();
             filtrationControlUnitNoDelay_1.setError("please enter a valid value");
-            return false;
+            return  false;
         }
-         if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
+        if(!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
                 filtrationControlUnitNoDelay_2.getText().toString().length() >= 1
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
-            filtrationControlUnitNoDelay_2.requestFocus();
+
             filtrationControlUnitNoDelay_2.getText().clear();
             filtrationControlUnitNoDelay_2.setError("please enter a valid value");
-            return false;
+            return  false;
+
         }
         if (!(filtrationControlUnitNoDelay_3.getText().toString().matches(regex) &&
                 filtrationControlUnitNoDelay_3.getText().toString().length() >= 1
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString())))) {
-            filtrationControlUnitNoDelay_3.requestFocus();
+
             filtrationControlUnitNoDelay_3.getText().clear();
             filtrationControlUnitNoDelay_3.setError("please enter a valid value");
             return false;
+
         }
         if (!(filtrationControlUnitOnTime.getText().toString().matches(regex) &&
                 filtrationControlUnitOnTime.getText().toString().length() >= 1
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitOnTime.getText().toString())))) {
-            filtrationControlUnitOnTime.requestFocus();
             filtrationControlUnitOnTime.getText().clear();
             filtrationControlUnitOnTime.setError("please enter a valid value");
-            return false;
+            return  false;
         }
+
         if (!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
                 filtrationControlUnitSeparation.getText().toString().length() >= 2
                 && validateRange(10, 240, Integer.parseInt(filtrationControlUnitSeparation.getText().toString())))) {
@@ -266,6 +357,7 @@ public class Screen_7 extends SmsServices {
             filtrationControlUnitSeparation.setError("please enter a valid value");
             return false;
         }
+
         return true;
     }
 
@@ -330,18 +422,7 @@ public class Screen_7 extends SmsServices {
         }
     }
 
-    @Override
-    public void initViews() {
-        filtrationControlUnitNoDelay_1 = findViewById(R.id.filtrationControlUnitNoDelay_1);
-        filtrationControlUnitNoDelay_2 = findViewById(R.id.filtrationControlUnitNoDelay_2);
-        filtrationControlUnitNoDelay_3 = findViewById(R.id.filtrationControlUnitNoDelay_3);
-        filtrationControlUnitOnTime = findViewById(R.id.filtrationControlUnitOnTime);
-        filtrationControlUnitSeparation = findViewById(R.id.filtrationControlUnitSeparation);
-        enableFiltration = findViewById(R.id.enableFiltration7);
-        disableFiltration = findViewById(R.id.disableFiltration7);
-        back_7 = findViewById(R.id.back_7);
-        status = findViewById(R.id.screen_7_status);
-    }
+
 
     @Override
     protected void onStart() {
@@ -386,7 +467,7 @@ public class Screen_7 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(Screen_7.this,MainActivity_GSM.class));
+        startActivity(new Intent(Screen_7.this,Screen_4.class));
         finish();
     }
 
