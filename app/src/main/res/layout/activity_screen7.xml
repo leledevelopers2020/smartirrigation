@@ -219,7 +219,7 @@
                 android:background="@drawable/underline"
                 android:layout_marginTop="5dp"
                 android:maxLength="3"
-                android:imeOptions="actionNext"/>
+                android:imeOptions="actionDone"/>
         </LinearLayout>
 
         <Button

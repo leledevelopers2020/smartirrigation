@@ -116,7 +116,7 @@
                 android:hint=" 0 - 1024 "
                 android:inputType="number"
                 android:maxLength="4"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:background="@drawable/underline"/>
         </LinearLayout>
 

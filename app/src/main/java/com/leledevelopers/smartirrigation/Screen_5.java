@@ -1,12 +1,15 @@
 package com.leledevelopers.smartirrigation;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -61,6 +64,7 @@ public class Screen_5 extends SmsServices {
     private boolean isEditedCycles = false;
     private boolean isEditedWetPeriod = false;
     private boolean isInitial = false;
+    TimePickerDialog timePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,6 +240,23 @@ public class Screen_5 extends SmsServices {
                 }
             }
         });
+        cycles.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId==EditorInfo.IME_ACTION_DONE)
+                {
+                    try {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                    cycles.clearFocus();
+                    wetPeriod.performClick();
+                }
+                return true;
+            }
+        });
 
 
         back_5.setOnClickListener(new View.OnClickListener() {
@@ -257,8 +278,8 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
 
-                    motorOnTime.clearFocus();
-                    motorOnTime.setError(null);
+                motorOnTime.clearFocus();
+                motorOnTime.setError(null);
 
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
@@ -269,7 +290,7 @@ public class Screen_5 extends SmsServices {
                     isEditedMotorOnTime = true;
                     isAnyViewEdited();
                 }
-                TimePickerDialog timePickerDialog = new TimePickerDialog(Screen_5.this,
+                  timePickerDialog = new TimePickerDialog(Screen_5.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
@@ -281,9 +302,10 @@ public class Screen_5 extends SmsServices {
                                 motorOnTime.setText(DateFormat.format("HH:mm", cal));
                             }
                         }, 24, 0, true);
-                timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK ));
                 timePickerDialog.updateTime(hour, min);
                 timePickerDialog.show();
+
             }
         });
 
@@ -357,9 +379,8 @@ public class Screen_5 extends SmsServices {
                     if (!(valveOffPeriod.getText().toString().matches(regex)
                             && valveOffPeriod.getText().toString().length() >= 1 &&
                             validateRange(1, 99, Integer.parseInt(valveOffPeriod.getText().toString())))) {
-                         valveOffPeriod.getText().clear();
+                        valveOffPeriod.getText().clear();
                         valveOffPeriod.setError("please enter a valid value");
-
                     }
                 }
             }
@@ -372,9 +393,8 @@ public class Screen_5 extends SmsServices {
                     if (!(soilDryness.getText().toString().matches(regex)
                             && soilDryness.getText().toString().length() >= 3 &&
                             validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
-                         soilDryness.getText().clear();
+                        soilDryness.getText().clear();
                         soilDryness.setError("please enter a valid value");
-
                     }
                 }
             }
@@ -387,11 +407,23 @@ public class Screen_5 extends SmsServices {
                     if (!(soilWetness.getText().toString().matches(regex)
                             && soilWetness.getText().toString().length() == 5 &&
                             validateRange(10000, 99999, Integer.parseInt(soilWetness.getText().toString())))) {
-                         soilWetness.setError("please enter a valid value");
                         soilWetness.getText().clear();
+                        soilWetness.setError("please enter a valid value");
+
 
                     }
                 }
+            }
+        });
+        soilWetness.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId== EditorInfo.IME_ACTION_NEXT)
+                {
+                    soilWetness.clearFocus();
+                    motorOnTime.performClick();
+                }
+                return true;
             }
         });
         priority.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -402,9 +434,9 @@ public class Screen_5 extends SmsServices {
                     if (!(priority.getText().toString().matches(regex) &&
                             priority.getText().toString().length() >= 1 &&
                             validateRange(1, 9, Integer.parseInt(priority.getText().toString())))) {
-                         priority.setError("please enter a valid value");
-                        priority.getText().clear();
 
+                        priority.getText().clear();
+                        priority.setError("please enter a valid value");
                     }
                 }
             }
@@ -417,10 +449,8 @@ public class Screen_5 extends SmsServices {
 
                     if (!(cycles.getText().toString().matches(regex) &&
                             cycles.getText().toString().length() == 1 && validateRange(1,9,Integer.parseInt(cycles.getText().toString())))) {
-
                         cycles.getText().clear();
                         cycles.setError("please enter a valid value");
-
                     }
                 }
             }
