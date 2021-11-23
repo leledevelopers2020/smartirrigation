@@ -87,7 +87,7 @@ public class Screen_5 extends SmsServices {
                     motorOnTime.setText(model.getMotorOnTime());
                     priority.setText(model.getPriority() + "");
                     cycles.setText(model.getCycle() + "");
-                    System.out.println("spinnerIntValue(model.getTiggerFrom() --> "+spinnerIntValue(model.getTiggerFrom()));
+                    System.out.println("spinnerIntValue(model.getTiggerFrom() --> " + spinnerIntValue(model.getTiggerFrom()));
                     wetPeriod.setSelection(spinnerIntValue(model.getTiggerFrom()));
                     getHoursAndMinutes(model.getMotorOnTime());
                     disableFertigation.setVisibility(View.VISIBLE);
@@ -117,14 +117,14 @@ public class Screen_5 extends SmsServices {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
-                } else if ((position+"").equals(spinnerIntValue(model.getTiggerFrom()) + "")) {
-                    System.out.println("model.getTiggerFrom() --> "+model.getTiggerFrom());
-                    System.out.println(position+"");
+                } else if ((position + "").equals(spinnerIntValue(model.getTiggerFrom()) + "")) {
+                    System.out.println("model.getTiggerFrom() --> " + model.getTiggerFrom());
+                    System.out.println(position + "");
                     isEditedWetPeriod = false;
                     isAnyViewEdited();
                 } else {
-                    System.out.println("model.getTiggerFrom() --> "+model.getTiggerFrom());
-                    System.out.println(position+"");
+                    System.out.println("model.getTiggerFrom() --> " + model.getTiggerFrom());
+                    System.out.println(position + "");
                     isEditedWetPeriod = true;
                     isAnyViewEdited();
                 }
@@ -141,19 +141,6 @@ public class Screen_5 extends SmsServices {
             public void onClick(View v) {
                 valveOnPeriod.setCursorVisible(true);
                 System.out.println("-->1 " + valveOnPeriod.getText().toString());
-                // System.out.println("-->1 "+model.getValveOnPeriod());
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (valveOnPeriod.getText().toString().equals(model.getValveOnPeriod() + "")) {
-                    isEditedValveOnPeriod = false;
-                    System.out.println("-->1 " + false);
-                    isAnyViewEdited();
-                } else {
-                    System.out.println();
-                    isEditedValveOnPeriod = true;
-                    System.out.println("-->1 " + true);
-                    isAnyViewEdited();
-                }
             }
         });
 
@@ -161,15 +148,6 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
                 valveOffPeriod.setCursorVisible(true);
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (valveOffPeriod.getText().toString().equals(model.getValveOffPeriod() + "")) {
-                    isEditedValveOffPeriod = false;
-                    isAnyViewEdited();
-                } else {
-                    isEditedValveOffPeriod = true;
-                    isAnyViewEdited();
-                }
             }
         });
 
@@ -177,15 +155,6 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
                 soilDryness.setCursorVisible(true);
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (soilDryness.getText().toString().equals(model.getSoilDryness() + "")) {
-                    isEditedSoilDryness = false;
-                    isAnyViewEdited();
-                } else {
-                    isEditedSoilDryness = true;
-                    isAnyViewEdited();
-                }
             }
         });
 
@@ -193,15 +162,6 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
                 soilWetness.setCursorVisible(true);
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (soilWetness.getText().toString().equals(model.getSoilWetness() + "")) {
-                    isEditedSoilWetness = false;
-                    isAnyViewEdited();
-                } else {
-                    isEditedSoilWetness = true;
-                    isAnyViewEdited();
-                }
             }
         });
 
@@ -209,15 +169,6 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
                 priority.setCursorVisible(true);
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (priority.getText().toString().equals(model.getPriority() + "")) {
-                    isEditedPriority = false;
-                    isAnyViewEdited();
-                } else {
-                    isEditedPriority = true;
-                    isAnyViewEdited();
-                }
             }
         });
 
@@ -225,15 +176,6 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
                 cycles.setCursorVisible(true);
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (cycles.getText().toString().equals(model.getCycle() + "")) {
-                    isEditedCycles = false;
-                    isAnyViewEdited();
-                } else {
-                    isEditedCycles = true;
-                    isAnyViewEdited();
-                }
             }
         });
 
@@ -242,7 +184,7 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
                 try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -257,8 +199,8 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
 
-                    motorOnTime.clearFocus();
-                    motorOnTime.setError(null);
+                motorOnTime.clearFocus();
+                motorOnTime.setError(null);
 
                 if (isInitial) {
                     disableFertigation.setVisibility(View.INVISIBLE);
@@ -292,7 +234,7 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
                 try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -321,7 +263,7 @@ public class Screen_5 extends SmsServices {
             @Override
             public void onClick(View v) {
                 try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -334,32 +276,56 @@ public class Screen_5 extends SmsServices {
                 }
             }
         });
+
         valveOnPeriod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                    {
-                        if (!(valveOnPeriod.getText().toString().matches(regex)
-                                && valveOnPeriod.getText().toString().length() >= 2 &&
-                                validateRange(10, 999, Integer.parseInt(valveOnPeriod.getText().toString())))) {
-
-                            valveOnPeriod.getText().clear();
-                            valveOnPeriod.setError("please enter a valid value");
-                        }
+                if (!hasFocus) {
+                    System.out.println("hasFocus valveOnPeriod ---> " + hasFocus);
+                    if (!(valveOnPeriod.getText().toString().matches(regex)
+                            && valveOnPeriod.getText().toString().length() >= 2 &&
+                            validateRange(10, 999, Integer.parseInt(valveOnPeriod.getText().toString())))) {
+                        System.out.println("hasFocus valveOnPeriod ---> please enter a valid value");
+                        valveOnPeriod.getText().clear();
+                        valveOnPeriod.setError("please enter a valid value");
                     }
+                    System.out.println("-->1 " + valveOnPeriod.getText().toString());
+                    // System.out.println("-->1 "+model.getValveOnPeriod());
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (valveOnPeriod.getText().toString().equals(model.getValveOnPeriod() + "")) {
+                        isEditedValveOnPeriod = false;
+                        System.out.println("-->1 " + false);
+                        isAnyViewEdited();
+                    } else {
+                        System.out.println();
+                        isEditedValveOnPeriod = true;
+                        System.out.println("-->1 " + true);
+                        isAnyViewEdited();
+                    }
+                }
             }
         });
         valveOffPeriod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
+                if (!hasFocus) {
+                    System.out.println("hasFocus valveOffPeriod ---> " + hasFocus);
                     if (!(valveOffPeriod.getText().toString().matches(regex)
                             && valveOffPeriod.getText().toString().length() >= 1 &&
                             validateRange(1, 99, Integer.parseInt(valveOffPeriod.getText().toString())))) {
-                         valveOffPeriod.getText().clear();
+                        valveOffPeriod.getText().clear();
                         valveOffPeriod.setError("please enter a valid value");
 
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (valveOffPeriod.getText().toString().equals(model.getValveOffPeriod() + "")) {
+                        isEditedValveOffPeriod = false;
+                        isAnyViewEdited();
+                    } else {
+                        isEditedValveOffPeriod = true;
+                        isAnyViewEdited();
                     }
                 }
             }
@@ -367,14 +333,23 @@ public class Screen_5 extends SmsServices {
         soilDryness.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
+                if (!hasFocus) {
+                    System.out.println("hasFocus soilDryness ---> " + hasFocus);
                     if (!(soilDryness.getText().toString().matches(regex)
                             && soilDryness.getText().toString().length() >= 3 &&
                             validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
-                         soilDryness.getText().clear();
+                        soilDryness.getText().clear();
                         soilDryness.setError("please enter a valid value");
 
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (soilDryness.getText().toString().equals(model.getSoilDryness() + "")) {
+                        isEditedSoilDryness = false;
+                        isAnyViewEdited();
+                    } else {
+                        isEditedSoilDryness = true;
+                        isAnyViewEdited();
                     }
                 }
             }
@@ -382,14 +357,23 @@ public class Screen_5 extends SmsServices {
         soilWetness.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
+                if (!hasFocus) {
+                    System.out.println("hasFocus soilWetness ---> " + hasFocus);
                     if (!(soilWetness.getText().toString().matches(regex)
                             && soilWetness.getText().toString().length() == 5 &&
                             validateRange(10000, 99999, Integer.parseInt(soilWetness.getText().toString())))) {
-                         soilWetness.setError("please enter a valid value");
+                        soilWetness.setError("please enter a valid value");
                         soilWetness.getText().clear();
 
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (soilWetness.getText().toString().equals(model.getSoilWetness() + "")) {
+                        isEditedSoilWetness = false;
+                        isAnyViewEdited();
+                    } else {
+                        isEditedSoilWetness = true;
+                        isAnyViewEdited();
                     }
                 }
             }
@@ -397,14 +381,23 @@ public class Screen_5 extends SmsServices {
         priority.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
+                if (!hasFocus) {
+                    System.out.println("hasFocus priority ---> " + hasFocus);
                     if (!(priority.getText().toString().matches(regex) &&
                             priority.getText().toString().length() >= 1 &&
                             validateRange(1, 9, Integer.parseInt(priority.getText().toString())))) {
-                         priority.setError("please enter a valid value");
+                        priority.setError("please enter a valid value");
                         priority.getText().clear();
 
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (priority.getText().toString().equals(model.getPriority() + "")) {
+                        isEditedPriority = false;
+                        isAnyViewEdited();
+                    } else {
+                        isEditedPriority = true;
+                        isAnyViewEdited();
                     }
                 }
             }
@@ -412,15 +405,23 @@ public class Screen_5 extends SmsServices {
         cycles.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
-
+                if (!hasFocus) {
+                    System.out.println("hasFocus cycles ---> " + hasFocus);
                     if (!(cycles.getText().toString().matches(regex) &&
-                            cycles.getText().toString().length() == 1 && validateRange(1,9,Integer.parseInt(cycles.getText().toString())))) {
+                            cycles.getText().toString().length() == 1 && validateRange(1, 9, Integer.parseInt(cycles.getText().toString())))) {
 
                         cycles.getText().clear();
                         cycles.setError("please enter a valid value");
 
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (cycles.getText().toString().equals(model.getCycle() + "")) {
+                        isEditedCycles = false;
+                        isAnyViewEdited();
+                    } else {
+                        isEditedCycles = true;
+                        isAnyViewEdited();
                     }
                 }
             }
@@ -428,6 +429,7 @@ public class Screen_5 extends SmsServices {
 
 
     }
+
     private boolean validateInput() {
 
         if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
@@ -484,7 +486,7 @@ public class Screen_5 extends SmsServices {
         }
 
         if (!(cycles.getText().toString().matches(regex) &&
-                cycles.getText().toString().length() == 1 && validateRange(1,9,Integer.parseInt(cycles.getText().toString())))) {
+                cycles.getText().toString().length() == 1 && validateRange(1, 9, Integer.parseInt(cycles.getText().toString())))) {
 
             cycles.getText().clear();
             cycles.setError("please enter a valid value");
@@ -494,6 +496,7 @@ public class Screen_5 extends SmsServices {
 
         return true;
     }
+
     @Override
     public void initViews() {
         spinner = (Spinner) findViewById(R.id.fieldNoSpinner5);
@@ -562,8 +565,6 @@ public class Screen_5 extends SmsServices {
 
         }
     }
-
-
 
 
     private boolean validateRange(int min, int max, int inputValue) {
@@ -663,7 +664,8 @@ public class Screen_5 extends SmsServices {
                 getHoursAndMinutes(model.getMotorOnTime());
                 model.setEnabled(true);
                 System.out.println("after set " + model.toString());
-                smsdata = smsUtils.OutSMS_4((model.getFieldNo()<10? String.format("%02d", model.getFieldNo()):model.getFieldNo()+""), model.getValveOnPeriod(), model.getValveOffPeriod()
+                System.out.println("field no ---> " + fieldNo);
+                smsdata = smsUtils.OutSMS_4((model.getFieldNo() < 10 ? String.format("%02d", model.getFieldNo()) : model.getFieldNo() + ""), model.getValveOnPeriod(), model.getValveOffPeriod()
                         , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
                         model.getSoilWetness(), model.getPriority(), model.getCycle(), spinnerIntValue(model.getTiggerFrom()));
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
@@ -671,7 +673,7 @@ public class Screen_5 extends SmsServices {
                 disableFertigation.setVisibility(View.INVISIBLE);
                 isInitial = false;
             } else {
-                smsdata = smsUtils.OutSMS_5((fieldNo<10? String.format("%02d", fieldNo):fieldNo+""));
+                smsdata = smsUtils.OutSMS_5((fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo + ""));
                 baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
                 enableFertigation.setVisibility(View.VISIBLE);
                 disableFertigation.setVisibility(View.INVISIBLE);
@@ -726,8 +728,6 @@ public class Screen_5 extends SmsServices {
     }
 
 
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -741,7 +741,7 @@ public class Screen_5 extends SmsServices {
                     checkSMS(message);
                     System.out.println("phoneNumber1 = " + phoneNumber);
                     System.out.println("phoneNumber2 = " + SmsServices.phoneNumber.trim());
-                } else if(phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s",""))  && !systemDown) {
+                } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     // System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                     checkSMS(message);
                 }
@@ -774,24 +774,27 @@ public class Screen_5 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(Screen_5.this,Screen_4.class));
+        startActivity(new Intent(Screen_5.this, Screen_4.class));
         finish();
     }
 
     public void checkSMS(String message) {
         if (message.contains(SmsUtils.INSMS_4_1)) {
-            status.setText(SmsUtils.INSMS_4_1);
-            baseConfigureFieldIrrigationModel.setModelList(modelList);
-            System.out.println("--> field no " + baseConfigureFieldIrrigationModel.getLastEnabledFieldNo());
-            try {
-                curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (Integer.parseInt(message.substring(SmsUtils.INSMS_4_1.length())) == model.getFieldNo()) {
+                // System.out.println("====> "+model.getFieldNo()+"====> "+Integer.parseInt(message.substring(SmsUtils.INSMS_4_1.length())));
+                status.setText(message);
+                baseConfigureFieldIrrigationModel.setModelList(modelList);
+                System.out.println("--> field no " + baseConfigureFieldIrrigationModel.getLastEnabledFieldNo());
+                try {
+                    curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // initializeModel();
             }
-           // initializeModel();
         } else if (message.contains(SmsUtils.INSMS_5_1)) {
             status.setText("Valve configuration kept on Hold");
         }
-       initializeModel();
+        initializeModel();
     }
 }

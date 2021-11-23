@@ -1,5 +1,6 @@
 package com.leledevelopers.smartirrigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -75,7 +76,7 @@ public class Screen_8 extends SmsServices {
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-                //startActivity(new Intent(Screen_8.this, Screen_4.class));
+                startActivity(new Intent(Screen_8.this, Screen_4.class));
                 finish();
             }
         });
@@ -85,10 +86,12 @@ public class Screen_8 extends SmsServices {
         List<Message> messageArrayList = new ArrayList<Message>();
         if (filterType.equals("fields")) {
             int fieldNo = Integer.parseInt(fieldSpinner.getSelectedItem().toString());
+            String fieldValue =  fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo+"";
             for (int i = 0; i < messages.size(); i++) {
-                if (messages.get(i).getAction().toLowerCase().contains("field no. " + fieldNo)
+                if (messages.get(i).getAction().toLowerCase().contains("field no."+fieldValue)
                         || messages.get(i).getAction().contains("Wet Field Detected.")
                         || messages.get(i).getAction().contains("Phase failure detected, Suspending all Actions")) {
+                    //System.out.println("---> "+messages.toString());
                     messageArrayList.add(messages.get(i));
                 }
                 if (i == messages.size() - 1) {
@@ -168,7 +171,7 @@ public class Screen_8 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //startActivity(new Intent(Screen_8.this, MainActivity_GSM.class));
+        startActivity(new Intent(Screen_8.this, MainActivity_GSM.class));
         finish();
     }
 }

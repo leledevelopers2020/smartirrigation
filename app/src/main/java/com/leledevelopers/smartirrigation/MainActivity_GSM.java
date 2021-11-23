@@ -48,6 +48,7 @@ public class MainActivity_GSM extends SmsServices {
                     sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2);
                     status.setText(SmsUtils.OutSMS_2 + " delivery");
                 }
+              //  startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
             }
         });
 
