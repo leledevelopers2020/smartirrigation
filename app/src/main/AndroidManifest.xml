@@ -42,7 +42,7 @@
         <activity
             android:name=".MainActivity_GSM"
             android:exported="true"
-            android:launchMode="singleTask" >
+            android:launchMode="standard">
 
         </activity>
         <activity
@@ -60,7 +60,7 @@
         <activity
             android:name=".Screen_4"
             android:exported="true"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask" >
 
         </activity>
         <activity
