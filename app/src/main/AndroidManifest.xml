@@ -59,7 +59,8 @@
             android:launchMode="standard" />
         <activity
             android:name=".Screen_4"
-            android:exported="true" >
+            android:exported="true"
+            android:launchMode="singleTask">
 
         </activity>
         <activity
