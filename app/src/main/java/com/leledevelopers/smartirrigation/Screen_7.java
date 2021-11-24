@@ -51,18 +51,6 @@ public class Screen_7 extends SmsServices {
             public void onClick(View v) {
                 filtrationControlUnitNoDelay_1.setCursorVisible(true);
                 System.out.println("--->++---> " + filtrationControlUnitNoDelay_1.getText().toString() + " & " + model.getFcDelay_1());
-                if (isInitial) {
-                    disableFiltration.setVisibility(View.INVISIBLE);
-                } else if (filtrationControlUnitNoDelay_1.getText().toString().equals(model.getFcDelay_1() + "")) {
-                    System.out.println("--->++---> " + "yes");
-                    isEditedDelay_1 = false;
-                    isAnyViewEdited();
-                } else {
-                    System.out.println("--->++---> " + "No");
-                    isEditedDelay_1 = true;
-                    isAnyViewEdited();
-                }
-
             }
         });
         filtrationControlUnitNoDelay_2.setOnClickListener(new View.OnClickListener() {
@@ -70,18 +58,6 @@ public class Screen_7 extends SmsServices {
             public void onClick(View v) {
                 filtrationControlUnitNoDelay_2.setCursorVisible(true);
                 System.out.println("--->++---> " + filtrationControlUnitNoDelay_2.getText().toString() + " & " + model.getFcDelay_2());
-                if (isInitial) {
-                    disableFiltration.setVisibility(View.INVISIBLE);
-                } else if (filtrationControlUnitNoDelay_2.getText().toString().equals(model.getFcDelay_2() + "")) {
-                    System.out.println("--->++---> " + "yes");
-                    isEditedDelay_2 = false;
-                    isAnyViewEdited();
-                } else {
-                    System.out.println("--->++---> " + "No");
-                    isEditedDelay_2 = true;
-                    isAnyViewEdited();
-                }
-
             }
         });
         filtrationControlUnitNoDelay_3.setOnClickListener(new View.OnClickListener() {
@@ -89,18 +65,6 @@ public class Screen_7 extends SmsServices {
             public void onClick(View v) {
                 filtrationControlUnitNoDelay_3.setCursorVisible(true);
                 System.out.println("--->++---> " + filtrationControlUnitNoDelay_3.getText().toString() + " & " + model.getFcDelay_3());
-                if (isInitial) {
-                    disableFiltration.setVisibility(View.INVISIBLE);
-                } else if (filtrationControlUnitNoDelay_3.getText().toString().equals(model.getFcDelay_3() + "")) {
-                    System.out.println("--->++---> " + "yes");
-                    isEditedDelay_3 = false;
-                    isAnyViewEdited();
-                } else {
-                    System.out.println("--->++---> " + "No");
-                    isEditedDelay_3 = true;
-                    isAnyViewEdited();
-                }
-
             }
         });
         filtrationControlUnitOnTime.setOnClickListener(new View.OnClickListener() {
@@ -108,15 +72,6 @@ public class Screen_7 extends SmsServices {
             public void onClick(View v) {
                 filtrationControlUnitOnTime.setCursorVisible(true);
                 System.out.println("--->++---> " + filtrationControlUnitOnTime.getText().toString() + " & " + model.getFcOnTime());
-                if (isInitial) {
-                    disableFiltration.setVisibility(View.INVISIBLE);
-                } else if (filtrationControlUnitOnTime.getText().toString().equals(model.getFcOnTime() + "")) {
-                    System.out.println("--->++---> " + "yes");
-                    isEditedOnTime = false; isAnyViewEdited();
-                } else {
-                    System.out.println("--->++---> " + "No");
-                    isEditedOnTime = true; isAnyViewEdited();
-                }
             }
         });
         filtrationControlUnitSeparation.setOnClickListener(new View.OnClickListener() {
@@ -124,22 +79,13 @@ public class Screen_7 extends SmsServices {
             public void onClick(View v) {
                 filtrationControlUnitSeparation.setCursorVisible(true);
                 System.out.println("--->++---> " + filtrationControlUnitSeparation.getText().toString() + " & " + model.getFcSeperation());
-                if (isInitial) {
-                    disableFiltration.setVisibility(View.INVISIBLE);
-                } else if (filtrationControlUnitSeparation.getText().toString().equals(model.getFcSeperation() + "")) {
-                    System.out.println("--->++---> " + "yes");
-                    isEditedSeparation = false; isAnyViewEdited();
-                } else {
-                    System.out.println("--->++---> " + "No");
-                    isEditedSeparation = true; isAnyViewEdited();
-                }
             }
         });
         enableFiltration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -156,7 +102,7 @@ public class Screen_7 extends SmsServices {
             @Override
             public void onClick(View v) {
                 try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -173,7 +119,7 @@ public class Screen_7 extends SmsServices {
             @Override
             public void onClick(View v) {
                 try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -185,8 +131,7 @@ public class Screen_7 extends SmsServices {
         filtrationControlUnitNoDelay_1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
+                if (!hasFocus) {
                     if (!(filtrationControlUnitNoDelay_1.getText().toString().matches(regex) &&
                             filtrationControlUnitNoDelay_1.getText().toString().length() >= 1
                             && validateRange(1, 60, Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString())))) {
@@ -194,30 +139,50 @@ public class Screen_7 extends SmsServices {
                         filtrationControlUnitNoDelay_1.getText().clear();
                         filtrationControlUnitNoDelay_1.setError("please enter a valid value");
                     }
+                    if (isInitial) {
+                        disableFiltration.setVisibility(View.INVISIBLE);
+                    } else if (filtrationControlUnitNoDelay_1.getText().toString().equals(model.getFcDelay_1() + "")) {
+                        System.out.println("--->++---> " + "yes");
+                        isEditedDelay_1 = false;
+                        isAnyViewEdited();
+                    } else {
+                        System.out.println("--->++---> " + "No");
+                        isEditedDelay_1 = true;
+                        isAnyViewEdited();
+                    }
                 }
             }
         });
         filtrationControlUnitNoDelay_2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
-                    if(!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
+                if (!hasFocus) {
+                    if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
                             filtrationControlUnitNoDelay_2.getText().toString().length() >= 1
                             && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
 
-                    filtrationControlUnitNoDelay_2.getText().clear();
-                    filtrationControlUnitNoDelay_2.setError("please enter a valid value");
+                        filtrationControlUnitNoDelay_2.getText().clear();
+                        filtrationControlUnitNoDelay_2.setError("please enter a valid value");
 
-                }
+                    }
+                    if (isInitial) {
+                        disableFiltration.setVisibility(View.INVISIBLE);
+                    } else if (filtrationControlUnitNoDelay_2.getText().toString().equals(model.getFcDelay_2() + "")) {
+                        System.out.println("--->++---> " + "yes");
+                        isEditedDelay_2 = false;
+                        isAnyViewEdited();
+                    } else {
+                        System.out.println("--->++---> " + "No");
+                        isEditedDelay_2 = true;
+                        isAnyViewEdited();
+                    }
                 }
             }
         });
         filtrationControlUnitNoDelay_3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
+                if (!hasFocus) {
 
                     if (!(filtrationControlUnitNoDelay_3.getText().toString().matches(regex) &&
                             filtrationControlUnitNoDelay_3.getText().toString().length() >= 1
@@ -227,19 +192,40 @@ public class Screen_7 extends SmsServices {
                         filtrationControlUnitNoDelay_3.setError("please enter a valid value");
 
                     }
+                    if (isInitial) {
+                        disableFiltration.setVisibility(View.INVISIBLE);
+                    } else if (filtrationControlUnitNoDelay_3.getText().toString().equals(model.getFcDelay_3() + "")) {
+                        System.out.println("--->++---> " + "yes");
+                        isEditedDelay_3 = false;
+                        isAnyViewEdited();
+                    } else {
+                        System.out.println("--->++---> " + "No");
+                        isEditedDelay_3 = true;
+                        isAnyViewEdited();
+                    }
                 }
             }
         });
         filtrationControlUnitOnTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
+                if (!hasFocus) {
                     if (!(filtrationControlUnitOnTime.getText().toString().matches(regex) &&
                             filtrationControlUnitOnTime.getText().toString().length() >= 1
                             && validateRange(1, 10, Integer.parseInt(filtrationControlUnitOnTime.getText().toString())))) {
                         filtrationControlUnitOnTime.getText().clear();
                         filtrationControlUnitOnTime.setError("please enter a valid value");
+                    }
+                    if (isInitial) {
+                        disableFiltration.setVisibility(View.INVISIBLE);
+                    } else if (filtrationControlUnitOnTime.getText().toString().equals(model.getFcOnTime() + "")) {
+                        System.out.println("--->++---> " + "yes");
+                        isEditedOnTime = false;
+                        isAnyViewEdited();
+                    } else {
+                        System.out.println("--->++---> " + "No");
+                        isEditedOnTime = true;
+                        isAnyViewEdited();
                     }
                 }
             }
@@ -247,8 +233,7 @@ public class Screen_7 extends SmsServices {
         filtrationControlUnitSeparation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
+                if (!hasFocus) {
 
                     if (!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
                             filtrationControlUnitSeparation.getText().toString().length() >= 2
@@ -257,11 +242,23 @@ public class Screen_7 extends SmsServices {
                         filtrationControlUnitSeparation.getText().clear();
                         filtrationControlUnitSeparation.setError("please enter a valid value");
                     }
+                    if (isInitial) {
+                        disableFiltration.setVisibility(View.INVISIBLE);
+                    } else if (filtrationControlUnitSeparation.getText().toString().equals(model.getFcSeperation() + "")) {
+                        System.out.println("--->++---> " + "yes");
+                        isEditedSeparation = false;
+                        isAnyViewEdited();
+                    } else {
+                        System.out.println("--->++---> " + "No");
+                        isEditedSeparation = true;
+                        isAnyViewEdited();
+                    }
                 }
             }
         });
 
     }
+
     @Override
     public void initViews() {
         filtrationControlUnitNoDelay_1 = findViewById(R.id.filtrationControlUnitNoDelay_1);
@@ -321,15 +318,15 @@ public class Screen_7 extends SmsServices {
 
             filtrationControlUnitNoDelay_1.getText().clear();
             filtrationControlUnitNoDelay_1.setError("please enter a valid value");
-            return  false;
+            return false;
         }
-        if(!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
+        if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
                 filtrationControlUnitNoDelay_2.getText().toString().length() >= 1
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
 
             filtrationControlUnitNoDelay_2.getText().clear();
             filtrationControlUnitNoDelay_2.setError("please enter a valid value");
-            return  false;
+            return false;
 
         }
         if (!(filtrationControlUnitNoDelay_3.getText().toString().matches(regex) &&
@@ -346,7 +343,7 @@ public class Screen_7 extends SmsServices {
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitOnTime.getText().toString())))) {
             filtrationControlUnitOnTime.getText().clear();
             filtrationControlUnitOnTime.setError("please enter a valid value");
-            return  false;
+            return false;
         }
 
         if (!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
@@ -362,7 +359,7 @@ public class Screen_7 extends SmsServices {
     }
 
     private boolean validateRange(int min, int max, int inputValue) {
-        Log.d("tag","Validate range min : " +min+" validate range max : "+max +" validate range input val : "+inputValue);
+        Log.d("tag", "Validate range min : " + min + " validate range max : " + max + " validate range input val : " + inputValue);
 
         if (inputValue >= min && inputValue <= max) {
             return true;
@@ -423,7 +420,6 @@ public class Screen_7 extends SmsServices {
     }
 
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -464,10 +460,11 @@ public class Screen_7 extends SmsServices {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(Screen_7.this,Screen_4.class));
+        startActivity(new Intent(Screen_7.this, Screen_4.class));
         finish();
     }
 
