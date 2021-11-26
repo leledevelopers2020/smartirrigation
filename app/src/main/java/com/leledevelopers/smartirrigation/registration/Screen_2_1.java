@@ -10,7 +10,9 @@ import android.provider.ContactsContract;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -94,6 +96,7 @@ public class Screen_2_1 extends SmsServices {
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                status.setText("");
 
                 try {
 
@@ -173,6 +176,36 @@ public class Screen_2_1 extends SmsServices {
                 }
             }
         });
+      newPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+          @Override
+          public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+              if(actionId==EditorInfo.IME_ACTION_DONE)
+              {
+
+              }
+              return true;
+          }
+      });
+      newPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+          @Override
+          public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+              if(actionId==EditorInfo.IME_ACTION_DONE)
+              {
+                  status.setText("Status");
+
+                  try {
+
+                      InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                      imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                  } catch (Exception e) {
+                      // TODO: handle exception
+                  }
+                  newPassword.clearFocus();
+              }
+              return true;
+          }
+      });
+
     }
 
 
@@ -185,6 +218,9 @@ public class Screen_2_1 extends SmsServices {
                 && oldPasswordlocal.length() == 6 && newPasswordlocal.length() == 6 && !(oldPasswordlocal.equals(newPasswordlocal))) {
             matching = true;
         }
+        else {
+            status.setText("Status");
+        }
         return matching;
     }
     private void validate(String input,String editTextField )
@@ -194,6 +230,9 @@ public class Screen_2_1 extends SmsServices {
         if (!(p.matcher(input).matches() && input.length() == 6))
         {
             switchFocus(editTextField);
+        }
+        else {
+            status.setText("Status");
         }
 
     }
@@ -306,7 +345,7 @@ public class Screen_2_1 extends SmsServices {
                     @Override
                     public void run() {
                         isPasswordSaved = true;
-                        startActivity(new Intent(Screen_2_1.this, Screen_9.class));
+                        startActivity(new Intent(Screen_2_1.this, MainActivity_GSM.class));
                         finish();
                     }
                 }, 1000);

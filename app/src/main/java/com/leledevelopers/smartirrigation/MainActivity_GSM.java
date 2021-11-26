@@ -32,7 +32,6 @@ public class MainActivity_GSM extends SmsServices {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "Welcome");
         System.out.println(Build.VERSION.SDK_INT);
         System.out.println(SmsServices.phoneNumber.replaceAll("\\s", ""));
         super.onCreate(savedInstanceState);

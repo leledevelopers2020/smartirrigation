@@ -67,8 +67,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="0.2"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/screen_2_1_edittext_1"
@@ -131,7 +130,7 @@
                 android:textAlignment="center"
                 android:maxLength="6"
                 android:textColor="@color/black"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:background="@drawable/underline"/>
 
             <LinearLayout
