@@ -832,7 +832,7 @@ public class Screen_5 extends SmsServices {
 
     public void checkSMS(String message) {
         if (message.contains(SmsUtils.INSMS_4_1)) {
-            if (Integer.parseInt(message.substring(SmsUtils.INSMS_4_1.length())) == model.getFieldNo()) {
+            if (Integer.parseInt(message.substring(SmsUtils.INSMS_4_1.length()).trim()) == model.getFieldNo()) {
                 // System.out.println("====> "+model.getFieldNo()+"====> "+Integer.parseInt(message.substring(SmsUtils.INSMS_4_1.length())));
                 status.setText(message);
                 baseConfigureFieldIrrigationModel.setModelList(modelList);
