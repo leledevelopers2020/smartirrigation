@@ -1,5 +1,8 @@
 package com.leledevelopers.smartirrigation;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -97,7 +100,22 @@ public class Screen_4 extends SmsServices {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+            AlertDialog.Builder exit=new AlertDialog.Builder(this);
+                exit.setMessage("Are you sure do you want to exit")
+                        .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+                AlertDialog alertDialog=exit.create();
+                alertDialog.show();
     }
 }
