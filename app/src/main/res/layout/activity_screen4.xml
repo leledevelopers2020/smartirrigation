@@ -36,7 +36,7 @@
                 android:layout_weight="0.1"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center"
-                android:background="@drawable/full_battery"/>
+                android:background="@drawable/empty_battery"/>
 
         </LinearLayout>
 
