@@ -254,14 +254,13 @@
                 android:textStyle="bold"
                 android:layout_weight="0.5"/>
 
-            <Button
+            <TextView
                 android:id="@+id/motorOnTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:layout_marginTop="3dp"
                 android:gravity="center"
-                android:background="@drawable/square_black_border"
                 android:hint="HH:MM"
              />
             </LinearLayout>
