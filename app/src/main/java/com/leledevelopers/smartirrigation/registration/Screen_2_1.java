@@ -337,9 +337,15 @@ public class Screen_2_1 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        System.out.println("message--> " +message);
+        System.out.println("message--> " +message+" "+SmsServices.phoneNumber);
         switch (message) {
             case SmsUtils.INSMS_1_1: {
+                try {
+                    saveFileDetails();
+                    createConfgFiles();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 status.setText("Admin set successfully");
                 handler.postDelayed(new Runnable() {
                     @Override
