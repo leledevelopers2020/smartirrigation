@@ -59,6 +59,7 @@
             android:layout_weight="0.08"
             android:background="@drawable/square_black_border"
             android:gravity="center"
+            android:padding="8dp"
             android:imeOptions="actionNext"
             android:text=" Select Gsm no." />
 

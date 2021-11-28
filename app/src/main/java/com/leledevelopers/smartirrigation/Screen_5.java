@@ -348,6 +348,23 @@ public class Screen_5 extends SmsServices {
                 }
             }
         });
+        motorOnTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (motorOnTime.getText().toString().equals(model.getMotorOnTime() + "")) {
+                    isEditedValveOnPeriod = false;
+                    System.out.println("-->1 " + false);
+                    isAnyViewEdited();
+                } else {
+                    System.out.println();
+                    isEditedValveOnPeriod = true;
+                    System.out.println("-->1 " + true);
+                    isAnyViewEdited();
+                }
+            }
+        });
         soilDryness.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
