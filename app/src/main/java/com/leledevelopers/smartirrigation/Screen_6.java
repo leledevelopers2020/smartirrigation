@@ -451,8 +451,8 @@ public class Screen_6 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        if (message.contains(SmsUtils.INSMS_6_1)) {
-            if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length())) == model.getFieldNo()) {
+        if (message.toLowerCase().contains(SmsUtils.INSMS_6_1.toLowerCase())) {
+            if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length()).trim()) == model.getFieldNo()) {
                 status.setText("Fertigation Enabled");
                 baseConfigurationFeildFertigationModel.setModelList(modelList);
                 System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
@@ -463,9 +463,9 @@ public class Screen_6 extends SmsServices {
                 }
                 initializeModel();
             }
-        } else if (message.contains(SmsUtils.INSMS_6_2)) {
+        } else if (message.toLowerCase().contains(SmsUtils.INSMS_6_2.toLowerCase())) {
             status.setText("Wrong Fertigation time send, fertigation is not enabled");
-        } else if (message.contains(SmsUtils.INSMS_7_1)) {
+        } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase())) {
             status.setText("Fertigation Disabled");
         }
 

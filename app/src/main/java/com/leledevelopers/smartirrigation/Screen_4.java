@@ -7,15 +7,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.leledevelopers.smartirrigation.models.Message;
 import com.leledevelopers.smartirrigation.services.SmsServices;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Screen_4 extends SmsServices {
 
     private static final String TAG = Screen_4.class.getSimpleName();
+    private static final String RTC_BATTERY_LOW_STATUS = "Please replace RTC battery";
+    private static final String RTC_BATTERY_FULL_STATUS = "RTC Battery Replaced, Please Set Time";
     TextView status;
+    ImageView rtcBattery;
     Button settings, configureFieldIrrigation, configureFieldFertigation, configurePumpFiltration, printReportFieldStatus;
+    List<Message> messages = new ArrayList<Message>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +44,7 @@ public class Screen_4 extends SmsServices {
                         startActivity(new Intent(Screen_4.this, Screen_5.class));
                         finish();
                     }
-                },1000);
+                }, 1000);
             }
         });
         configureFieldFertigation.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +57,7 @@ public class Screen_4 extends SmsServices {
                         startActivity(new Intent(Screen_4.this, Screen_6.class));
                         finish();
                     }
-                },1000);
+                }, 1000);
 
             }
         });
@@ -61,7 +71,7 @@ public class Screen_4 extends SmsServices {
                         startActivity(new Intent(Screen_4.this, Screen_7.class));
                         finish();
                     }
-                },1000);
+                }, 1000);
 
             }
         });
@@ -75,7 +85,7 @@ public class Screen_4 extends SmsServices {
                         startActivity(new Intent(Screen_4.this, Screen_8.class));
                         finish();
                     }
-                },1000);
+                }, 1000);
 
             }
         });
@@ -88,6 +98,23 @@ public class Screen_4 extends SmsServices {
         });
     }
 
+    private void filterMessages() {
+        for (Message message :
+                messages) {
+            rtcBattery.setImageResource(R.drawable.empty_battery);
+            System.out.println("message------>>>>> " + message.toString());
+            if (message.getAction().contains(RTC_BATTERY_FULL_STATUS)) {
+                rtcBattery.setImageResource(0);
+                rtcBattery.setImageResource(R.drawable.full_battery_green);
+                break;
+            } else if (message.getAction().contains(RTC_BATTERY_LOW_STATUS)) {
+                rtcBattery.setImageResource(0);
+                rtcBattery.setImageResource(R.drawable.empty_battery_red);
+                break;
+            }
+        }
+    }
+
     @Override
     public void initViews() {
         status = findViewById(R.id.screen_4_status);
@@ -96,26 +123,39 @@ public class Screen_4 extends SmsServices {
         configurePumpFiltration = findViewById(R.id.screen_4_button3);
         printReportFieldStatus = findViewById(R.id.screen_4_button4);
         settings = findViewById(R.id.settings);
+        rtcBattery = findViewById(R.id.batterystatus);
     }
 
     @Override
     public void onBackPressed() {
-            AlertDialog.Builder exit=new AlertDialog.Builder(this);
-                exit.setMessage("Are you sure do you want to exit")
-                        .setCancelable(false)
+        AlertDialog.Builder exit = new AlertDialog.Builder(this);
+        exit.setMessage("Are you sure do you want to exit")
+                .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 })
-        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-                AlertDialog alertDialog=exit.create();
-                alertDialog.show();
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = exit.create();
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            readAllMessages();
+            messages = getSMS();
+            filterMessages();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

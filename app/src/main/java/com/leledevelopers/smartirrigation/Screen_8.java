@@ -86,13 +86,17 @@ public class Screen_8 extends SmsServices {
         List<Message> messageArrayList = new ArrayList<Message>();
         if (filterType.equals("fields")) {
             int fieldNo = Integer.parseInt(fieldSpinner.getSelectedItem().toString());
-            String fieldValue =  fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo+"";
+            String fieldValue = fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo + "";
+           // System.out.println("fieldValue -->> "+fieldValue);
             for (int i = 0; i < messages.size(); i++) {
-                if (messages.get(i).getAction().toLowerCase().contains("field no."+fieldValue)
+                System.out.println("--> "+messages.get(i).getAction().toLowerCase());
+                if (messages.get(i).getAction().toLowerCase().contains("field no." + fieldValue)
+                        || messages.get(i).getAction().toLowerCase().contains("field no. " + fieldValue)
                         || messages.get(i).getAction().contains("Wet Field Detected.")
                         || messages.get(i).getAction().contains("Phase failure detected, Suspending all Actions")) {
                     //System.out.println("---> "+messages.toString());
                     messageArrayList.add(messages.get(i));
+
                 }
                 if (i == messages.size() - 1) {
                     startRecyclerView(messageArrayList);
