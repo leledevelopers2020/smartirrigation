@@ -30,7 +30,7 @@ public class Screen_9 extends SmsServices {
     private ArrayAdapter<CharSequence> adapter;
     private Button setSystemTime, getSystemTime, updatePassword, setMotorloadCutoff,back_9, save;
     private TextView status;
-
+    DecimalFormat mFormat= new DecimalFormat("00");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,10 +108,7 @@ public class Screen_9 extends SmsServices {
         });
     }
 
-    private String lastTwoDigits(int year) {
 
-         return year%100+"";
-    }
 
     @Override
     public void initViews() {
