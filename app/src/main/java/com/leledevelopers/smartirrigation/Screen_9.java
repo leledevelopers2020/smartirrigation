@@ -17,6 +17,7 @@ import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -70,9 +71,14 @@ public class Screen_9 extends SmsServices {
                 smsReceiver.waitFor_1_Minute();
                 b = true;
                 Calendar calendar=Calendar.getInstance();
-                String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
+                DecimalFormat mFormat= new DecimalFormat("00");
+                String smsData=smsUtils.OutSMS_10(  mFormat.format(Double.valueOf(calendar.get(Calendar.DATE)))+"",mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH)+1)))+"",
+                        mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR))%100)) +"",mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY)))+""
+                        ,mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE)))+"", mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND)))+"");
+
+                /*String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
                         (calendar.get(Calendar.YEAR))%100+"",calendar.get(Calendar.HOUR_OF_DAY)+""
-                        ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");
+                        ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");*/
                 sendMessage(SmsServices.phoneNumber,smsData);
                 status.setText("Message Delivered");
             }
