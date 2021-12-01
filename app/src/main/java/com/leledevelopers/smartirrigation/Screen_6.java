@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -109,6 +110,7 @@ public class Screen_6 extends SmsServices {
             @Override
             public void onClick(View v) {
                 if (validateInput() && !systemDown) {
+                    disableEditText();
                     cursorVisibility();
                     updateData_And_SendSMS("enable");
                     smsReceiver.waitFor_1_Minute();
@@ -121,6 +123,7 @@ public class Screen_6 extends SmsServices {
             @Override
             public void onClick(View v) {
                 if (!systemDown) {
+                    disableEditText();
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
                     b = false;
@@ -235,7 +238,21 @@ public class Screen_6 extends SmsServices {
         back_6 = findViewById(R.id.back_6);
         status = findViewById(R.id.screen_6_status);
     }
+    private void disableEditText() {
 
+        spinner.setFocusableInTouchMode(false);
+        wetPeriod.setFocusableInTouchMode(false);
+        injectPeriod.setFocusableInTouchMode(false);
+        noOfIterations.setFocusableInTouchMode(false);
+
+    }
+    private void enableEditText()
+    {
+        spinner.setFocusableInTouchMode(true);
+        wetPeriod.setFocusableInTouchMode(true);
+        injectPeriod.setFocusableInTouchMode(true);
+        noOfIterations.setFocusableInTouchMode(true);
+    }
 
     private void isAnyViewEdited() {
         if (isEditedNoOfIterations || isEditedInjectPeriod || isEditedWetPeriod) {
@@ -424,6 +441,14 @@ public class Screen_6 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
+                    Handler handler=new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Screen_6.this,MainActivity_GSM.class));
+                            finish();
+                        }
+                    },2000);
                 }
             }
 
@@ -451,6 +476,7 @@ public class Screen_6 extends SmsServices {
     }
 
     public void checkSMS(String message) {
+        enableEditText();
         if (message.toLowerCase().contains(SmsUtils.INSMS_6_1.toLowerCase())) {
             if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length()).trim()) == model.getFieldNo()) {
                 status.setText("Fertigation Enabled");

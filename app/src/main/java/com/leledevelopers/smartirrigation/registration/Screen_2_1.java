@@ -128,8 +128,7 @@ public class Screen_2_1 extends SmsServices {
                         if (validateInput(oldPassword.getText().toString(), newPassword.getText().toString())) {
                             smsReceiver.waitFor_1_Minute();
                             b = true;
-                            oldPassword.setFocusableInTouchMode(false);
-                            newPassword.setFocusableInTouchMode(false);
+                            disableEditText();
                             isSetClicked = true;
                             cursorVisibility();
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
@@ -350,6 +349,7 @@ public class Screen_2_1 extends SmsServices {
 
     public void checkSMS(String message) {
         System.out.println("message--> " +message+" "+SmsServices.phoneNumber);
+        enableEditText();
         switch (message) {
             case SmsUtils.INSMS_1_1: {
                 try {
@@ -432,10 +432,20 @@ public class Screen_2_1 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
+
                 }
             }
 
         });
+    }
+    private void enableEditText()
+    {
+
+    }
+    private void disableEditText()
+    {
+        newPassword.setFocusableInTouchMode(false);
+        oldPassword.setFocusableInTouchMode(false);
     }
 
     @Override

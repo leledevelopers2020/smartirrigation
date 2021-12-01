@@ -175,6 +175,17 @@ public class Screen_10 extends SmsServices {
         back_10=findViewById(R.id.back_10);
     }
 
+    private void enableEditText()
+    {
+        noLoadCutoffText.setFocusableInTouchMode(true);
+        fullLoadCutOffText.setFocusableInTouchMode(true);
+    }
+    private  void disableEditText()
+    {
+        noLoadCutoffText.setFocusableInTouchMode(false);
+        fullLoadCutOffText.setFocusableInTouchMode(false);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

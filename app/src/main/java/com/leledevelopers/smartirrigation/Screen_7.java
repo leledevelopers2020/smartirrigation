@@ -3,6 +3,7 @@ package com.leledevelopers.smartirrigation;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -95,6 +96,7 @@ public class Screen_7 extends SmsServices {
                 }
                 cursorVisibility();
                 if (validateInput() && !systemDown) {
+                    disableEditText();
                     updateData_And_SendSMS("enable");
                     smsReceiver.waitFor_1_Minute();
                     b = true;
@@ -111,6 +113,7 @@ public class Screen_7 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (!systemDown) {
+                    disableEditText();
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
                     b = false;
@@ -292,6 +295,21 @@ public class Screen_7 extends SmsServices {
         back_7 = findViewById(R.id.back_7);
         status = findViewById(R.id.screen_7_status);
     }
+    private void disableEditText() {
+        filtrationControlUnitNoDelay_1.setFocusableInTouchMode(false);
+        filtrationControlUnitNoDelay_2.setFocusableInTouchMode(false);
+        filtrationControlUnitNoDelay_3.setFocusableInTouchMode(false);
+        filtrationControlUnitOnTime.setFocusableInTouchMode(false);
+        filtrationControlUnitSeparation.setFocusableInTouchMode(false);
+    }
+    private void enableEditText() {
+        filtrationControlUnitNoDelay_1.setFocusableInTouchMode(true);
+        filtrationControlUnitNoDelay_2.setFocusableInTouchMode(true);
+        filtrationControlUnitNoDelay_3.setFocusableInTouchMode(true);
+        filtrationControlUnitOnTime.setFocusableInTouchMode(true);
+        filtrationControlUnitSeparation.setFocusableInTouchMode(true);
+    }
+
 
     private void updateData_And_SendSMS(String typeOfAction) {
         String smsData;
@@ -387,21 +405,6 @@ public class Screen_7 extends SmsServices {
         }
         return false;
     }
-    private void disableEditText(EditText editText) {
-        editText.setFocusable(false);
-        editText.setEnabled(false);
-        editText.setCursorVisible(false);
-        editText.setKeyListener(null);
-        editText.setBackgroundColor(Color.TRANSPARENT);
-        editText.setFocusableInTouchMode(true);
-    }
-    private void enableEditText(EditText editText) {
-
-        editText.setEnabled(true);
-        editText.setCursorVisible(false);
-        editText.setKeyListener(null);
-        editText.setBackgroundColor(Color.TRANSPARENT);
-    }
 
 
     private void initializeModel() {
@@ -478,6 +481,14 @@ public class Screen_7 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
+                    Handler handler=new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Screen_7.this,MainActivity_GSM.class));
+                            finish();
+                        }
+                    },2000);
                 }
             }
 
@@ -505,6 +516,7 @@ public class Screen_7 extends SmsServices {
     }
 
     public void checkSMS(String message) {
+        enableEditText();
         switch (message) {
             case SmsUtils.INSMS_8_1: {
                 status.setText("Pump Filtration Activated");
