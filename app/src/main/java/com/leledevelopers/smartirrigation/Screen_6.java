@@ -143,7 +143,7 @@ public class Screen_6 extends SmsServices {
                             && wetPeriod.getText().toString().length() >= 1
                             && validateRange(1, 999, Integer.parseInt(wetPeriod.getText().toString())))) {
                         wetPeriod.getText().clear();
-                        wetPeriod.setError("please enter a valid value");
+                        wetPeriod.setError("Enter a valid value");
                     }
                     if (isInitial) {
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
@@ -167,7 +167,7 @@ public class Screen_6 extends SmsServices {
                             && injectPeriod.getText().toString().length() >= 1
                             && validateRange(1, 999, Integer.parseInt(injectPeriod.getText().toString())))) {
                         injectPeriod.getText().clear();
-                        injectPeriod.setError("please enter a valid value");
+                        injectPeriod.setError("Enter a valid value");
 
                     }
                     if (isInitial) {
@@ -190,7 +190,7 @@ public class Screen_6 extends SmsServices {
                             && noOfIterations.getText().toString().length() == 1
                             && validateRange(1, 5, Integer.parseInt(noOfIterations.getText().toString())))) {
                         noOfIterations.getText().clear();
-                        noOfIterations.setError("please enter a valid value");
+                        noOfIterations.setError("Enter a valid value");
                     }
                     if (isInitial) {
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
@@ -267,19 +267,19 @@ public class Screen_6 extends SmsServices {
                 && wetPeriod.getText().toString().length() >= 1
                 && validateRange(1, 999, Integer.parseInt(wetPeriod.getText().toString())))) {
             wetPeriod.getText().clear();
-            wetPeriod.setError("please enter a valid value");
+            wetPeriod.setError("Enter a valid value");
             return false;
         }
         if (!(injectPeriod.getText().toString().matches(regex)
                 && injectPeriod.getText().toString().length() >= 1
                 && validateRange(1, 999, Integer.parseInt(injectPeriod.getText().toString())))) {
             injectPeriod.getText().clear();
-            injectPeriod.setError("please enter a valid value");
+            injectPeriod.setError("Enter a valid value");
             return false;
         }
         if (!validateRange(1, 5, Integer.parseInt(noOfIterations.getText().toString()))) {
             noOfIterations.getText().clear();
-            noOfIterations.setError("please enter a valid value");
+            noOfIterations.setError("Enter a valid value");
             return false;
         }
 
@@ -316,12 +316,12 @@ public class Screen_6 extends SmsServices {
                     } else {
                         isInitial = true;
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
-                        enableFieldFertigation.setVisibility(View.VISIBLE);
+                     //   enableFieldFertigation.setVisibility(View.VISIBLE);
                     }
                 } else {
                     isInitial = true;
                     disableFieldFertigation.setVisibility(View.INVISIBLE);
-                    enableFieldFertigation.setVisibility(View.VISIBLE);
+                  //  enableFieldFertigation.setVisibility(View.VISIBLE);
                 }
             } else {
                 Toast.makeText(Screen_6.this, "NO data", Toast.LENGTH_LONG).show();

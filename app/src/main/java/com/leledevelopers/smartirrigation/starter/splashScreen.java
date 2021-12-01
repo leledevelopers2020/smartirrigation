@@ -61,7 +61,7 @@ public class splashScreen extends SmsServices {
                     finish();
                 }
             }
-        }, 3000);
+        }, 2000);
 
     }
 

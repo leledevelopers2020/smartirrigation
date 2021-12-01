@@ -86,7 +86,7 @@ public class Screen_10 extends SmsServices {
                             validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) )
                     {
                         noLoadCutoffText.getText().clear();
-                        noLoadCutoffText.setError("Please enter the data");
+                        noLoadCutoffText.setError("Enter a valid value");
 
                     }
                 }
@@ -103,7 +103,7 @@ public class Screen_10 extends SmsServices {
                     {
 
                         fullLoadCutOffText.getText().clear();
-                        fullLoadCutOffText.setError("Please enter the data");
+                        fullLoadCutOffText.setError("Enter a valid value");
                     }
                 }
             }
@@ -136,7 +136,7 @@ public class Screen_10 extends SmsServices {
                 validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) )
         {
             noLoadCutoffText.getText().clear();
-            noLoadCutoffText.setError("Please enter the data");
+            noLoadCutoffText.setError("Enter a valid value");
             return false;
         }
         if(fullLoadCutOffText.getText().toString().length()==0 &&
@@ -144,7 +144,7 @@ public class Screen_10 extends SmsServices {
         {
 
             fullLoadCutOffText.getText().clear();
-            fullLoadCutOffText.setError("Please enter the data");
+            fullLoadCutOffText.setError("Enter a valid value");
             return false;
         }
         return validate;

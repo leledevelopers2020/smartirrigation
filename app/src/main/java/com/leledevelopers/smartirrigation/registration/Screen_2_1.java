@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 
 import com.leledevelopers.smartirrigation.MainActivity_GSM;
 import com.leledevelopers.smartirrigation.R;
+import com.leledevelopers.smartirrigation.Screen_4;
 import com.leledevelopers.smartirrigation.Screen_9;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
@@ -58,6 +59,8 @@ public class Screen_2_1 extends SmsServices {
     private boolean isSetClicked = false, isGSMSelected = false, isPasswordSaved = false;
     private CheckBox checkbox1, checkbox2;
     private String smsData;
+    Intent intent=getIntent();
+    Boolean extra=  intent.getParcelableExtra("Settings");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -358,12 +361,12 @@ public class Screen_2_1 extends SmsServices {
                 break;
             }
             case SmsUtils.INSMS_1_2: {
-                status.setText("Wrong factory Password");
+                status.setText("Wrong password entered");
                 oldPassword.requestFocus();
                 break;
             }
             case SmsUtils.INSMS_3_1: {
-                status.setText("Password Updated successfully");
+                status.setText("Password changed successfully");
                 isPasswordSaved = true;
                 try {
                     saveFileDetails();
@@ -433,7 +436,7 @@ public class Screen_2_1 extends SmsServices {
     }
 
     private void createConfgFiles() throws IOException {
-        CURD_Files curd_files = new CURD_FilesImpl();
+        CURD_Files curd_files  = new CURD_FilesImpl();
         if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME)) {
             curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME);
         }
@@ -468,12 +471,21 @@ public class Screen_2_1 extends SmsServices {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
         if(!isPasswordSaved){
             SmsServices.phoneNumber = "";
             isSetClicked = false;
             isGSMSelected = false;
             isPasswordSaved = false;
+        }
+        if(extra)
+        {
+            startActivity(new Intent(Screen_2_1.this, Screen_4.class));
+            finish();
+        }
+        else
+        {
+            super.onBackPressed();
         }
     }
 }

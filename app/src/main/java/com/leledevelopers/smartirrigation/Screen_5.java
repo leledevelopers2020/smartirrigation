@@ -307,9 +307,9 @@ public class Screen_5 extends SmsServices {
                     if (!(valveOnPeriod.getText().toString().matches(regex)
                             && valveOnPeriod.getText().toString().length() >= 2 &&
                             validateRange(10, 999, Integer.parseInt(valveOnPeriod.getText().toString())))) {
-                        System.out.println("hasFocus valveOnPeriod ---> please enter a valid value");
+                        System.out.println("hasFocus valveOnPeriod ---> Enter a valid value");
                         valveOnPeriod.getText().clear();
-                        valveOnPeriod.setError("please enter a valid value");
+                        valveOnPeriod.setError("Enter a valid value");
                     }
                     System.out.println("-->1 " + valveOnPeriod.getText().toString());
                     // System.out.println("-->1 "+model.getValveOnPeriod());
@@ -337,7 +337,7 @@ public class Screen_5 extends SmsServices {
                             && valveOffPeriod.getText().toString().length() >= 1 &&
                             validateRange(1, 99, Integer.parseInt(valveOffPeriod.getText().toString())))) {
                         valveOffPeriod.getText().clear();
-                        valveOffPeriod.setError("please enter a valid value");
+                        valveOffPeriod.setError("Enter a valid value");
 
                     }
                     if (isInitial) {
@@ -378,7 +378,7 @@ public class Screen_5 extends SmsServices {
                             && soilDryness.getText().toString().length() >= 3 &&
                             validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
                         soilDryness.getText().clear();
-                        soilDryness.setError("please enter a valid value");
+                        soilDryness.setError("Enter a valid value");
 
                     }
                     if (isInitial) {
@@ -401,7 +401,7 @@ public class Screen_5 extends SmsServices {
                     if (!(soilWetness.getText().toString().matches(regex)
                             && soilWetness.getText().toString().length() == 5 &&
                             validateRange(10000, 99999, Integer.parseInt(soilWetness.getText().toString())))) {
-                        soilWetness.setError("please enter a valid value");
+                        soilWetness.setError("Enter a valid value");
                         soilWetness.getText().clear();
 
                     }
@@ -425,8 +425,9 @@ public class Screen_5 extends SmsServices {
                     if (!(priority.getText().toString().matches(regex) &&
                             priority.getText().toString().length() >= 1 &&
                             validateRange(1, 9, Integer.parseInt(priority.getText().toString())))) {
-                        priority.setError("please enter a valid value");
                         priority.getText().clear();
+                        priority.setError("Enter a valid value");
+                       
 
                     }
                     if (isInitial) {
@@ -450,7 +451,7 @@ public class Screen_5 extends SmsServices {
                             cycles.getText().toString().length() == 1 && validateRange(1, 9, Integer.parseInt(cycles.getText().toString())))) {
 
                         cycles.getText().clear();
-                        cycles.setError("please enter a valid value");
+                        cycles.setError("Enter a valid value");
 
                     }
                     if (isInitial) {
@@ -509,7 +510,7 @@ public class Screen_5 extends SmsServices {
                 validateRange(10, 999, Integer.parseInt(valveOnPeriod.getText().toString())))) {
 
             valveOnPeriod.getText().clear();
-            valveOnPeriod.setError("Please enter a valid value");
+            valveOnPeriod.setError("Enter a valid value");
             return false;
         }
 
@@ -517,7 +518,7 @@ public class Screen_5 extends SmsServices {
                 && valveOffPeriod.getText().toString().length() >= 1 &&
                 validateRange(1, 99, Integer.parseInt(valveOffPeriod.getText().toString())))) {
             valveOffPeriod.getText().clear();
-            valveOffPeriod.setError("Please enter a valid value");
+            valveOffPeriod.setError("Enter a valid value");
             return false;
 
         }
@@ -525,7 +526,7 @@ public class Screen_5 extends SmsServices {
                 && soilDryness.getText().toString().length() >= 3 &&
                 validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
             soilDryness.getText().clear();
-            soilDryness.setError("Please enter a valid value");
+            soilDryness.setError("Enter a valid value");
             return false;
 
         }
@@ -533,7 +534,7 @@ public class Screen_5 extends SmsServices {
                 && soilWetness.getText().toString().length() == 5 &&
                 validateRange(10000, 99999, Integer.parseInt(soilWetness.getText().toString())))) {
             soilWetness.getText().clear();
-            soilWetness.setError("Please enter a valid value");
+            soilWetness.setError("Enter a valid value");
 
             return false;
 
@@ -542,14 +543,14 @@ public class Screen_5 extends SmsServices {
         if (motorOnTime.getText().toString() == "")  /// motor time validation is to be checked
         {
 
-            motorOnTime.setError("Please enter a valid value");
+            motorOnTime.setError("Enter a valid value");
             return false;
         }
         if (!(priority.getText().toString().matches(regex) &&
                 priority.getText().toString().length() >= 1 &&
                 validateRange(1, 12, Integer.parseInt(priority.getText().toString())))) {
             priority.getText().clear();
-            priority.setError("Please enter a valid value");
+            priority.setError("Enter a valid value");
 
             return false;
 
@@ -559,7 +560,7 @@ public class Screen_5 extends SmsServices {
                 cycles.getText().toString().length() == 1 && validateRange(1, 9, Integer.parseInt(cycles.getText().toString())))) {
 
             cycles.getText().clear();
-            cycles.setError("Please enter a valid value");
+            cycles.setError("Enter a valid value");
             return false;
 
         }
@@ -672,12 +673,12 @@ public class Screen_5 extends SmsServices {
                     } else {
                         isInitial = true;
                         disableFertigation.setVisibility(View.INVISIBLE);
-                        enableFertigation.setVisibility(View.VISIBLE);
+                      //  enableFertigation.setVisibility(View.VISIBLE);
                     }
                 } else {
                     isInitial = true;
                     disableFertigation.setVisibility(View.INVISIBLE);
-                    enableFertigation.setVisibility(View.VISIBLE);
+                 //   enableFertigation.setVisibility(View.VISIBLE);
                 }
             } else {
                 System.out.println("--> no data ");

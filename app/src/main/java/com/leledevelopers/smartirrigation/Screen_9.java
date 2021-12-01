@@ -61,7 +61,9 @@ public class Screen_9 extends SmsServices {
         updatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Screen_9.this, Screen_2_1.class));
+                Intent intent=new Intent(Screen_9.this, Screen_2_1.class);
+                intent.putExtra("Settings",true);
+                startActivity(intent);
                 finish();
             }
         });
