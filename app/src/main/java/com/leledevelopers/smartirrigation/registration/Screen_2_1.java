@@ -59,13 +59,21 @@ public class Screen_2_1 extends SmsServices {
     private boolean isSetClicked = false, isGSMSelected = false, isPasswordSaved = false;
     private CheckBox checkbox1, checkbox2;
     private String smsData;
-    Intent intent=getIntent();
-    Boolean extra=  intent.getParcelableExtra("Settings");
+    Intent intent;
+    Boolean extra;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen21);
+        try
+        {
+            intent=getIntent();
+           extra=  intent.getParcelableExtra("Settings");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initViews();
         Toast.makeText(Screen_2_1.this, TAG, Toast.LENGTH_LONG).show();
         System.out.println(TAG + " into");
@@ -282,8 +290,7 @@ public class Screen_2_1 extends SmsServices {
             status.setText("Enter valid new password");
         }
         if (oldPasswordlocal.equals(newPasswordlocal)) {
-            oldPassword.getText().clear();
-            newPassword.getText().clear();
+
             status.setText("Both Passwords cannot be same");
         }
     }
