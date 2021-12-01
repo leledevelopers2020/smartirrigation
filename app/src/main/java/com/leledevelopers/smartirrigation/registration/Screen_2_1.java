@@ -128,6 +128,8 @@ public class Screen_2_1 extends SmsServices {
                         if (validateInput(oldPassword.getText().toString(), newPassword.getText().toString())) {
                             smsReceiver.waitFor_1_Minute();
                             b = true;
+                            oldPassword.setFocusableInTouchMode(false);
+                            newPassword.setFocusableInTouchMode(false);
                             isSetClicked = true;
                             cursorVisibility();
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());

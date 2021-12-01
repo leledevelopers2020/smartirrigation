@@ -1,6 +1,7 @@
 package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -385,6 +386,21 @@ public class Screen_7 extends SmsServices {
             return true;
         }
         return false;
+    }
+    private void disableEditText(EditText editText) {
+        editText.setFocusable(false);
+        editText.setEnabled(false);
+        editText.setCursorVisible(false);
+        editText.setKeyListener(null);
+        editText.setBackgroundColor(Color.TRANSPARENT);
+        editText.setFocusableInTouchMode(true);
+    }
+    private void enableEditText(EditText editText) {
+
+        editText.setEnabled(true);
+        editText.setCursorVisible(false);
+        editText.setKeyListener(null);
+        editText.setBackgroundColor(Color.TRANSPARENT);
     }
 
 
