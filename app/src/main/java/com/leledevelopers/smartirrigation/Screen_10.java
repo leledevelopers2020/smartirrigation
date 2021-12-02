@@ -132,14 +132,14 @@ public class Screen_10 extends SmsServices {
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
         Boolean validate=true;
-        if(noLoadCutoffText.getText().toString().length()==0 &&
+        if(noLoadCutoffTextlocal.equals(null) && noLoadCutoffText.getText().toString().length()==0 &&
                 validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) )
         {
             noLoadCutoffText.getText().clear();
             noLoadCutoffText.setError("Enter a valid value");
             return false;
         }
-        if(fullLoadCutOffText.getText().toString().length()==0 &&
+        if(fullLoadCutOffTextlocal.equals(null) && fullLoadCutOffText.getText().toString().length()==0 &&
                 validateRange(0,1024,Integer.parseInt(fullLoadCutOffText.getText().toString())))
         {
 
