@@ -45,10 +45,12 @@ public class Screen_10 extends SmsServices {
                     cursorVisibility();
                     String smsData=smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    sendMessage(SmsServices.phoneNumber,smsData);
+                   // sendMessage(SmsServices.phoneNumber,smsData);
                     smsReceiver.waitFor_1_Minute();
                     b = true;
                     status.setText("Message Delivered");
+                    startActivity(new Intent(Screen_10.this,Screen_9.class));
+                    finish();
                 }
             }
         });
@@ -132,15 +134,13 @@ public class Screen_10 extends SmsServices {
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
         Boolean validate=true;
-        if(noLoadCutoffTextlocal.equals(null) && noLoadCutoffText.getText().toString().length()==0 &&
-                validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) )
+        if(noLoadCutoffTextlocal==""  &&              !(validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) ))
         {
             noLoadCutoffText.getText().clear();
             noLoadCutoffText.setError("Enter a valid value");
             return false;
         }
-        if(fullLoadCutOffTextlocal.equals(null) && fullLoadCutOffText.getText().toString().length()==0 &&
-                validateRange(0,1024,Integer.parseInt(fullLoadCutOffText.getText().toString())))
+        if(fullLoadCutOffTextlocal=="" && !(validateRange(0,1024,Integer.parseInt(fullLoadCutOffText.getText().toString()))))
         {
 
             fullLoadCutOffText.getText().clear();
