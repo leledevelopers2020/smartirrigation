@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -109,6 +110,7 @@ public class Screen_6 extends SmsServices {
             @Override
             public void onClick(View v) {
                 if (validateInput() && !systemDown) {
+                    disableEditText();
                     cursorVisibility();
                     updateData_And_SendSMS("enable");
                     smsReceiver.waitFor_1_Minute();
@@ -121,6 +123,7 @@ public class Screen_6 extends SmsServices {
             @Override
             public void onClick(View v) {
                 if (!systemDown) {
+                    disableEditText();
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
                     b = false;
@@ -143,7 +146,7 @@ public class Screen_6 extends SmsServices {
                             && wetPeriod.getText().toString().length() >= 1
                             && validateRange(1, 999, Integer.parseInt(wetPeriod.getText().toString())))) {
                         wetPeriod.getText().clear();
-                        wetPeriod.setError("please enter a valid value");
+                        wetPeriod.setError("Enter a valid value");
                     }
                     if (isInitial) {
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
@@ -167,7 +170,7 @@ public class Screen_6 extends SmsServices {
                             && injectPeriod.getText().toString().length() >= 1
                             && validateRange(1, 999, Integer.parseInt(injectPeriod.getText().toString())))) {
                         injectPeriod.getText().clear();
-                        injectPeriod.setError("please enter a valid value");
+                        injectPeriod.setError("Enter a valid value");
 
                     }
                     if (isInitial) {
@@ -190,7 +193,7 @@ public class Screen_6 extends SmsServices {
                             && noOfIterations.getText().toString().length() == 1
                             && validateRange(1, 5, Integer.parseInt(noOfIterations.getText().toString())))) {
                         noOfIterations.getText().clear();
-                        noOfIterations.setError("please enter a valid value");
+                        noOfIterations.setError("Enter a valid value");
                     }
                     if (isInitial) {
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
@@ -235,7 +238,21 @@ public class Screen_6 extends SmsServices {
         back_6 = findViewById(R.id.back_6);
         status = findViewById(R.id.screen_6_status);
     }
+    private void disableEditText() {
 
+        spinner.setFocusableInTouchMode(false);
+        wetPeriod.setFocusableInTouchMode(false);
+        injectPeriod.setFocusableInTouchMode(false);
+        noOfIterations.setFocusableInTouchMode(false);
+
+    }
+    private void enableEditText()
+    {
+        spinner.setFocusableInTouchMode(true);
+        wetPeriod.setFocusableInTouchMode(true);
+        injectPeriod.setFocusableInTouchMode(true);
+        noOfIterations.setFocusableInTouchMode(true);
+    }
 
     private void isAnyViewEdited() {
         if (isEditedNoOfIterations || isEditedInjectPeriod || isEditedWetPeriod) {
@@ -267,19 +284,19 @@ public class Screen_6 extends SmsServices {
                 && wetPeriod.getText().toString().length() >= 1
                 && validateRange(1, 999, Integer.parseInt(wetPeriod.getText().toString())))) {
             wetPeriod.getText().clear();
-            wetPeriod.setError("please enter a valid value");
+            wetPeriod.setError("Enter a valid value");
             return false;
         }
         if (!(injectPeriod.getText().toString().matches(regex)
                 && injectPeriod.getText().toString().length() >= 1
                 && validateRange(1, 999, Integer.parseInt(injectPeriod.getText().toString())))) {
             injectPeriod.getText().clear();
-            injectPeriod.setError("please enter a valid value");
+            injectPeriod.setError("Enter a valid value");
             return false;
         }
         if (!validateRange(1, 5, Integer.parseInt(noOfIterations.getText().toString()))) {
             noOfIterations.getText().clear();
-            noOfIterations.setError("please enter a valid value");
+            noOfIterations.setError("Enter a valid value");
             return false;
         }
 
@@ -316,12 +333,12 @@ public class Screen_6 extends SmsServices {
                     } else {
                         isInitial = true;
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
-                        enableFieldFertigation.setVisibility(View.VISIBLE);
+                     //   enableFieldFertigation.setVisibility(View.VISIBLE);
                     }
                 } else {
                     isInitial = true;
                     disableFieldFertigation.setVisibility(View.INVISIBLE);
-                    enableFieldFertigation.setVisibility(View.VISIBLE);
+                  //  enableFieldFertigation.setVisibility(View.VISIBLE);
                 }
             } else {
                 Toast.makeText(Screen_6.this, "NO data", Toast.LENGTH_LONG).show();
@@ -424,6 +441,14 @@ public class Screen_6 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
+                    Handler handler=new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Screen_6.this,MainActivity_GSM.class));
+                            finish();
+                        }
+                    },2000);
                 }
             }
 
@@ -451,6 +476,7 @@ public class Screen_6 extends SmsServices {
     }
 
     public void checkSMS(String message) {
+        enableEditText();
         if (message.toLowerCase().contains(SmsUtils.INSMS_6_1.toLowerCase())) {
             if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length()).trim()) == model.getFieldNo()) {
                 status.setText("Fertigation Enabled");

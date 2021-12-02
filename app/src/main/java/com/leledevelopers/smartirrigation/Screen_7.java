@@ -1,7 +1,9 @@
 package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -94,6 +96,7 @@ public class Screen_7 extends SmsServices {
                 }
                 cursorVisibility();
                 if (validateInput() && !systemDown) {
+                    disableEditText();
                     updateData_And_SendSMS("enable");
                     smsReceiver.waitFor_1_Minute();
                     b = true;
@@ -110,6 +113,7 @@ public class Screen_7 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (!systemDown) {
+                    disableEditText();
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
                     b = false;
@@ -139,7 +143,7 @@ public class Screen_7 extends SmsServices {
                             && validateRange(1, 60, Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString())))) {
 
                         filtrationControlUnitNoDelay_1.getText().clear();
-                        filtrationControlUnitNoDelay_1.setError("please enter a valid value");
+                        filtrationControlUnitNoDelay_1.setError("Enter a valid value");
                     }
                     if (isInitial) {
                         disableFiltration.setVisibility(View.INVISIBLE);
@@ -164,7 +168,7 @@ public class Screen_7 extends SmsServices {
                             && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
 
                         filtrationControlUnitNoDelay_2.getText().clear();
-                        filtrationControlUnitNoDelay_2.setError("please enter a valid value");
+                        filtrationControlUnitNoDelay_2.setError("Enter a valid value");
 
                     }
                     if (isInitial) {
@@ -191,7 +195,7 @@ public class Screen_7 extends SmsServices {
                             && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString())))) {
 
                         filtrationControlUnitNoDelay_3.getText().clear();
-                        filtrationControlUnitNoDelay_3.setError("please enter a valid value");
+                        filtrationControlUnitNoDelay_3.setError("Enter a valid value");
 
                     }
                     if (isInitial) {
@@ -216,7 +220,7 @@ public class Screen_7 extends SmsServices {
                             filtrationControlUnitOnTime.getText().toString().length() >= 1
                             && validateRange(1, 10, Integer.parseInt(filtrationControlUnitOnTime.getText().toString())))) {
                         filtrationControlUnitOnTime.getText().clear();
-                        filtrationControlUnitOnTime.setError("please enter a valid value");
+                        filtrationControlUnitOnTime.setError("Enter a valid value");
                     }
                     if (isInitial) {
                         disableFiltration.setVisibility(View.INVISIBLE);
@@ -242,7 +246,7 @@ public class Screen_7 extends SmsServices {
                             && validateRange(10, 240, Integer.parseInt(filtrationControlUnitSeparation.getText().toString())))) {
                         filtrationControlUnitSeparation.requestFocus();
                         filtrationControlUnitSeparation.getText().clear();
-                        filtrationControlUnitSeparation.setError("please enter a valid value");
+                        filtrationControlUnitSeparation.setError("Enter a valid value");
                     }
                     if (isInitial) {
                         disableFiltration.setVisibility(View.INVISIBLE);
@@ -291,6 +295,21 @@ public class Screen_7 extends SmsServices {
         back_7 = findViewById(R.id.back_7);
         status = findViewById(R.id.screen_7_status);
     }
+    private void disableEditText() {
+        filtrationControlUnitNoDelay_1.setFocusableInTouchMode(false);
+        filtrationControlUnitNoDelay_2.setFocusableInTouchMode(false);
+        filtrationControlUnitNoDelay_3.setFocusableInTouchMode(false);
+        filtrationControlUnitOnTime.setFocusableInTouchMode(false);
+        filtrationControlUnitSeparation.setFocusableInTouchMode(false);
+    }
+    private void enableEditText() {
+        filtrationControlUnitNoDelay_1.setFocusableInTouchMode(true);
+        filtrationControlUnitNoDelay_2.setFocusableInTouchMode(true);
+        filtrationControlUnitNoDelay_3.setFocusableInTouchMode(true);
+        filtrationControlUnitOnTime.setFocusableInTouchMode(true);
+        filtrationControlUnitSeparation.setFocusableInTouchMode(true);
+    }
+
 
     private void updateData_And_SendSMS(String typeOfAction) {
         String smsData;
@@ -337,7 +356,7 @@ public class Screen_7 extends SmsServices {
                 && validateRange(1, 60, Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString())))) {
 
             filtrationControlUnitNoDelay_1.getText().clear();
-            filtrationControlUnitNoDelay_1.setError("please enter a valid value");
+            filtrationControlUnitNoDelay_1.setError("Enter a valid value");
             return false;
         }
         if (!(filtrationControlUnitNoDelay_2.getText().toString().matches(regex) &&
@@ -345,7 +364,7 @@ public class Screen_7 extends SmsServices {
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString())))) {
 
             filtrationControlUnitNoDelay_2.getText().clear();
-            filtrationControlUnitNoDelay_2.setError("please enter a valid value");
+            filtrationControlUnitNoDelay_2.setError("Enter a valid value");
             return false;
 
         }
@@ -354,7 +373,7 @@ public class Screen_7 extends SmsServices {
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString())))) {
 
             filtrationControlUnitNoDelay_3.getText().clear();
-            filtrationControlUnitNoDelay_3.setError("please enter a valid value");
+            filtrationControlUnitNoDelay_3.setError("Enter a valid value");
             return false;
 
         }
@@ -362,7 +381,7 @@ public class Screen_7 extends SmsServices {
                 filtrationControlUnitOnTime.getText().toString().length() >= 1
                 && validateRange(1, 10, Integer.parseInt(filtrationControlUnitOnTime.getText().toString())))) {
             filtrationControlUnitOnTime.getText().clear();
-            filtrationControlUnitOnTime.setError("please enter a valid value");
+            filtrationControlUnitOnTime.setError("Enter a valid value");
             return false;
         }
 
@@ -371,7 +390,7 @@ public class Screen_7 extends SmsServices {
                 && validateRange(10, 240, Integer.parseInt(filtrationControlUnitSeparation.getText().toString())))) {
             filtrationControlUnitSeparation.requestFocus();
             filtrationControlUnitSeparation.getText().clear();
-            filtrationControlUnitSeparation.setError("please enter a valid value");
+            filtrationControlUnitSeparation.setError("Enter a valid value");
             return false;
         }
 
@@ -401,7 +420,7 @@ public class Screen_7 extends SmsServices {
                     filtrationControlUnitNoDelay_3.setText(model.getFcDelay_3() + "");
                     filtrationControlUnitOnTime.setText(model.getFcOnTime() + "");
                     filtrationControlUnitSeparation.setText(model.getFcSeperation() + "");
-                    disableFiltration.setVisibility(View.VISIBLE);
+                //    disableFiltration.setVisibility(View.VISIBLE);
                     enableFiltration.setVisibility(View.INVISIBLE);
                 } else {
                     System.out.println("isEnabled " + model.isEnabled());
@@ -411,7 +430,7 @@ public class Screen_7 extends SmsServices {
                     filtrationControlUnitOnTime.setText("");
                     filtrationControlUnitSeparation.setText("");
                     disableFiltration.setVisibility(View.INVISIBLE);
-                    enableFiltration.setVisibility(View.VISIBLE);
+                  //  enableFiltration.setVisibility(View.VISIBLE);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -462,6 +481,14 @@ public class Screen_7 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
+                    Handler handler=new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Screen_7.this,MainActivity_GSM.class));
+                            finish();
+                        }
+                    },2000);
                 }
             }
 
@@ -489,6 +516,7 @@ public class Screen_7 extends SmsServices {
     }
 
     public void checkSMS(String message) {
+        enableEditText();
         switch (message) {
             case SmsUtils.INSMS_8_1: {
                 status.setText("Pump Filtration Activated");

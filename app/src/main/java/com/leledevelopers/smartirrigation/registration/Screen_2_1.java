@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 
 import com.leledevelopers.smartirrigation.MainActivity_GSM;
 import com.leledevelopers.smartirrigation.R;
+import com.leledevelopers.smartirrigation.Screen_4;
 import com.leledevelopers.smartirrigation.Screen_9;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
@@ -58,11 +59,21 @@ public class Screen_2_1 extends SmsServices {
     private boolean isSetClicked = false, isGSMSelected = false, isPasswordSaved = false;
     private CheckBox checkbox1, checkbox2;
     private String smsData;
+    Intent intent;
+    Boolean extra;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen21);
+        try
+        {
+            intent=getIntent();
+           extra=  intent.getParcelableExtra("Settings");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initViews();
         Toast.makeText(Screen_2_1.this, TAG, Toast.LENGTH_LONG).show();
         System.out.println(TAG + " into");
@@ -117,6 +128,7 @@ public class Screen_2_1 extends SmsServices {
                         if (validateInput(oldPassword.getText().toString(), newPassword.getText().toString())) {
                             smsReceiver.waitFor_1_Minute();
                             b = true;
+                            disableEditText();
                             isSetClicked = true;
                             cursorVisibility();
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
@@ -279,8 +291,7 @@ public class Screen_2_1 extends SmsServices {
             status.setText("Enter valid new password");
         }
         if (oldPasswordlocal.equals(newPasswordlocal)) {
-            oldPassword.getText().clear();
-            newPassword.getText().clear();
+
             status.setText("Both Passwords cannot be same");
         }
     }
@@ -338,6 +349,7 @@ public class Screen_2_1 extends SmsServices {
 
     public void checkSMS(String message) {
         System.out.println("message--> " +message+" "+SmsServices.phoneNumber);
+        enableEditText();
         switch (message) {
             case SmsUtils.INSMS_1_1: {
                 try {
@@ -358,12 +370,12 @@ public class Screen_2_1 extends SmsServices {
                 break;
             }
             case SmsUtils.INSMS_1_2: {
-                status.setText("Wrong factory Password");
+                status.setText("Wrong password entered");
                 oldPassword.requestFocus();
                 break;
             }
             case SmsUtils.INSMS_3_1: {
-                status.setText("Password Updated successfully");
+                status.setText("Password changed successfully");
                 isPasswordSaved = true;
                 try {
                     saveFileDetails();
@@ -420,10 +432,20 @@ public class Screen_2_1 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
+
                 }
             }
 
         });
+    }
+    private void enableEditText()
+    {
+
+    }
+    private void disableEditText()
+    {
+        newPassword.setFocusableInTouchMode(false);
+        oldPassword.setFocusableInTouchMode(false);
     }
 
     @Override
@@ -433,7 +455,7 @@ public class Screen_2_1 extends SmsServices {
     }
 
     private void createConfgFiles() throws IOException {
-        CURD_Files curd_files = new CURD_FilesImpl();
+        CURD_Files curd_files  = new CURD_FilesImpl();
         if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME)) {
             curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME);
         }
@@ -468,12 +490,21 @@ public class Screen_2_1 extends SmsServices {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
         if(!isPasswordSaved){
             SmsServices.phoneNumber = "";
             isSetClicked = false;
             isGSMSelected = false;
             isPasswordSaved = false;
+        }
+        if(extra)
+        {
+            startActivity(new Intent(Screen_2_1.this, Screen_4.class));
+            finish();
+        }
+        else
+        {
+            super.onBackPressed();
         }
     }
 }

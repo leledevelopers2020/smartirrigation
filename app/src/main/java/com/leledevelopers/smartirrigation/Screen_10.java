@@ -45,10 +45,12 @@ public class Screen_10 extends SmsServices {
                     cursorVisibility();
                     String smsData=smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    sendMessage(SmsServices.phoneNumber,smsData);
+                   // sendMessage(SmsServices.phoneNumber,smsData);
                     smsReceiver.waitFor_1_Minute();
                     b = true;
                     status.setText("Message Delivered");
+                    startActivity(new Intent(Screen_10.this,Screen_9.class));
+                    finish();
                 }
             }
         });
@@ -86,7 +88,7 @@ public class Screen_10 extends SmsServices {
                             validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) )
                     {
                         noLoadCutoffText.getText().clear();
-                        noLoadCutoffText.setError("Please enter the data");
+                        noLoadCutoffText.setError("Enter a valid value");
 
                     }
                 }
@@ -103,7 +105,7 @@ public class Screen_10 extends SmsServices {
                     {
 
                         fullLoadCutOffText.getText().clear();
-                        fullLoadCutOffText.setError("Please enter the data");
+                        fullLoadCutOffText.setError("Enter a valid value");
                     }
                 }
             }
@@ -132,19 +134,17 @@ public class Screen_10 extends SmsServices {
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
         Boolean validate=true;
-        if(noLoadCutoffText.getText().toString().length()==0 &&
-                validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) )
+        if(noLoadCutoffTextlocal==""  &&              !(validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) ))
         {
             noLoadCutoffText.getText().clear();
-            noLoadCutoffText.setError("Please enter the data");
+            noLoadCutoffText.setError("Enter a valid value");
             return false;
         }
-        if(fullLoadCutOffText.getText().toString().length()==0 &&
-                validateRange(0,1024,Integer.parseInt(fullLoadCutOffText.getText().toString())))
+        if(fullLoadCutOffTextlocal=="" && !(validateRange(0,1024,Integer.parseInt(fullLoadCutOffText.getText().toString()))))
         {
 
             fullLoadCutOffText.getText().clear();
-            fullLoadCutOffText.setError("Please enter the data");
+            fullLoadCutOffText.setError("Enter a valid value");
             return false;
         }
         return validate;
@@ -173,6 +173,17 @@ public class Screen_10 extends SmsServices {
         setMotorLoadThreshold = findViewById(R.id.setMotorLoadThreshold);
         status = findViewById(R.id.screen_10_status);
         back_10=findViewById(R.id.back_10);
+    }
+
+    private void enableEditText()
+    {
+        noLoadCutoffText.setFocusableInTouchMode(true);
+        fullLoadCutOffText.setFocusableInTouchMode(true);
+    }
+    private  void disableEditText()
+    {
+        noLoadCutoffText.setFocusableInTouchMode(false);
+        fullLoadCutOffText.setFocusableInTouchMode(false);
     }
 
     @Override

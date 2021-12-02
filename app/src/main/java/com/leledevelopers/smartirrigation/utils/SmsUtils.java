@@ -7,22 +7,22 @@ package com.leledevelopers.smartirrigation.utils;
 public class SmsUtils {
     // SMS responses from controller
     public static final String INSMS_1_1= "Admin set successfully";
-    public static final String INSMS_1_2="Wrong factory Password";
-    public static final String INSMS_1_3="You are no more Admin now.";
-    public static final String INSMS_2_1="Hooked";
-    public static final String INSMS_2_2="Not Authenticated";
-    public static final String INSMS_3_1="Password updated successfully";
-    public static final String INSMS_4_1="Valve Set for field no.";
-    public static final String INSMS_5_1="Valve kept on Hold";
+    public static final String INSMS_1_2="Wrong password entered";
+    public static final String INSMS_1_3="You are no more Admin now.New Admin is set to <GSM no.>";
+    public static final String INSMS_2_1="System Connected";
+    public static final String INSMS_2_2="Authentication failed";
+    public static final String INSMS_3_1="Password changed successfully";
+    public static final String INSMS_4_1="Irrigation configured for field no.";
+    public static final String INSMS_5_1="Irrigation configuration disabled for field no.";
     public static final String INSMS_6_1="Fertigation enabled for field no.";
-    public static final String INSMS_6_2="In correct values.";
-    public static final String INSMS_7_1="Fertigation disabled";
-    public static final String INSMS_8_1="Pump Filtration Activated";
-    public static final String INSMS_9_1="Pump Filtration Deactivated";
-    public static final String INSMS_10_1="RTC Set to current Timestamp";
-    public static final String INSMS_10_2="Incorrect Time stamp found";
+    public static final String INSMS_6_2="Incorrect values.Fertigation not enabled for field no.";
+    public static final String INSMS_7_1="Fertigation disabled for field no.";
+    public static final String INSMS_8_1="Water filtration activated";
+    public static final String INSMS_9_1="Water filtration deactivated";
+    public static final String INSMS_10_1="RTC is set to current Timestamp";
+    public static final String INSMS_10_2="Incorrect Timestamp found";
     public static final String INSMS_11_1="Current Time:";
-    public static final String INSMS_12_1="Motor Load Threshold Set Sucessfully.";
+    public static final String INSMS_12_1="Motorload thresholds set sucessfully.";
 
 
     //Sms to controller from mobile devices
@@ -32,6 +32,7 @@ public class SmsUtils {
     {
         return "AU"+" "+factoryPassword+" "+userNewPassword;
     }
+
 
     //User connection
     public static final String OutSMS_2="HOOK";
