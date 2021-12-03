@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.leledevelopers.smartirrigation.models.Message;
 import com.leledevelopers.smartirrigation.services.SmsServices;
+import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,8 +21,7 @@ import java.util.List;
 public class Screen_4 extends SmsServices {
 
     private static final String TAG = Screen_4.class.getSimpleName();
-    private static final String RTC_BATTERY_LOW_STATUS = "Please replace RTC battery";
-    private static final String RTC_BATTERY_FULL_STATUS = "RTC Battery Replaced, Please Set Time";
+
     TextView status;
     ImageView rtcBattery;
     Button settings, configureFieldIrrigation, configureFieldFertigation, configurePumpFiltration, printReportFieldStatus;
@@ -99,19 +99,24 @@ public class Screen_4 extends SmsServices {
     }
 
     private void filterMessages() {
+        int i=0;
+        boolean isRTC = false;
         for (Message message :
                 messages) {
-            rtcBattery.setImageResource(R.drawable.empty_battery);
-            System.out.println("message------>>>>> " + message.toString());
-            if (message.getAction().contains(RTC_BATTERY_FULL_STATUS)) {
+            System.out.println("message------>>>>> "+(i++) + message.toString());
+            if (message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)) {
                 rtcBattery.setImageResource(0);
                 rtcBattery.setImageResource(R.drawable.full_battery_green);
-                break;
-            } else if (message.getAction().contains(RTC_BATTERY_LOW_STATUS)) {
+                isRTC = true;
+            }
+            if (message.getAction().contains(SmsUtils.RTC_BATTERY_LOW_STATUS)) {
                 rtcBattery.setImageResource(0);
                 rtcBattery.setImageResource(R.drawable.empty_battery_red);
-                break;
+                isRTC = true;
             }
+        }
+        if(!isRTC){
+            rtcBattery.setImageResource(R.drawable.empty_battery);
         }
     }
 

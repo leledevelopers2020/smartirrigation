@@ -17,6 +17,7 @@ import com.leledevelopers.smartirrigation.models.Message;
 import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
 import com.leledevelopers.smartirrigation.starter.splashScreen;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
+import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -98,43 +99,63 @@ public abstract class SmsServices extends AppCompatActivity {
     }
 
     protected void readAllMessages() throws IOException, ClassNotFoundException {
+        String date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).format(new Date());
         if (createSMSFile.isFileHasData(context, ProjectUtils.MESSAGES_PATH)) {
             System.out.println("Has Data");
             baseMessages = (BaseMessages) createSMSFile.getFile(context, ProjectUtils.MESSAGES_PATH);
-            if (!baseMessages.getLastAccessedDate().equals("")) {
+            if (!baseMessages.getLastAccessedDate().isEmpty()) {
                 messageList = baseMessages.getMessages();
                 System.out.println("messageList.size() = " + messageList.size());
                 System.out.println(baseMessages.getLastAccessedDate());
 
                 messageList = getMessages(messageList, baseMessages);
+                messageList = deleteMessages(messageList);
+                System.out.println("size----> "+messageList.size());
                 baseMessages.setMessages(messageList);
-                String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
                 baseMessages.setLastAccessedDate(date);
+                baseMessages.setMessageInitial(false);
                 createSMSFile.createFile(context, ProjectUtils.MESSAGES_PATH, baseMessages);
+                System.out.println("baseMessages.getLastAccessedDate()--> " + baseMessages.getLastAccessedDate());
+            } else {
+                System.out.println("Has file but no Data");
+                messageList = new ArrayList<Message>();
+                baseMessages = new BaseMessages();
+
+                messageList = getMessages(messageList, baseMessages);
+                System.out.println("messageList.size()--> " + messageList.size());
+                messageList = deleteMessages(messageList);
+                System.out.println("size----> "+messageList.size());
+                baseMessages.setMessages(messageList);
+                baseMessages.setLastAccessedDate(date);
+                baseMessages.setMessageInitial(false);
+                createSMSFile.createFile(context, ProjectUtils.MESSAGES_PATH, baseMessages);
+                System.out.println("baseMessages.getLastAccessedDate()--> " + baseMessages.getLastAccessedDate());
+                //System.out.println("baseMessages.toString()--> " + baseMessages.toString());
             }
         } else {
-            System.out.println("Has Empty Data");
+            System.out.println("NO Data");
             messageList = new ArrayList<Message>();
             baseMessages = new BaseMessages();
             messageList = getMessages(messageList, baseMessages);
             System.out.println("messageList.size()--> " + messageList.size());
-
             baseMessages.setMessages(messageList);
-            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
             baseMessages.setLastAccessedDate(date);
+            baseMessages.setMessageInitial(false);
             createSMSFile.createFile(context, ProjectUtils.MESSAGES_PATH, baseMessages);
-            System.out.println("baseMessages.toString()--> " + baseMessages.toString());
+            // System.out.println("baseMessages.toString()--> " + baseMessages.toString());
+            System.out.println("baseMessages.getLastAccessedDate()--> " + baseMessages.getLastAccessedDate());
         }
     }
 
     private List<Message> getMessages(List<Message> messages, BaseMessages baseMessages) {
         Cursor cursor = null;
+        List<Message> newMessages = new ArrayList<Message>();
         String ownerNumber = SmsServices.phoneNumber.replaceAll("\\s", "");
         final Uri SMS_INBOX = Uri.parse("content://sms/inbox");
-        messages.clear();
+        //messages.clear();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-        String filter = getDateFilter();
+        String filter = getDateFilter(baseMessages.isMessageInitial(), baseMessages.getLastAccessedDate());
         cursor = context.getContentResolver().query(SMS_INBOX, null, filter, null, null);
 
         while (cursor.moveToNext()) {
@@ -154,29 +175,39 @@ public abstract class SmsServices extends AppCompatActivity {
                 message.setAction(smsBody);
                 message.setDate(smsDate);
                 message.setTime(smsTime);
-                messages.add(message);
-                System.out.println("message --> "+message.toString());
+                newMessages.add(message);
+                // System.out.println("message --> " + message.toString());
             }
         }
+        messages.addAll(newMessages);
         return messages;
     }
 
-    protected String getDateFilter() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar currentCal = Calendar.getInstance();
-        String currentdate = dateFormat.format(currentCal.getTime());
-        currentCal.add(Calendar.DATE, -7);
-        String pastDate = dateFormat.format(currentCal.getTime());
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    protected String getDateFilter(boolean isInitial, String lastModifiedDate) {
         Date dateStart = null;
         Date dateEnd = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Calendar currentCal = Calendar.getInstance();
+        String currentdate;
+        System.out.println("lastModifiedDate " + lastModifiedDate);
         try {
-            dateStart = formatter.parse(pastDate + "T00:00:00");
-            dateEnd = formatter.parse(currentdate + "T23:59:59");
+            if (isInitial && lastModifiedDate.isEmpty()) {
+                currentdate = dateFormat.format(currentCal.getTime());
+                currentCal.add(Calendar.DATE, -7);
+                String pastDate = dateFormat.format(currentCal.getTime());
+                dateStart = formatter.parse(pastDate + "T00:00:00");
+                dateEnd = formatter.parse(currentdate + "T23:59:59");
+            } else if (!isInitial && !lastModifiedDate.isEmpty()) {
+                currentdate = formatter.format(currentCal.getTime());
+                dateStart = formatter.parse(lastModifiedDate);
+                dateEnd = formatter.parse(currentdate);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println("start date " + dateStart.toString());
+        System.out.println("end date " + dateEnd.toString());
         return "date>=" + dateStart.getTime() + " and date<=" + dateEnd.getTime();
     }
 
@@ -189,6 +220,28 @@ public abstract class SmsServices extends AppCompatActivity {
             return this.messageList;
         } else
             return null;
+    }
+
+    protected List<Message> deleteMessages(List<Message> messages) {
+        List<Message> updatedList = new ArrayList<Message>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar currentCal = Calendar.getInstance();
+        String currentdate = dateFormat.format(currentCal.getTime());
+        try {
+            Date endDate = dateFormat.parse(currentdate);
+            for (Message message : messages) {
+               if(Math.abs(dateFormat.parse(message.getDate()).getTime()-endDate.getTime())/ (1000 * 60 * 60 * 24) <= 7
+               || message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)
+               || message.getAction().contains(SmsUtils.RTC_BATTERY_LOW_STATUS)){
+                   System.out.println(message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)?message.getAction()+" "+message.getDate()+ " "+message.getTime():
+                           (message.getAction().contains(SmsUtils.RTC_BATTERY_LOW_STATUS)?message.getAction()+" "+message.getDate()+ " "+message.getTime():""));
+                   updatedList.add(message);
+               }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return updatedList;
     }
 
     /*public String getPhoneNumber() {
