@@ -146,6 +146,8 @@ public class Screen_9 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
+                    startActivity(new Intent(Screen_9.this,MainActivity_GSM.class));
+                    finish();
                 }
             }
 

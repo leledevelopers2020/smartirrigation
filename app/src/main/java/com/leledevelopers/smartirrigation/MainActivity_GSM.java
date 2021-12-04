@@ -28,8 +28,8 @@ public class MainActivity_GSM extends SmsServices {
     private SmsReceiver smsReceiver = new SmsReceiver();
     private TextView smsLabel, status;
     private Button connect, resetConnection;
-    private Boolean b,systemDown = false;
-
+    private Boolean b,extra=false,systemDown = false;
+    Intent extraIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println(Build.VERSION.SDK_INT);
@@ -38,6 +38,12 @@ public class MainActivity_GSM extends SmsServices {
         setContentView(R.layout.activity_mainactivity_gsm);
         initViews();
         readUserFile();
+        try {
+            extraIntent=getIntent();
+            extra=extraIntent.getParcelableExtra("newUser");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +79,7 @@ public class MainActivity_GSM extends SmsServices {
                              @Override
                              public void run() {
                                  startActivity(new Intent(MainActivity_GSM.this, Screen_1.class));
+                                 finish();
                              }
                          },1000);
                     }
@@ -147,10 +154,19 @@ public class MainActivity_GSM extends SmsServices {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                       Intent intent=new Intent(MainActivity_GSM.this, Screen_4.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
+                        if(extra)
+                        {
+                            Intent intent=new Intent(MainActivity_GSM.this, Screen_9.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else {
+                            Intent intent = new Intent(MainActivity_GSM.this, Screen_4.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 },1000);
                 break;

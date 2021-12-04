@@ -363,7 +363,9 @@ public class Screen_2_1 extends SmsServices {
                     @Override
                     public void run() {
                         isPasswordSaved = true;
-                        startActivity(new Intent(Screen_2_1.this, MainActivity_GSM.class));
+                        Intent intent=(new Intent(Screen_2_1.this, MainActivity_GSM.class));
+                        intent.putExtra("newUser",true);
+                        startActivity(intent);
                         finish();
                     }
                 }, 1000);
