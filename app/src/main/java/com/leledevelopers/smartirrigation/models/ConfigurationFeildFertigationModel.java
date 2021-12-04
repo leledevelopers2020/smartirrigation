@@ -7,7 +7,8 @@ public class ConfigurationFeildFertigationModel implements Serializable {
     private int wetPeriod;
     private int injectPeriod;
     private int noIterations;
-    private boolean isEnabled;
+    private boolean isEnabled = false;
+    private boolean isModelEmpty = true;
 
     public int getFieldNo() {
         return fieldNo;
@@ -49,6 +50,14 @@ public class ConfigurationFeildFertigationModel implements Serializable {
         isEnabled = enabled;
     }
 
+    public boolean isModelEmpty() {
+        return isModelEmpty;
+    }
+
+    public void setModelEmpty(boolean modelEmpty) {
+        isModelEmpty = modelEmpty;
+    }
+
     @Override
     public String toString() {
         return "ConfigurationFeildFertigationModel{" +
@@ -57,6 +66,7 @@ public class ConfigurationFeildFertigationModel implements Serializable {
                 ", injectPeriod=" + injectPeriod +
                 ", noIterations=" + noIterations +
                 ", isEnabled=" + isEnabled +
+                ", isModelEmpty=" + isModelEmpty +
                 '}';
     }
 }

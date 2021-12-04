@@ -15,6 +15,7 @@ public class ConfigureFieldIrrigationModel implements Serializable {
     private int motorOnTimeHr;
     private int motorOnTimeMins;
     private boolean isEnabled = false;
+    private boolean isModelEmpty = true;
 
     public int getFieldNo() {
         return fieldNo;
@@ -112,6 +113,14 @@ public class ConfigureFieldIrrigationModel implements Serializable {
         isEnabled = enabled;
     }
 
+    public boolean isModelEmpty() {
+        return isModelEmpty;
+    }
+
+    public void setModelEmpty(boolean modelEmpty) {
+        isModelEmpty = modelEmpty;
+    }
+
     @Override
     public String toString() {
         return "ConfigureFieldIrrigationModel{" +
@@ -127,6 +136,7 @@ public class ConfigureFieldIrrigationModel implements Serializable {
                 ", motorOnTimeHr=" + motorOnTimeHr +
                 ", motorOnTimeMins=" + motorOnTimeMins +
                 ", isEnabled=" + isEnabled +
+                ", isModelEmpty=" + isModelEmpty +
                 '}';
     }
 }

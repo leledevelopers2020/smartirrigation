@@ -147,14 +147,16 @@ public class Screen_7 extends SmsServices {
                     }
                     if (isInitial) {
                         disableFiltration.setVisibility(View.INVISIBLE);
-                    } else if (filtrationControlUnitNoDelay_1.getText().toString().equals(model.getFcDelay_1() + "")) {
-                        System.out.println("--->++---> " + "yes");
-                        isEditedDelay_1 = false;
-                        isAnyViewEdited();
-                    } else {
-                        System.out.println("--->++---> " + "No");
-                        isEditedDelay_1 = true;
-                        isAnyViewEdited();
+                    } else if (model.isEnabled()) {
+                        if (filtrationControlUnitNoDelay_1.getText().toString().equals(model.getFcDelay_1() + "")) {
+                            System.out.println("--->++---> " + "yes");
+                            isEditedDelay_1 = false;
+                            isAnyViewEdited();
+                        } else {
+                            System.out.println("--->++---> " + "No");
+                            isEditedDelay_1 = true;
+                            isAnyViewEdited();
+                        }
                     }
                 }
             }
@@ -173,14 +175,16 @@ public class Screen_7 extends SmsServices {
                     }
                     if (isInitial) {
                         disableFiltration.setVisibility(View.INVISIBLE);
-                    } else if (filtrationControlUnitNoDelay_2.getText().toString().equals(model.getFcDelay_2() + "")) {
-                        System.out.println("--->++---> " + "yes");
-                        isEditedDelay_2 = false;
-                        isAnyViewEdited();
-                    } else {
-                        System.out.println("--->++---> " + "No");
-                        isEditedDelay_2 = true;
-                        isAnyViewEdited();
+                    } else if (model.isEnabled()) {
+                        if (filtrationControlUnitNoDelay_2.getText().toString().equals(model.getFcDelay_2() + "")) {
+                            System.out.println("--->++---> " + "yes");
+                            isEditedDelay_2 = false;
+                            isAnyViewEdited();
+                        } else {
+                            System.out.println("--->++---> " + "No");
+                            isEditedDelay_2 = true;
+                            isAnyViewEdited();
+                        }
                     }
                 }
             }
@@ -200,14 +204,16 @@ public class Screen_7 extends SmsServices {
                     }
                     if (isInitial) {
                         disableFiltration.setVisibility(View.INVISIBLE);
-                    } else if (filtrationControlUnitNoDelay_3.getText().toString().equals(model.getFcDelay_3() + "")) {
-                        System.out.println("--->++---> " + "yes");
-                        isEditedDelay_3 = false;
-                        isAnyViewEdited();
-                    } else {
-                        System.out.println("--->++---> " + "No");
-                        isEditedDelay_3 = true;
-                        isAnyViewEdited();
+                    } else if (model.isEnabled()) {
+                        if (filtrationControlUnitNoDelay_3.getText().toString().equals(model.getFcDelay_3() + "")) {
+                            System.out.println("--->++---> " + "yes");
+                            isEditedDelay_3 = false;
+                            isAnyViewEdited();
+                        } else {
+                            System.out.println("--->++---> " + "No");
+                            isEditedDelay_3 = true;
+                            isAnyViewEdited();
+                        }
                     }
                 }
             }
@@ -224,14 +230,16 @@ public class Screen_7 extends SmsServices {
                     }
                     if (isInitial) {
                         disableFiltration.setVisibility(View.INVISIBLE);
-                    } else if (filtrationControlUnitOnTime.getText().toString().equals(model.getFcOnTime() + "")) {
-                        System.out.println("--->++---> " + "yes");
-                        isEditedOnTime = false;
-                        isAnyViewEdited();
-                    } else {
-                        System.out.println("--->++---> " + "No");
-                        isEditedOnTime = true;
-                        isAnyViewEdited();
+                    } else if (model.isEnabled()) {
+                        if (filtrationControlUnitOnTime.getText().toString().equals(model.getFcOnTime() + "")) {
+                            System.out.println("--->++---> " + "yes");
+                            isEditedOnTime = false;
+                            isAnyViewEdited();
+                        } else {
+                            System.out.println("--->++---> " + "No");
+                            isEditedOnTime = true;
+                            isAnyViewEdited();
+                        }
                     }
                 }
             }
@@ -250,14 +258,16 @@ public class Screen_7 extends SmsServices {
                     }
                     if (isInitial) {
                         disableFiltration.setVisibility(View.INVISIBLE);
-                    } else if (filtrationControlUnitSeparation.getText().toString().equals(model.getFcSeperation() + "")) {
-                        System.out.println("--->++---> " + "yes");
-                        isEditedSeparation = false;
-                        isAnyViewEdited();
-                    } else {
-                        System.out.println("--->++---> " + "No");
-                        isEditedSeparation = true;
-                        isAnyViewEdited();
+                    } else if (model.isEnabled()) {
+                        if (filtrationControlUnitSeparation.getText().toString().equals(model.getFcSeperation() + "")) {
+                            System.out.println("--->++---> " + "yes");
+                            isEditedSeparation = false;
+                            isAnyViewEdited();
+                        } else {
+                            System.out.println("--->++---> " + "No");
+                            isEditedSeparation = true;
+                            isAnyViewEdited();
+                        }
                     }
                 }
             }
@@ -265,11 +275,10 @@ public class Screen_7 extends SmsServices {
         filtrationControlUnitSeparation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_DONE)
-                {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     try {
 
-                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     } catch (Exception e) {
                         // TODO: handle exception
@@ -295,6 +304,7 @@ public class Screen_7 extends SmsServices {
         back_7 = findViewById(R.id.back_7);
         status = findViewById(R.id.screen_7_status);
     }
+
     private void disableEditText() {
         filtrationControlUnitNoDelay_1.setFocusableInTouchMode(false);
         filtrationControlUnitNoDelay_2.setFocusableInTouchMode(false);
@@ -302,6 +312,7 @@ public class Screen_7 extends SmsServices {
         filtrationControlUnitOnTime.setFocusableInTouchMode(false);
         filtrationControlUnitSeparation.setFocusableInTouchMode(false);
     }
+
     private void enableEditText() {
         filtrationControlUnitNoDelay_1.setFocusableInTouchMode(true);
         filtrationControlUnitNoDelay_2.setFocusableInTouchMode(true);
@@ -313,22 +324,26 @@ public class Screen_7 extends SmsServices {
 
     private void updateData_And_SendSMS(String typeOfAction) {
         String smsData;
+        model.setFcDelay_1(Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()));
+        model.setFcDelay_2(Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString()));
+        model.setFcDelay_3(Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString()));
+        model.setFcOnTime(Integer.parseInt(filtrationControlUnitOnTime.getText().toString()));
+        model.setFcSeperation(Integer.parseInt(filtrationControlUnitSeparation.getText().toString()));
         if (typeOfAction.equals("enable")) {
-            model.setFcDelay_1(Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()));
-            model.setFcDelay_2(Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString()));
-            model.setFcDelay_3(Integer.parseInt(filtrationControlUnitNoDelay_3.getText().toString()));
-            model.setFcOnTime(Integer.parseInt(filtrationControlUnitOnTime.getText().toString()));
-            model.setFcSeperation(Integer.parseInt(filtrationControlUnitSeparation.getText().toString()));
             model.setEnabled(true);
+            model.setModelEmpty(false);
             System.out.println("after set " + model.toString());
             smsData = smsUtils.OutSMS_8(model.getFcDelay_1() + "", model.getFcDelay_2() + ""
                     , model.getFcDelay_3() + "", model.getFcOnTime() + "",
                     model.getFcSeperation() + "");
             enableFiltration.setVisibility(View.INVISIBLE);
             disableFiltration.setVisibility(View.INVISIBLE);
+            isInitial = false;
         } else {
+            model.setEnabled(false);
+            model.setModelEmpty(false);
             smsData = smsUtils.OutSMS_9;
-            enableFiltration.setVisibility(View.VISIBLE);
+            //enableFiltration.setVisibility(View.VISIBLE);
             disableFiltration.setVisibility(View.INVISIBLE);
         }
         sendMessage(SmsServices.phoneNumber, smsData);
@@ -408,41 +423,42 @@ public class Screen_7 extends SmsServices {
 
 
     private void initializeModel() {
-        if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE)) {
-            try {
-                isInitial = false;
+        try {
+            if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE)) {
                 model = (FiltrationModel) curd_files.getFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE);
                 System.out.println("getting file " + model.toString());
-                if (model.isEnabled()) {
+                if (model.isEnabled() || !model.isModelEmpty()) {
                     System.out.println("isEnabled " + model.isEnabled());
                     filtrationControlUnitNoDelay_1.setText(model.getFcDelay_1() + "");
                     filtrationControlUnitNoDelay_2.setText(model.getFcDelay_2() + "");
                     filtrationControlUnitNoDelay_3.setText(model.getFcDelay_3() + "");
                     filtrationControlUnitOnTime.setText(model.getFcOnTime() + "");
                     filtrationControlUnitSeparation.setText(model.getFcSeperation() + "");
-                //    disableFiltration.setVisibility(View.VISIBLE);
-                    enableFiltration.setVisibility(View.INVISIBLE);
+                    if (model.isEnabled()) {
+                        disableFiltration.setVisibility(View.VISIBLE);
+                        enableFiltration.setVisibility(View.INVISIBLE);
+                    } else {
+                        disableFiltration.setVisibility(View.INVISIBLE);
+                        enableFiltration.setVisibility(View.VISIBLE);
+                    }
+
                 } else {
-                    System.out.println("isEnabled " + model.isEnabled());
-                    filtrationControlUnitNoDelay_1.setText("");
-                    filtrationControlUnitNoDelay_2.setText("");
-                    filtrationControlUnitNoDelay_3.setText("");
-                    filtrationControlUnitOnTime.setText("");
-                    filtrationControlUnitSeparation.setText("");
+                    isInitial = true;
                     disableFiltration.setVisibility(View.INVISIBLE);
-                  //  enableFiltration.setVisibility(View.VISIBLE);
+                    enableFiltration.setVisibility(View.VISIBLE);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            } else {
+                Toast.makeText(Screen_7.this, "NO data", Toast.LENGTH_LONG).show();
+                model = new FiltrationModel();
+                isInitial = true;
+                disableFiltration.setVisibility(View.INVISIBLE);
             }
-        } else {
-            Toast.makeText(Screen_7.this, "NO data", Toast.LENGTH_LONG).show();
-            model = new FiltrationModel();
-            isInitial = true;
-            disableFiltration.setVisibility(View.INVISIBLE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
+
     }
 
     private void cursorVisibility() {
@@ -481,14 +497,14 @@ public class Screen_7 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
-                    Handler handler=new Handler();
+                    Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            startActivity(new Intent(Screen_7.this,MainActivity_GSM.class));
+                            startActivity(new Intent(Screen_7.this, MainActivity_GSM.class));
                             finish();
                         }
-                    },2000);
+                    }, 2000);
                 }
             }
 
@@ -517,22 +533,19 @@ public class Screen_7 extends SmsServices {
 
     public void checkSMS(String message) {
         enableEditText();
-        switch (message) {
-            case SmsUtils.INSMS_8_1: {
+        try {
+            if (message.toLowerCase().contains(SmsUtils.INSMS_8_1.toLowerCase())) {
+                System.out.println("pushing to file " + model.toString());
+                curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Pump Filtration Activated");
-                try {
-                    System.out.println("pushing to file " + model.toString());
-                    curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-            case SmsUtils.INSMS_9_1: {
+            } else if (message.toLowerCase().contains(SmsUtils.INSMS_9_1.toLowerCase())) {
+                System.out.println("pushing to file " + model.toString());
+                curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Pump Filtration De-Activated");
-                break;
             }
+            initializeModel();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        initializeModel();
     }
 }
