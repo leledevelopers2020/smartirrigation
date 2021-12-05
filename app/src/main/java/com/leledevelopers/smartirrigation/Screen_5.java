@@ -834,15 +834,17 @@ public class Screen_5 extends SmsServices {
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                     status.setText(message);
+                    initializeModel();
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_5_1.toLowerCase())) {
                 if(Integer.parseInt(message.substring(SmsUtils.INSMS_5_1.length()).trim()) == model.getFieldNo()){
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                     status.setText("Valve configuration kept on Hold");
+                    initializeModel();
                 }
             }
-            initializeModel();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

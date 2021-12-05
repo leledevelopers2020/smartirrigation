@@ -519,18 +519,20 @@ public class Screen_6 extends SmsServices {
                     System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
                     status.setText("Fertigation Enabled");
+                    initializeModel();
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_6_2.toLowerCase())) {
                 status.setText("Wrong Fertigation time send, fertigation is not enabled");
+                initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase())) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_7_1.length()).trim()) == model.getFieldNo()) {
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
                     status.setText("Fertigation Disabled");
+                    initializeModel();
                 }
             }
-            initializeModel();
         } catch (IOException e) {
             e.printStackTrace();
         }

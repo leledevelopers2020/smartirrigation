@@ -538,12 +538,13 @@ public class Screen_7 extends SmsServices {
                 System.out.println("pushing to file " + model.toString());
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Pump Filtration Activated");
+                initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_9_1.toLowerCase())) {
                 System.out.println("pushing to file " + model.toString());
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Pump Filtration De-Activated");
+                initializeModel();
             }
-            initializeModel();
         } catch (IOException e) {
             e.printStackTrace();
         }
