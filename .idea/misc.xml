@@ -3,26 +3,35 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/drawable/back_nav.xml" value="0.18208469055374593" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/drawable/title_bar_bg.xml" value="0.1984375" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_main.xml" value="0.18229166666666666" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_mainactivity_gsm.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen1.xml" value="0.22" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen10.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen21.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen22.xml" value="0.18229166666666666" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen31.xml" value="0.18229166666666666" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen32.xml" value="0.18229166666666666" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen4.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen5.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen6.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen7.xml" value="0.22" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen8.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_screen9.xml" value="0.22" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/activity_splash_screen.xml" value="0.18229166666666666" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/smartirrigation/app/src/main/res/layout/message.xml" value="0.18229166666666666" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/drawable/button_colours.xml" value="0.18388157894736842" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/drawable/screen_background.xml" value="0.18208469055374593" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/drawable/square_black_border.xml" value="0.18208469055374593" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/drawable/square_black_border_dash.xml" value="0.18208469055374593" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/drawable/square_black_border_round.xml" value="0.17083333333333334" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/drawable/title_bar_bg.xml" value="0.18208469055374593" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/drawable/underline.xml" value="0.152" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/drawable/verticalline.xml" value="0.176" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_main.xml" value="0.1719869706840391" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_mainactivity_gsm.xml" value="0.1719869706840391" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_mainactivity_wifi.xml" value="0.1719869706840391" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen1.xml" value="0.176" />
+        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen1.xml" value="0.1736842105263158" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen10.xml" value="0.16041666666666668" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen21.xml" value="0.176" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen22.xml" value="0.152" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen31.xml" value="0.176" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen32.xml" value="0.1736842105263158" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen4.xml" value="0.16799999999999998" />
-        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen5.xml" value="0.152" />
+        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen4.xml" value="0.1736842105263158" />
+        <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen5.xml" value="0.1736842105263158" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen6.xml" value="0.1736842105263158" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen7.xml" value="0.1719869706840391" />
         <entry key="..\:/Users/shiva/AndroidStudioProjects/smartIrrigation/app/src/main/res/layout/activity_screen8.xml" value="0.1736842105263158" />
