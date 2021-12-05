@@ -25,6 +25,7 @@ public class Screen_10 extends SmsServices {
     EditText noLoadCutoffText, fullLoadCutOffText;
     private Button setMotorLoadThreshold,back_10;
     private TextView status;
+    private boolean validate=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class Screen_10 extends SmsServices {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus)
                 {
-                    if(noLoadCutoffText.getText().toString().length()==0 &&
+                    if(noLoadCutoffText.getText().toString().length()==0 ||
                             validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) )
                     {
                         noLoadCutoffText.getText().clear();
@@ -100,7 +101,7 @@ public class Screen_10 extends SmsServices {
                 if(!hasFocus)
                 {
 
-                    if(fullLoadCutOffText.getText().toString().length()==0 &&
+                    if(fullLoadCutOffText.getText().toString().length()==0 ||
                             validateRange(0,1024,Integer.parseInt(fullLoadCutOffText.getText().toString())))
                     {
 
@@ -133,19 +134,21 @@ public class Screen_10 extends SmsServices {
 
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
-        Boolean validate=true;
-        if(noLoadCutoffTextlocal==""  &&              !(validateRange(0,1024,Integer.parseInt(noLoadCutoffText.getText().toString())) ))
-        {
-            noLoadCutoffText.getText().clear();
-            noLoadCutoffText.setError("Enter a valid value");
-            return false;
-        }
-        if(fullLoadCutOffTextlocal=="" && !(validateRange(0,1024,Integer.parseInt(fullLoadCutOffText.getText().toString()))))
-        {
 
-            fullLoadCutOffText.getText().clear();
-            fullLoadCutOffText.setError("Enter a valid value");
-            return false;
+        try {
+            if (noLoadCutoffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffText.getText().toString())))) {
+                noLoadCutoffText.getText().clear();
+                noLoadCutoffText.setError("Enter a valid value");
+                 validate = false;
+            }
+            if (fullLoadCutOffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffText.getText().toString())))) {
+
+                fullLoadCutOffText.getText().clear();
+                fullLoadCutOffText.setError("Enter a valid value");
+               validate = false;
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
         return validate;
     }

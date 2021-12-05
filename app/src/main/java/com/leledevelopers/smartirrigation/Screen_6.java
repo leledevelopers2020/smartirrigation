@@ -117,6 +117,12 @@ public class Screen_6 extends SmsServices {
         enableFieldFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 if (validateInput() && !systemDown) {
                     disableEditText();
                     cursorVisibility();
@@ -130,6 +136,12 @@ public class Screen_6 extends SmsServices {
         disableFieldFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 if (!systemDown) {
                     disableEditText();
                     updateData_And_SendSMS("disable");
