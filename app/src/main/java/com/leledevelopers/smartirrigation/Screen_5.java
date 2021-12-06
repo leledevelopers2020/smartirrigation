@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -80,6 +81,7 @@ public class Screen_5 extends SmsServices {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d("TAG", modelList.get(position).isEnabled() +"+++++++"+ !modelList.get(position).isModelEmpty());
                 if (modelList.get(position).isEnabled() || !modelList.get(position).isModelEmpty()) {
                     model = modelList.get(position);
                     System.out.println(model.toString());
@@ -523,27 +525,27 @@ public class Screen_5 extends SmsServices {
     }
 
     private void disableEditText() {
-        spinner.setFocusableInTouchMode(false);
-        valveOnPeriod.setFocusableInTouchMode(false);
-        valveOffPeriod.setFocusableInTouchMode(false);
-        soilDryness.setFocusableInTouchMode(false);
-        soilWetness.setFocusableInTouchMode(false);
-        motorOnTime.setFocusableInTouchMode(false);
-        priority.setFocusableInTouchMode(false);
-        cycles.setFocusableInTouchMode(false);
-        wetPeriod.setFocusableInTouchMode(false);
+        spinner.setEnabled(false);
+        valveOnPeriod.setEnabled(false);
+        valveOffPeriod.setEnabled(false);
+        soilDryness.setEnabled(false);
+        soilWetness.setEnabled(false);
+        motorOnTime.setEnabled(false);
+        priority.setEnabled(false);
+        cycles.setEnabled(false);
+        wetPeriod.setEnabled(false);
     }
 
     private void enableEditText() {
-        spinner.setFocusableInTouchMode(true);
-        valveOnPeriod.setFocusableInTouchMode(true);
-        valveOffPeriod.setFocusableInTouchMode(true);
-        soilDryness.setFocusableInTouchMode(true);
-        soilWetness.setFocusableInTouchMode(true);
-        motorOnTime.setFocusableInTouchMode(true);
-        priority.setFocusableInTouchMode(true);
-        cycles.setFocusableInTouchMode(true);
-        wetPeriod.setFocusableInTouchMode(true);
+        spinner.setEnabled(true);
+        valveOnPeriod.setEnabled(true);
+        valveOffPeriod.setEnabled(true);
+        soilDryness.setEnabled(true);
+        soilWetness.setEnabled(true);
+        motorOnTime.setEnabled(true);
+        priority.setEnabled(true);
+        cycles.setEnabled(true);
+        wetPeriod.setEnabled(true);
     }
 
     private boolean validateInput() {

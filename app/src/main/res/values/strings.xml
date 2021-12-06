@@ -18,6 +18,7 @@
 
     <string-array name="languagesArray">
         <item>English</item>
+
     </string-array>
 
     <string-array name="triggerfrom">
