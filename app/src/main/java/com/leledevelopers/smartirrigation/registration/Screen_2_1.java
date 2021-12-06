@@ -60,7 +60,7 @@ public class Screen_2_1 extends SmsServices {
     private CheckBox checkbox1, checkbox2;
     private String smsData;
     Intent intent;
-    Boolean extra=false;
+    Boolean extra = false;
 
 
     @Override
@@ -68,10 +68,9 @@ public class Screen_2_1 extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen21);
         System.out.println("create method 2.1");
-        try
-        {
-            intent=getIntent();
-           extra= intent.getParcelableExtra("Settings");
+        try {
+            intent = getIntent();
+            extra = intent.getParcelableExtra("Settings");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,7 +111,7 @@ public class Screen_2_1 extends SmsServices {
 
                 try {
 
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -135,7 +134,7 @@ public class Screen_2_1 extends SmsServices {
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
                             sendMessage(SmsServices.phoneNumber, smsData);
                             status.setText("Message Sent");
-                         } else {
+                        } else {
                             focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
                     }
@@ -169,58 +168,53 @@ public class Screen_2_1 extends SmsServices {
                 }
             }
         });
-      newPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        newPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
-                    validate(newPassword.getText().toString(),"Newpassword");
+                if (!hasFocus) {
+                    validate(newPassword.getText().toString(), "Newpassword");
 
                 }
             }
         });
-      oldPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        oldPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus)
-                {
-                    validate(oldPassword.getText().toString(),"Oldpassword");
+                if (!hasFocus) {
+                    validate(oldPassword.getText().toString(), "Oldpassword");
 
                 }
             }
         });
-      newPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-          @Override
-          public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-              if(actionId==EditorInfo.IME_ACTION_DONE)
-              {
+        newPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-              }
-              return true;
-          }
-      });
-      newPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-          @Override
-          public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-              if(actionId==EditorInfo.IME_ACTION_DONE)
-              {
-                  status.setText("Status");
+                }
+                return true;
+            }
+        });
+        newPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    status.setText("Status");
 
-                  try {
+                    try {
 
-                      InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                      imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                  } catch (Exception e) {
-                      // TODO: handle exception
-                  }
-                  newPassword.clearFocus();
-              }
-              return true;
-          }
-      });
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                    newPassword.clearFocus();
+                }
+                return true;
+            }
+        });
 
     }
-
 
 
     private boolean validateInput(String oldPasswordlocal, String newPasswordlocal) {
@@ -230,46 +224,40 @@ public class Screen_2_1 extends SmsServices {
         if (p.matcher(oldPasswordlocal).matches() && p.matcher(newPasswordlocal).matches()
                 && oldPasswordlocal.length() == 6 && newPasswordlocal.length() == 6 && !(oldPasswordlocal.equals(newPasswordlocal))) {
             matching = true;
-        }
-        else {
+        } else {
             status.setText("Status");
         }
         return matching;
     }
-    private void validate(String input,String editTextField )
-    {
+
+    private void validate(String input, String editTextField) {
         String regex = "[0-9]+";
         Pattern p = Pattern.compile(regex);
-        if (!(p.matcher(input).matches() && input.length() == 6))
-        {
+        if (!(p.matcher(input).matches() && input.length() == 6)) {
             switchFocus(editTextField);
-        }
-        else {
+        } else {
             status.setText("Status");
         }
 
     }
 
     private void switchFocus(String editTextField) {
-        switch (editTextField)
-        {
+        switch (editTextField) {
             case "Oldpassword": {
 
                 oldPassword.getText().clear();
                 oldPassword.setError("Enter valid 6 digit password");
                 status.setText("Enter valid Old/Factory password");
             }
-                break;
-            case "Newpassword":
-            {
+            break;
+            case "Newpassword": {
 
                 newPassword.getText().clear();
                 newPassword.setError("Enter valid 6 digit password");
                 status.setText("Enter valid new password");
             }
             break;
-            case "Same":
-            {   
+            case "Same": {
                 status.setText("Both Passwords cannot be same");
             }
             break;
@@ -279,14 +267,12 @@ public class Screen_2_1 extends SmsServices {
     private void focus(String oldPasswordlocal, String newPasswordlocal) {
         String regex = "[0-9]+";
 
-        if(oldPasswordlocal.length()!=6 && !(oldPasswordlocal.matches(regex)))
-        {
+        if (oldPasswordlocal.length() != 6 && !(oldPasswordlocal.matches(regex))) {
             oldPassword.getText().clear();
             oldPassword.setError("Enter valid 6 digit password");
             status.setText("Enter valid Old/Factory password");
         }
-        if(newPasswordlocal.length()!=6 &&!(newPasswordlocal.matches(regex)))
-        {
+        if (newPasswordlocal.length() != 6 && !(newPasswordlocal.matches(regex))) {
             newPassword.getText().clear();
             newPassword.setError("Enter valid 6 digit password");
             status.setText("Enter valid new password");
@@ -320,13 +306,12 @@ public class Screen_2_1 extends SmsServices {
             gsmContact.setText(SmsServices.phoneNumber);
         }
     }
+
     private void cursorVisibility() {
-        try{
+        try {
             oldPassword.setCursorVisible(false);
             newPassword.setCursorVisible(false);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -349,43 +334,34 @@ public class Screen_2_1 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        System.out.println("message--> " +message+" "+SmsServices.phoneNumber);
+        System.out.println("message--> " + message + " " + SmsServices.phoneNumber);
         enableEditText();
-        switch (message) {
-            case SmsUtils.INSMS_1_1: {
-                try {
-                    saveFileDetails();
-                    createConfgFiles();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        try {
+            if (message.toLowerCase().contains(SmsUtils.INSMS_1_1.toLowerCase())) {
+                b = false;
+                saveFileDetails();
+                createConfgFiles();
                 status.setText("Admin set successfully");
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         isPasswordSaved = true;
-                        Intent intent=(new Intent(Screen_2_1.this, MainActivity_GSM.class));
-                        intent.putExtra("newUser",true);
+                        Intent intent = (new Intent(Screen_2_1.this, MainActivity_GSM.class));
+                        intent.putExtra("newUser", true);
                         startActivity(intent);
                         finish();
                     }
                 }, 1000);
-                break;
-            }
-            case SmsUtils.INSMS_1_2: {
+            } else if (message.toLowerCase().contains(SmsUtils.INSMS_1_2.toLowerCase())) {
+                b = false;
                 status.setText("Wrong password entered");
                 oldPassword.requestFocus();
-                break;
-            }
-            case SmsUtils.INSMS_3_1: {
+            } else if (message.toLowerCase().contains(SmsUtils.INSMS_3_1.toLowerCase())) {
+                b = false;
                 status.setText("Password changed successfully");
                 isPasswordSaved = true;
-                try {
-                    saveFileDetails();
-                    createConfgFiles();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                saveFileDetails();
+                createConfgFiles();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -393,8 +369,9 @@ public class Screen_2_1 extends SmsServices {
                         finish();
                     }
                 }, 1000);
-                break;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -402,7 +379,7 @@ public class Screen_2_1 extends SmsServices {
     protected void onStart() {
         super.onStart();
         if (!SmsServices.phoneNumber.equals("")) {
-            System.out.println("has phone number = "+SmsServices.phoneNumber);
+            System.out.println("has phone number = " + SmsServices.phoneNumber);
             isGSMSelected = true;
         } else {
             System.out.println("phone number = " + SmsServices.phoneNumber);
@@ -418,13 +395,10 @@ public class Screen_2_1 extends SmsServices {
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
-                b = false;
-                System.out.println("isSetClicked  = " + isSetClicked + "\n systemDown : " + systemDown +" SmsServices.phoneNumber "+SmsServices.phoneNumber + " phoneNumber "+phoneNumber);
+                System.out.println("isSetClicked  = " + isSetClicked + "\n systemDown : " + systemDown + " SmsServices.phoneNumber " + SmsServices.phoneNumber + " phoneNumber " + phoneNumber);
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && isSetClicked && !systemDown) {
-                    System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                     checkSMS(message);
-                } else if(phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s","")) && isSetClicked && !systemDown) {
-                    System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
+                } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && isSetClicked && !systemDown) {
                     checkSMS(message);
                 }
             }
@@ -441,13 +415,13 @@ public class Screen_2_1 extends SmsServices {
 
         });
     }
-    private void enableEditText()
-    {
+
+    private void enableEditText() {
         newPassword.setFocusableInTouchMode(true);
         oldPassword.setFocusableInTouchMode(true);
     }
-    private void disableEditText()
-    {
+
+    private void disableEditText() {
         newPassword.setFocusableInTouchMode(false);
         oldPassword.setFocusableInTouchMode(false);
     }
@@ -459,7 +433,7 @@ public class Screen_2_1 extends SmsServices {
     }
 
     private void createConfgFiles() throws IOException {
-        CURD_Files curd_files  = new CURD_FilesImpl();
+        CURD_Files curd_files = new CURD_FilesImpl();
         if (!curd_files.isFileExists(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME)) {
             curd_files.createEmptyFile(getApplicationContext(), ProjectUtils.CONFG_DIRECTORY_PATH, ProjectUtils.CONFG_IRRIGATION_NAME);
         }
@@ -482,6 +456,7 @@ public class Screen_2_1 extends SmsServices {
                 fos = new FileOutputStream(myExternalFile);
                 String data = SmsServices.phoneNumber;
                 fos.write(data.getBytes());
+                fos.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -495,13 +470,13 @@ public class Screen_2_1 extends SmsServices {
     @Override
     public void onBackPressed() {
 
-        if(!isPasswordSaved){
+        if (!isPasswordSaved) {
             SmsServices.phoneNumber = "";
             isSetClicked = false;
             isGSMSelected = false;
             isPasswordSaved = false;
         }
-        System.out.println("TaG"+extra);
+        System.out.println("TaG" + extra);
         try {
             if (extra) {
                 startActivity(new Intent(Screen_2_1.this, Screen_4.class));
@@ -512,9 +487,8 @@ public class Screen_2_1 extends SmsServices {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
-            Log.d("TAG","finally block :"+extra);
+        } finally {
+            Log.d("TAG", "finally block :" + extra);
             startActivity(new Intent(Screen_2_1.this, Screen_1.class));
             finish();
         }
