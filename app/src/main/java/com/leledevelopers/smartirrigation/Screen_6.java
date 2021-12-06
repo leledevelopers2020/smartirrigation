@@ -64,14 +64,22 @@ public class Screen_6 extends SmsServices {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (modelList.get(position).isEnabled()) {
+                if (modelList.get(position).isEnabled() || !modelList.get(position).isModelEmpty()) {
                     model = modelList.get(position);
                     System.out.println(model.toString());
                     wetPeriod.setText(model.getWetPeriod() + "");
                     injectPeriod.setText(model.getInjectPeriod() + "");
                     noOfIterations.setText(model.getNoIterations() + "");
-                    disableFieldFertigation.setVisibility(View.VISIBLE);
-                    enableFieldFertigation.setVisibility(View.INVISIBLE);
+
+                    if (model.isEnabled()) {
+                        disableFieldFertigation.setVisibility(View.VISIBLE);
+                        enableFieldFertigation.setVisibility(View.INVISIBLE);
+                    } else {
+                        disableFieldFertigation.setVisibility(View.INVISIBLE);
+                        enableFieldFertigation.setVisibility(View.VISIBLE);
+                    }
+                    //disableFieldFertigation.setVisibility(View.VISIBLE);
+                    //enableFieldFertigation.setVisibility(View.INVISIBLE);
                     isInitial = false;
                 } else {
                     isInitial = true;
@@ -162,14 +170,16 @@ public class Screen_6 extends SmsServices {
                     }
                     if (isInitial) {
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
-                    } else if (wetPeriod.getText().toString().equals(model.getWetPeriod() + "")) {
-                        System.out.println();
-                        isEditedWetPeriod = false;
-                        isAnyViewEdited();
-                    } else {
-                        System.out.println("wetPeriod " + model.getWetPeriod());
-                        isEditedWetPeriod = true;
-                        isAnyViewEdited();
+                    } else if (model.isEnabled()) {
+                        if (wetPeriod.getText().toString().equals(model.getWetPeriod() + "")) {
+                            System.out.println();
+                            isEditedWetPeriod = false;
+                            isAnyViewEdited();
+                        } else {
+                            System.out.println("wetPeriod " + model.getWetPeriod());
+                            isEditedWetPeriod = true;
+                            isAnyViewEdited();
+                        }
                     }
                 }
             }
@@ -187,12 +197,14 @@ public class Screen_6 extends SmsServices {
                     }
                     if (isInitial) {
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
-                    } else if (injectPeriod.getText().toString().equals(model.getInjectPeriod() + "")) {
-                        isEditedInjectPeriod = false;
-                        isAnyViewEdited();
-                    } else {
-                        isEditedInjectPeriod = true;
-                        isAnyViewEdited();
+                    } else if (model.isEnabled()) {
+                        if (injectPeriod.getText().toString().equals(model.getInjectPeriod() + "")) {
+                            isEditedInjectPeriod = false;
+                            isAnyViewEdited();
+                        } else {
+                            isEditedInjectPeriod = true;
+                            isAnyViewEdited();
+                        }
                     }
                 }
             }
@@ -209,12 +221,14 @@ public class Screen_6 extends SmsServices {
                     }
                     if (isInitial) {
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
-                    } else if (noOfIterations.getText().toString().equals(model.getNoIterations() + "")) {
-                        isEditedNoOfIterations = false;
-                        isAnyViewEdited();
-                    } else {
-                        isEditedNoOfIterations = true;
-                        isAnyViewEdited();
+                    } else if (model.isEnabled()) {
+                        if (noOfIterations.getText().toString().equals(model.getNoIterations() + "")) {
+                            isEditedNoOfIterations = false;
+                            isAnyViewEdited();
+                        } else {
+                            isEditedNoOfIterations = true;
+                            isAnyViewEdited();
+                        }
                     }
                 }
             }
@@ -222,12 +236,11 @@ public class Screen_6 extends SmsServices {
         noOfIterations.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE)
-                {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                     try {
 
-                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     } catch (Exception e) {
                         // TODO: handle exception
@@ -250,6 +263,7 @@ public class Screen_6 extends SmsServices {
         back_6 = findViewById(R.id.back_6);
         status = findViewById(R.id.screen_6_status);
     }
+
     private void disableEditText() {
 
         spinner.setFocusableInTouchMode(false);
@@ -258,8 +272,8 @@ public class Screen_6 extends SmsServices {
         noOfIterations.setFocusableInTouchMode(false);
 
     }
-    private void enableEditText()
-    {
+
+    private void enableEditText() {
         spinner.setFocusableInTouchMode(true);
         wetPeriod.setFocusableInTouchMode(true);
         injectPeriod.setFocusableInTouchMode(true);
@@ -335,22 +349,28 @@ public class Screen_6 extends SmsServices {
                 if (baseConfigurationFeildFertigationModel.getLastEnabledFieldNo() != -1) {
                     model = modelList.get(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     Toast.makeText(Screen_6.this, model.toString(), Toast.LENGTH_LONG).show();
-                    if (model.isEnabled()) {
+                    if (model.isEnabled() || !model.isModelEmpty()) {
                         spinner.setSelection(model.getFieldNo() - 1);
                         wetPeriod.setText(model.getWetPeriod() + "");
                         injectPeriod.setText(model.getInjectPeriod() + "");
                         noOfIterations.setText(model.getNoIterations() + "");
-                        disableFieldFertigation.setVisibility(View.VISIBLE);
-                        enableFieldFertigation.setVisibility(View.INVISIBLE);
+
+                        if (model.isEnabled()) {
+                            disableFieldFertigation.setVisibility(View.VISIBLE);
+                            enableFieldFertigation.setVisibility(View.INVISIBLE);
+                        } else {
+                            disableFieldFertigation.setVisibility(View.INVISIBLE);
+                            enableFieldFertigation.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         isInitial = true;
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
-                     //   enableFieldFertigation.setVisibility(View.VISIBLE);
+                        enableFieldFertigation.setVisibility(View.VISIBLE);
                     }
                 } else {
                     isInitial = true;
                     disableFieldFertigation.setVisibility(View.INVISIBLE);
-                  //  enableFieldFertigation.setVisibility(View.VISIBLE);
+                    enableFieldFertigation.setVisibility(View.VISIBLE);
                 }
             } else {
                 Toast.makeText(Screen_6.this, "NO data", Toast.LENGTH_LONG).show();
@@ -383,13 +403,14 @@ public class Screen_6 extends SmsServices {
         if (!spinner.getSelectedItem().toString().trim().equals("Pick one")) {
             String smsdata;
             fieldNo = Integer.parseInt(spinner.getSelectedItem().toString());
+            model = modelList.get(fieldNo - 1);
+            model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
+            model.setWetPeriod(Integer.parseInt(wetPeriod.getText().toString()));
+            model.setInjectPeriod(Integer.parseInt(injectPeriod.getText().toString()));
+            model.setNoIterations(Integer.parseInt(noOfIterations.getText().toString()));
             if (typeOfAction.equals("enable")) {
-                model = modelList.get(fieldNo - 1);
-                model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
-                model.setWetPeriod(Integer.parseInt(wetPeriod.getText().toString()));
-                model.setInjectPeriod(Integer.parseInt(injectPeriod.getText().toString()));
-                model.setNoIterations(Integer.parseInt(noOfIterations.getText().toString()));
                 model.setEnabled(true);
+                model.setModelEmpty(false);
                 System.out.println("after set " + model.toString());
                 smsdata = smsUtils.OutSMS_6((model.getFieldNo() < 10 ? String.format("%02d", model.getFieldNo()) : model.getFieldNo() + ""), model.getWetPeriod(),
                         model.getInjectPeriod(), model.getNoIterations());
@@ -399,9 +420,11 @@ public class Screen_6 extends SmsServices {
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
                 isInitial = false;
             } else {
+                model.setEnabled(false);
+                model.setModelEmpty(false);
                 smsdata = smsUtils.OutSMS_7((fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo + ""));
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
-                enableFieldFertigation.setVisibility(View.VISIBLE);
+                //enableFieldFertigation.setVisibility(View.VISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
             }
             sendMessage(SmsServices.phoneNumber, smsdata);
@@ -453,14 +476,14 @@ public class Screen_6 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
-                    Handler handler=new Handler();
+                    Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            startActivity(new Intent(Screen_6.this,MainActivity_GSM.class));
+                            startActivity(new Intent(Screen_6.this, MainActivity_GSM.class));
                             finish();
                         }
-                    },2000);
+                    }, 2000);
                 }
             }
 
@@ -489,24 +512,29 @@ public class Screen_6 extends SmsServices {
 
     public void checkSMS(String message) {
         enableEditText();
-        if (message.toLowerCase().contains(SmsUtils.INSMS_6_1.toLowerCase())) {
-            if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length()).trim()) == model.getFieldNo()) {
-                status.setText("Fertigation Enabled");
-                baseConfigurationFeildFertigationModel.setModelList(modelList);
-                System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
-                try {
+        try {
+            if (message.toLowerCase().contains(SmsUtils.INSMS_6_1.toLowerCase())) {
+                if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length()).trim()) == model.getFieldNo()) {
+                    baseConfigurationFeildFertigationModel.setModelList(modelList);
+                    System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    status.setText("Fertigation Enabled");
+                    initializeModel();
                 }
+            } else if (message.toLowerCase().contains(SmsUtils.INSMS_6_2.toLowerCase())) {
+                status.setText("Wrong Fertigation time send, fertigation is not enabled");
                 initializeModel();
+            } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase())) {
+                if (Integer.parseInt(message.substring(SmsUtils.INSMS_7_1.length()).trim()) == model.getFieldNo()) {
+                    baseConfigurationFeildFertigationModel.setModelList(modelList);
+                    System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
+                    curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
+                    status.setText("Fertigation Disabled");
+                    initializeModel();
+                }
             }
-        } else if (message.toLowerCase().contains(SmsUtils.INSMS_6_2.toLowerCase())) {
-            status.setText("Wrong Fertigation time send, fertigation is not enabled");
-        } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase())) {
-            status.setText("Fertigation Disabled");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-
     }
 }
