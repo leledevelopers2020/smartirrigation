@@ -50,6 +50,7 @@ public class Screen_7 extends SmsServices {
         setContentView(R.layout.activity_screen7);
         initViews();
         initializeModel();
+
         filtrationControlUnitNoDelay_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,7 +253,7 @@ public class Screen_7 extends SmsServices {
                     if (!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
                             filtrationControlUnitSeparation.getText().toString().length() >= 2
                             && validateRange(10, 240, Integer.parseInt(filtrationControlUnitSeparation.getText().toString())))) {
-                        filtrationControlUnitSeparation.requestFocus();
+
                         filtrationControlUnitSeparation.getText().clear();
                         filtrationControlUnitSeparation.setError("Enter a valid value");
                     }
@@ -403,7 +404,6 @@ public class Screen_7 extends SmsServices {
         if (!(filtrationControlUnitSeparation.getText().toString().matches(regex) &&
                 filtrationControlUnitSeparation.getText().toString().length() >= 2
                 && validateRange(10, 240, Integer.parseInt(filtrationControlUnitSeparation.getText().toString())))) {
-            filtrationControlUnitSeparation.requestFocus();
             filtrationControlUnitSeparation.getText().clear();
             filtrationControlUnitSeparation.setError("Enter a valid value");
             return false;
