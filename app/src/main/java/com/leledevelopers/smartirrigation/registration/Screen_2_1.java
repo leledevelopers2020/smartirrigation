@@ -60,17 +60,18 @@ public class Screen_2_1 extends SmsServices {
     private CheckBox checkbox1, checkbox2;
     private String smsData;
     Intent intent;
-    Boolean extra;
+    Boolean extra=false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen21);
+        System.out.println("create method 2.1");
         try
         {
             intent=getIntent();
-           extra=  intent.getParcelableExtra("Settings");
+           extra= intent.getParcelableExtra("Settings");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -442,7 +443,8 @@ public class Screen_2_1 extends SmsServices {
     }
     private void enableEditText()
     {
-
+        newPassword.setFocusableInTouchMode(true);
+        oldPassword.setFocusableInTouchMode(true);
     }
     private void disableEditText()
     {
@@ -499,14 +501,23 @@ public class Screen_2_1 extends SmsServices {
             isGSMSelected = false;
             isPasswordSaved = false;
         }
-        if(extra)
-        {
-            startActivity(new Intent(Screen_2_1.this, Screen_4.class));
+        System.out.println("TaG"+extra);
+        try {
+            if (extra) {
+                startActivity(new Intent(Screen_2_1.this, Screen_4.class));
+                finish();
+            } else {
+                startActivity(new Intent(Screen_2_1.this, Screen_1.class));
+                finish();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            Log.d("TAG","finally block :"+extra);
+            startActivity(new Intent(Screen_2_1.this, Screen_1.class));
             finish();
         }
-        else
-        {
-            super.onBackPressed();
-        }
+
     }
 }
