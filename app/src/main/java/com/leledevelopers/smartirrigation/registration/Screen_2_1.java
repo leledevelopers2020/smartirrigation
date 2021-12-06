@@ -501,15 +501,23 @@ public class Screen_2_1 extends SmsServices {
             isGSMSelected = false;
             isPasswordSaved = false;
         }
-        Log.d("TaG",extra+"");
-        if (extra) {
+        System.out.println("TaG"+extra);
+        try {
+            if (extra) {
                 startActivity(new Intent(Screen_2_1.this, Screen_4.class));
                 finish();
             } else {
                 startActivity(new Intent(Screen_2_1.this, Screen_1.class));
                 finish();
             }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            Log.d("TAG","finally block :"+extra);
+            startActivity(new Intent(Screen_2_1.this, Screen_1.class));
+            finish();
+        }
 
     }
 }
