@@ -458,7 +458,6 @@ public class Screen_6 extends SmsServices {
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
-                b = false;
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                     System.out.println("phoneNumber1 = " + phoneNumber);
@@ -515,6 +514,7 @@ public class Screen_6 extends SmsServices {
         try {
             if (message.toLowerCase().contains(SmsUtils.INSMS_6_1.toLowerCase())) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length()).trim()) == model.getFieldNo()) {
+                    b = false;
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
@@ -522,10 +522,12 @@ public class Screen_6 extends SmsServices {
                     initializeModel();
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_6_2.toLowerCase())) {
+                b = false;
                 status.setText("Wrong Fertigation time send, fertigation is not enabled");
                 initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase())) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_7_1.length()).trim()) == model.getFieldNo()) {
+                    b = false;
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);

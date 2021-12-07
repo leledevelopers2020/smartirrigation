@@ -24,13 +24,14 @@ import java.util.Date;
 public class Screen_9 extends SmsServices {
     private static final String TAG = Screen_9.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
-    private SmsUtils smsUtils=new SmsUtils();
-    private Boolean b,systemDown = false;
+    private SmsUtils smsUtils = new SmsUtils();
+    private Boolean b, systemDown = false;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> adapter;
-    private Button setSystemTime, getSystemTime, updatePassword, setMotorloadCutoff,back_9, save;
+    private Button setSystemTime, getSystemTime, updatePassword, setMotorloadCutoff, back_9, save;
     private TextView status;
-    DecimalFormat mFormat= new DecimalFormat("00");
+    DecimalFormat mFormat = new DecimalFormat("00");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,26 +45,26 @@ public class Screen_9 extends SmsServices {
             @Override
             public void onClick(View v) {
                 try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-                startActivity(new Intent(Screen_9.this,MainActivity_GSM.class));
+                startActivity(new Intent(Screen_9.this, MainActivity_GSM.class));
                 finish();
             }
         });
         setMotorloadCutoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Screen_9.this,Screen_10.class));
+                startActivity(new Intent(Screen_9.this, Screen_10.class));
             }
         });
         updatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Screen_9.this, Screen_2_1.class);
-                intent.putExtra("Settings",true);
+                Intent intent = new Intent(Screen_9.this, Screen_2_1.class);
+                intent.putExtra("Settings", true);
                 startActivity(intent);
                 finish();
             }
@@ -73,16 +74,16 @@ public class Screen_9 extends SmsServices {
             public void onClick(View v) {
                 smsReceiver.waitFor_1_Minute();
                 b = true;
-                Calendar calendar=Calendar.getInstance();
-                DecimalFormat mFormat= new DecimalFormat("00");
-                String smsData=smsUtils.OutSMS_10(  mFormat.format(Double.valueOf(calendar.get(Calendar.DATE)))+"",mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH)+1)))+"",
-                        mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR))%100)) +"",mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY)))+""
-                        ,mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE)))+"", mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND)))+"");
+                Calendar calendar = Calendar.getInstance();
+                DecimalFormat mFormat = new DecimalFormat("00");
+                String smsData = smsUtils.OutSMS_10(mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "", mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "",
+                        mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ""
+                        , mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE))) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND))) + "");
 
                 /*String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
                         (calendar.get(Calendar.YEAR))%100+"",calendar.get(Calendar.HOUR_OF_DAY)+""
                         ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");*/
-                sendMessage(SmsServices.phoneNumber,smsData);
+                sendMessage(SmsServices.phoneNumber, smsData);
                 status.setText("Message Delivered");
             }
         });
@@ -91,8 +92,8 @@ public class Screen_9 extends SmsServices {
             public void onClick(View v) {
                 smsReceiver.waitFor_1_Minute();
                 b = true;
-                String smsData=smsUtils.OutSMS_11;
-                sendMessage(SmsServices.phoneNumber,smsData);
+                String smsData = smsUtils.OutSMS_11;
+                sendMessage(SmsServices.phoneNumber, smsData);
                 status.setText("Message Delivered");
             }
         });
@@ -100,17 +101,16 @@ public class Screen_9 extends SmsServices {
             @Override
             public void onClick(View v) {
                 try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-                startActivity(new Intent(Screen_9.this,Screen_4.class));
+                startActivity(new Intent(Screen_9.this, Screen_4.class));
                 finish();
             }
         });
     }
-
 
 
     @Override
@@ -122,7 +122,7 @@ public class Screen_9 extends SmsServices {
         setMotorloadCutoff = findViewById(R.id.setMotorloadCutoff);
         status = findViewById(R.id.screen_9_status);
         save = findViewById(R.id.save);
-        back_9=findViewById(R.id.back_9);
+        back_9 = findViewById(R.id.back_9);
     }
 
     @Override
@@ -133,7 +133,6 @@ public class Screen_9 extends SmsServices {
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
-                b = false;
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                 } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
@@ -147,7 +146,7 @@ public class Screen_9 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
-                    startActivity(new Intent(Screen_9.this,MainActivity_GSM.class));
+                    startActivity(new Intent(Screen_9.this, MainActivity_GSM.class));
                     finish();
                 }
             }
@@ -167,19 +166,23 @@ public class Screen_9 extends SmsServices {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(Screen_9.this,Screen_4.class));
+        startActivity(new Intent(Screen_9.this, Screen_4.class));
         finish();
     }
 
     public void checkSMS(String message) {
-        if(message.contains(SmsUtils.INSMS_10_1)){
+        if (message.toLowerCase().contains(SmsUtils.INSMS_10_1.toLowerCase())) {
+            b = false;
             status.setText("System time set to current time");
-        } else if(message.contains(SmsUtils.INSMS_10_2)){
+        } else if (message.toLowerCase().contains(SmsUtils.INSMS_10_2.toLowerCase())) {
+            b = false;
             status.setText("System time set failed ");
-        } else if(message.contains(SmsUtils.INSMS_11_1)){
+        } else if (message.toLowerCase().contains(SmsUtils.INSMS_11_1.toLowerCase())) {
+            b = false;
             status.setText(message);
         }
     }
