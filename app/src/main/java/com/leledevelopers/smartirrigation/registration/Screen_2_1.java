@@ -489,6 +489,7 @@ public class Screen_2_1 extends SmsServices {
                 startActivity(new Intent(Screen_2_1.this, Screen_1.class));
                 finish();
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
