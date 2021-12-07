@@ -483,7 +483,6 @@ public class Screen_7 extends SmsServices {
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
-                b = false;
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                 } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
@@ -535,11 +534,13 @@ public class Screen_7 extends SmsServices {
         enableEditText();
         try {
             if (message.toLowerCase().contains(SmsUtils.INSMS_8_1.toLowerCase())) {
+                b = false;
                 System.out.println("pushing to file " + model.toString());
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Pump Filtration Activated");
                 initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_9_1.toLowerCase())) {
+                b = false;
                 System.out.println("pushing to file " + model.toString());
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Pump Filtration De-Activated");

@@ -87,9 +87,9 @@ public class Screen_8 extends SmsServices {
         if (filterType.equals("fields")) {
             int fieldNo = Integer.parseInt(fieldSpinner.getSelectedItem().toString());
             String fieldValue = fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo + "";
-           // System.out.println("fieldValue -->> "+fieldValue);
+            // System.out.println("fieldValue -->> "+fieldValue);
             for (int i = 0; i < messages.size(); i++) {
-                System.out.println("--> "+messages.get(i).getAction().toLowerCase());
+                System.out.println("--> " + messages.get(i).getAction().toLowerCase());
                 if (messages.get(i).getAction().toLowerCase().contains("field no." + fieldValue)
                         || messages.get(i).getAction().toLowerCase().contains("field no. " + fieldValue)
                         || messages.get(i).getAction().contains("Wet Field Detected.")

@@ -833,13 +833,15 @@ public class Screen_5 extends SmsServices {
         try {
             if (message.toLowerCase().contains(SmsUtils.INSMS_4_1.toLowerCase())) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_4_1.length()).trim()) == model.getFieldNo()) {
+                    b = false;
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                     status.setText(message);
                     initializeModel();
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_5_1.toLowerCase())) {
-                if(Integer.parseInt(message.substring(SmsUtils.INSMS_5_1.length()).trim()) == model.getFieldNo()){
+                if (Integer.parseInt(message.substring(SmsUtils.INSMS_5_1.length()).trim()) == model.getFieldNo()) {
+                    b = false;
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                     status.setText("Valve configuration kept on Hold");
@@ -895,13 +897,9 @@ public class Screen_5 extends SmsServices {
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
-                b = false;
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
-
                     checkSMS(message);
                 } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
-                    // System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
-
                     checkSMS(message);
                 }
             }

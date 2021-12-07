@@ -28,10 +28,8 @@ public class MainActivity_GSM extends SmsServices {
     private SmsReceiver smsReceiver = new SmsReceiver();
     private TextView smsLabel, status;
     private Button connect, resetConnection;
-    private Boolean b, systemDown = false;
-    private Intent extraIntent;
-    private Bundle bundle;
-    private Boolean extra=false;
+    private Boolean b, extra = false, systemDown = false;
+    Intent extraIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +40,11 @@ public class MainActivity_GSM extends SmsServices {
         initViews();
         readUserFile();
         try {
-            extraIntent=getIntent();
-            bundle=extraIntent.getExtras();
-            extra=bundle.getBoolean("newUser");
+            extraIntent = getIntent();
+            extra = extraIntent.getParcelableExtra("newUser");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,17 +153,17 @@ public class MainActivity_GSM extends SmsServices {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (extra) {
+                    /*if (extra) {
                         Intent intent = new Intent(MainActivity_GSM.this, Screen_9.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
-                    } else {
+                    } else {*/
                     Intent intent = new Intent(MainActivity_GSM.this, Screen_4.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
-                    }
+                    //}
                 }
             }, 1000);
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_2_2.toLowerCase())) {
