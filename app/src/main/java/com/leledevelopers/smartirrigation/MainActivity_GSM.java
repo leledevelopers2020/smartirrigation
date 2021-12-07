@@ -28,8 +28,12 @@ public class MainActivity_GSM extends SmsServices {
     private SmsReceiver smsReceiver = new SmsReceiver();
     private TextView smsLabel, status;
     private Button connect, resetConnection;
-    private Boolean b,extra=false,systemDown = false;
-    Intent extraIntent;
+    private Boolean b,systemDown = false;
+    private Intent extraIntent;
+    private Bundle bundle;
+    private Boolean extra=false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println(Build.VERSION.SDK_INT);
@@ -40,7 +44,8 @@ public class MainActivity_GSM extends SmsServices {
         readUserFile();
         try {
             extraIntent=getIntent();
-            extra=extraIntent.getParcelableExtra("newUser");
+            bundle=extraIntent.getExtras();
+            extra=bundle.getBoolean("newUser");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -154,6 +159,7 @@ public class MainActivity_GSM extends SmsServices {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        Log.d("tag",extra+"");
                         if(extra)
                         {
                             Intent intent=new Intent(MainActivity_GSM.this, Screen_9.class);
