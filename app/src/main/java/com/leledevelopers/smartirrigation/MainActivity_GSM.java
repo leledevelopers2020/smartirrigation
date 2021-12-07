@@ -159,7 +159,10 @@ public class MainActivity_GSM extends SmsServices {
                         startActivity(intent);
                         finish();
                     } else {*/
- 
+                    Intent intent = new Intent(MainActivity_GSM.this, Screen_4.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                     //}
                 }
             }, 1000);

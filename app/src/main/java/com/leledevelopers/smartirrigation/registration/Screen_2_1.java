@@ -59,8 +59,9 @@ public class Screen_2_1 extends SmsServices {
     private boolean isSetClicked = false, isGSMSelected = false, isPasswordSaved = false;
     private CheckBox checkbox1, checkbox2;
     private String smsData;
-    Intent intent;
-    Boolean extra = false;
+    private Intent intent;
+    private Bundle bundle;
+    private Boolean extra=false;
 
 
     @Override
@@ -68,9 +69,12 @@ public class Screen_2_1 extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen21);
         System.out.println("create method 2.1");
-        try {
-            intent = getIntent();
-            extra = intent.getParcelableExtra("Settings");
+        try
+        {
+            intent=getIntent();
+            bundle=intent.getExtras();
+            if(bundle!=null)
+                extra= bundle.getBoolean("Settings");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -485,12 +489,9 @@ public class Screen_2_1 extends SmsServices {
                 startActivity(new Intent(Screen_2_1.this, Screen_1.class));
                 finish();
             }
+
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            Log.d("TAG", "finally block :" + extra);
-            startActivity(new Intent(Screen_2_1.this, Screen_1.class));
-            finish();
         }
 
     }
