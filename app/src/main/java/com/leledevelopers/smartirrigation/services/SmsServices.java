@@ -110,7 +110,7 @@ public abstract class SmsServices extends AppCompatActivity {
 
                 messageList = getMessages(messageList, baseMessages);
                 messageList = deleteMessages(messageList);
-                System.out.println("size----> "+messageList.size());
+                System.out.println("size----> " + messageList.size());
                 baseMessages.setMessages(messageList);
                 baseMessages.setLastAccessedDate(date);
                 baseMessages.setMessageInitial(false);
@@ -124,7 +124,7 @@ public abstract class SmsServices extends AppCompatActivity {
                 messageList = getMessages(messageList, baseMessages);
                 System.out.println("messageList.size()--> " + messageList.size());
                 messageList = deleteMessages(messageList);
-                System.out.println("size----> "+messageList.size());
+                System.out.println("size----> " + messageList.size());
                 baseMessages.setMessages(messageList);
                 baseMessages.setLastAccessedDate(date);
                 baseMessages.setMessageInitial(false);
@@ -155,6 +155,7 @@ public abstract class SmsServices extends AppCompatActivity {
         //messages.clear();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+        SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String filter = getDateFilter(baseMessages.isMessageInitial(), baseMessages.getLastAccessedDate());
         cursor = context.getContentResolver().query(SMS_INBOX, null, filter, null, null);
 
@@ -169,12 +170,14 @@ public abstract class SmsServices extends AppCompatActivity {
             Date finaldate = calendar.getTime();
             String smsDate = dateFormat.format(finaldate);
             String smsTime = timeFormat.format(finaldate);
+            String smsDateTime = dateTimeFormatter.format(finaldate);
             String smsBody = cursor.getString(cursor.getColumnIndex("body"));
             String phoneNumber = cursor.getString(cursor.getColumnIndex("address"));
             if (phoneNumber.contains(ownerNumber)) {
                 message.setAction(smsBody);
                 message.setDate(smsDate);
                 message.setTime(smsTime);
+                message.setDateTime(smsDateTime);
                 newMessages.add(message);
                 // System.out.println("message --> " + message.toString());
             }
@@ -230,13 +233,13 @@ public abstract class SmsServices extends AppCompatActivity {
         try {
             Date endDate = dateFormat.parse(currentdate);
             for (Message message : messages) {
-               if(Math.abs(dateFormat.parse(message.getDate()).getTime()-endDate.getTime())/ (1000 * 60 * 60 * 24) <= 7
-               || message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)
-               || message.getAction().contains(SmsUtils.RTC_BATTERY_LOW_STATUS)){
-                   System.out.println(message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)?message.getAction()+" "+message.getDate()+ " "+message.getTime():
-                           (message.getAction().contains(SmsUtils.RTC_BATTERY_LOW_STATUS)?message.getAction()+" "+message.getDate()+ " "+message.getTime():""));
-                   updatedList.add(message);
-               }
+                if (Math.abs(dateFormat.parse(message.getDate()).getTime() - endDate.getTime()) / (1000 * 60 * 60 * 24) <= 7
+                        || message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)
+                        || message.getAction().contains(SmsUtils.RTC_BATTERY_LOW_STATUS)) {
+                    System.out.println(message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS) ? message.getAction() + " " + message.getDate() + " " + message.getTime() :
+                            (message.getAction().contains(SmsUtils.RTC_BATTERY_LOW_STATUS) ? message.getAction() + " " + message.getDate() + " " + message.getTime() : ""));
+                    updatedList.add(message);
+                }
             }
         } catch (ParseException e) {
             e.printStackTrace();

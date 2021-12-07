@@ -29,7 +29,8 @@ public class MainActivity_GSM extends SmsServices {
     private TextView smsLabel, status;
     private Button connect, resetConnection;
     private Boolean b, extra = false, systemDown = false;
-    Intent extraIntent;
+    private Intent extraIntent;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,8 @@ public class MainActivity_GSM extends SmsServices {
         readUserFile();
         try {
             extraIntent = getIntent();
-            extra = extraIntent.getParcelableExtra("newUser");
+            bundle = extraIntent.getExtras();
+            extra = bundle.getBoolean("newUser");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -153,17 +155,17 @@ public class MainActivity_GSM extends SmsServices {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    /*if (extra) {
+                    if (extra) {
                         Intent intent = new Intent(MainActivity_GSM.this, Screen_9.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
-                    } else {*/
+                    } else {
                         Intent intent = new Intent(MainActivity_GSM.this, Screen_4.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
-                    //}
+                    }
                 }
             }, 1000);
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_2_2.toLowerCase())) {
