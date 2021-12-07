@@ -28,9 +28,8 @@ public class MainActivity_GSM extends SmsServices {
     private SmsReceiver smsReceiver = new SmsReceiver();
     private TextView smsLabel, status;
     private Button connect, resetConnection;
-    private Boolean b, extra = false, systemDown = false;
+    private Boolean b,extra=false,systemDown = false;
     Intent extraIntent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println(Build.VERSION.SDK_INT);
@@ -40,21 +39,21 @@ public class MainActivity_GSM extends SmsServices {
         initViews();
         readUserFile();
         try {
-            extraIntent = getIntent();
-            extra = extraIntent.getParcelableExtra("newUser");
+            extraIntent=getIntent();
+            extra=extraIntent.getParcelableExtra("newUser");
         } catch (Exception e) {
             e.printStackTrace();
         }
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!systemDown) {
+                if (!systemDown){
                     smsReceiver.waitFor_1_Minute();
                     b = true;
                     sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2);
                     status.setText(SmsUtils.OutSMS_2 + " delivery");
                 }
-                //  startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
+              //  startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
             }
         });
 
@@ -74,15 +73,15 @@ public class MainActivity_GSM extends SmsServices {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
-                        status.setText("Reset Successful");
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(MainActivity_GSM.this, Screen_1.class));
-                                finish();
-                            }
-                        }, 1000);
+                         new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
+                         status.setText("Reset Successful");
+                         handler.postDelayed(new Runnable() {
+                             @Override
+                             public void run() {
+                                 startActivity(new Intent(MainActivity_GSM.this, Screen_1.class));
+                                 finish();
+                             }
+                         },1000);
                     }
                 });
 
@@ -114,9 +113,11 @@ public class MainActivity_GSM extends SmsServices {
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
+                b = false;
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
-                } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
+                } else if(phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s",""))  && !systemDown) {
+                   // System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
                     checkSMS(message);
                 }
             }
@@ -147,35 +148,40 @@ public class MainActivity_GSM extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        if (message.toLowerCase().contains(SmsUtils.INSMS_2_1.toLowerCase())) {
-            b = false;
-            status.setText("Connection Successful");
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    /*if (extra) {
-                        Intent intent = new Intent(MainActivity_GSM.this, Screen_9.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+        switch (message) {
+            case SmsUtils.INSMS_2_1: {
+                status.setText("Connection Successful");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(extra)
+                        {
+                            Intent intent=new Intent(MainActivity_GSM.this, Screen_9.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else {
+                            Intent intent = new Intent(MainActivity_GSM.this, Screen_4.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                },1000);
+                break;
+            }
+            case SmsUtils.INSMS_2_2: {
+                status.setText("Admin Changed, please reauthenticate device");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(MainActivity_GSM.this, Screen_2_1.class));
                         finish();
-                    } else {*/
-                        Intent intent = new Intent(MainActivity_GSM.this, Screen_4.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    //}
-                }
-            }, 1000);
-        } else if (message.toLowerCase().contains(SmsUtils.INSMS_2_2.toLowerCase())) {
-            b = false;
-            status.setText("Admin Changed, please reauthenticate device");
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(MainActivity_GSM.this, Screen_2_1.class));
-                    finish();
-                }
-            }, 1000);
+                    }
+                },1000);
+                break;
+            }
         }
     }
 
