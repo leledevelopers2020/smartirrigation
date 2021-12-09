@@ -43,7 +43,9 @@ public class MainActivity_GSM extends SmsServices {
         try {
             extraIntent = getIntent();
             bundle = extraIntent.getExtras();
-            extra = bundle.getBoolean("newUser");
+            if((bundle!=null)) {
+                extra = bundle.getBoolean("newUser");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
