@@ -307,19 +307,19 @@ public class Screen_7 extends SmsServices {
     }
 
     private void disableEditText() {
-        filtrationControlUnitNoDelay_1.setFocusableInTouchMode(false);
-        filtrationControlUnitNoDelay_2.setFocusableInTouchMode(false);
-        filtrationControlUnitNoDelay_3.setFocusableInTouchMode(false);
-        filtrationControlUnitOnTime.setFocusableInTouchMode(false);
-        filtrationControlUnitSeparation.setFocusableInTouchMode(false);
+        filtrationControlUnitNoDelay_1.setEnabled(false);
+        filtrationControlUnitNoDelay_2.setEnabled(false);
+        filtrationControlUnitNoDelay_3.setEnabled(false);
+        filtrationControlUnitOnTime.setEnabled(false);
+        filtrationControlUnitSeparation.setEnabled(false);
     }
 
     private void enableEditText() {
-        filtrationControlUnitNoDelay_1.setFocusableInTouchMode(true);
-        filtrationControlUnitNoDelay_2.setFocusableInTouchMode(true);
-        filtrationControlUnitNoDelay_3.setFocusableInTouchMode(true);
-        filtrationControlUnitOnTime.setFocusableInTouchMode(true);
-        filtrationControlUnitSeparation.setFocusableInTouchMode(true);
+        filtrationControlUnitNoDelay_1.setEnabled(true);
+        filtrationControlUnitNoDelay_2.setEnabled(true);
+        filtrationControlUnitNoDelay_3.setEnabled(true);
+        filtrationControlUnitOnTime.setEnabled(true);
+        filtrationControlUnitSeparation.setEnabled(true);
     }
 
 

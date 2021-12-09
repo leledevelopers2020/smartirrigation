@@ -266,18 +266,18 @@ public class Screen_6 extends SmsServices {
 
     private void disableEditText() {
 
-        spinner.setFocusableInTouchMode(false);
-        wetPeriod.setFocusableInTouchMode(false);
-        injectPeriod.setFocusableInTouchMode(false);
-        noOfIterations.setFocusableInTouchMode(false);
+        spinner.setEnabled(false);
+        wetPeriod.setEnabled(false);
+        injectPeriod.setEnabled(false);
+        noOfIterations.setEnabled(false);
 
     }
 
     private void enableEditText() {
-        spinner.setFocusableInTouchMode(true);
-        wetPeriod.setFocusableInTouchMode(true);
-        injectPeriod.setFocusableInTouchMode(true);
-        noOfIterations.setFocusableInTouchMode(true);
+        spinner.setEnabled(true);
+        wetPeriod.setEnabled(true);
+        injectPeriod.setEnabled(true);
+        noOfIterations.setEnabled(true);
     }
 
     private void isAnyViewEdited() {
