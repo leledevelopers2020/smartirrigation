@@ -146,7 +146,7 @@ public class Screen_6 extends SmsServices {
                     disableEditText();
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
-                    b = false;
+                    b = true;
                     status.setText("Field No " + fieldNo + " was disabled");
                 }
             }

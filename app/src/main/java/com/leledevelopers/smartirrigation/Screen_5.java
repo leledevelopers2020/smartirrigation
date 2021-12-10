@@ -307,7 +307,7 @@ public class Screen_5 extends SmsServices {
                     disableEditText();
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
-                    b = false;
+                    b = true;
                 }
             }
         });
