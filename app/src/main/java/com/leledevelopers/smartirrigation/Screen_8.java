@@ -31,7 +31,6 @@ public class Screen_8 extends SmsServices {
     RecyclerView recyclerView;
     List<Message> messages = new ArrayList<Message>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +47,9 @@ public class Screen_8 extends SmsServices {
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fieldSpinner.setAdapter(adapter1);
 
-
         adapter2 = ArrayAdapter.createFromResource(getApplicationContext(), R.array.messgesFrom, android.R.layout.simple_spinner_dropdown_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         allSMSSpinner.setAdapter(adapter2);
-
-        printSms();
 
         printFieldSMS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +72,7 @@ public class Screen_8 extends SmsServices {
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
-                    // TODO: handle exception
+                    e.printStackTrace();
                 }
                 startActivity(new Intent(Screen_8.this, Screen_4.class));
                 finish();
@@ -89,16 +85,12 @@ public class Screen_8 extends SmsServices {
         if (filterType.equals("fields")) {
             int fieldNo = Integer.parseInt(fieldSpinner.getSelectedItem().toString());
             String fieldValue = fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo + "";
-            // System.out.println("fieldValue -->> "+fieldValue);
             for (int i = 0; i < messages.size(); i++) {
-                System.out.println("--> " + messages.get(i).getAction().toLowerCase());
                 if (messages.get(i).getAction().toLowerCase().contains("field no." + fieldValue)
                         || messages.get(i).getAction().toLowerCase().contains("field no. " + fieldValue)
                         || messages.get(i).getAction().contains("Wet Field Detected.")
                         || messages.get(i).getAction().contains("Phase failure detected, Suspending all Actions")) {
-                    //System.out.println("---> "+messages.toString());
                     messageArrayList.add(messages.get(i));
-
                 }
                 if (i == messages.size() - 1) {
                     sortMessages(messageArrayList);
@@ -111,8 +103,6 @@ public class Screen_8 extends SmsServices {
             String currentdate = dateFormat.format(currentCal.getTime());
             currentCal.add(Calendar.DATE, -selectedDate);
             String pastDate = dateFormat.format(currentCal.getTime());
-            System.out.println("Selected Date = " + pastDate);
-
             for (int i = 0; i < messages.size(); i++) {
                 if (messages.get(i).getDate().equals(pastDate)) {
                     messageArrayList.add(messages.get(i));
@@ -162,12 +152,6 @@ public class Screen_8 extends SmsServices {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new MessageAdapters(messageList));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-    }
-
-    private void printSms() {
-        for (Message message : messages) {
-            System.out.println(message.toString());
-        }
     }
 
     @Override

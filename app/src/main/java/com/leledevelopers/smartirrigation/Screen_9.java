@@ -2,15 +2,12 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Telephony;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.leledevelopers.smartirrigation.registration.Screen_2_1;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
@@ -19,7 +16,6 @@ import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Screen_9 extends SmsServices {
     private static final String TAG = Screen_9.class.getSimpleName();
@@ -50,7 +46,7 @@ public class Screen_9 extends SmsServices {
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
-                    // TODO: handle exception
+                    e.printStackTrace();
                 }
                 startActivity(new Intent(Screen_9.this, MainActivity_GSM.class));
                 finish();

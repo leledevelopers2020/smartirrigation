@@ -3,7 +3,6 @@ package com.leledevelopers.smartirrigation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -17,9 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leledevelopers.smartirrigation.models.BaseConfigurationFeildFertigationModel;
-import com.leledevelopers.smartirrigation.models.BaseConfigureFieldIrrigationModel;
 import com.leledevelopers.smartirrigation.models.ConfigurationFeildFertigationModel;
-import com.leledevelopers.smartirrigation.models.ConfigureFieldIrrigationModel;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
@@ -66,7 +63,6 @@ public class Screen_6 extends SmsServices {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (modelList.get(position).isEnabled() || !modelList.get(position).isModelEmpty()) {
                     model = modelList.get(position);
-                    System.out.println(model.toString());
                     wetPeriod.setText(model.getWetPeriod() + "");
                     injectPeriod.setText(model.getInjectPeriod() + "");
                     noOfIterations.setText(model.getNoIterations() + "");
@@ -173,11 +169,9 @@ public class Screen_6 extends SmsServices {
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
                     } else if (model.isEnabled()) {
                         if (wetPeriod.getText().toString().equals(model.getWetPeriod() + "")) {
-                            System.out.println();
                             isEditedWetPeriod = false;
                             isAnyViewEdited();
                         } else {
-                            System.out.println("wetPeriod " + model.getWetPeriod());
                             isEditedWetPeriod = true;
                             isAnyViewEdited();
                         }
@@ -289,7 +283,6 @@ public class Screen_6 extends SmsServices {
             disableFieldFertigation.setVisibility(View.VISIBLE);
             enableFieldFertigation.setVisibility(View.INVISIBLE);
         }
-        System.out.println(toString());
     }
 
     @Override
@@ -332,7 +325,6 @@ public class Screen_6 extends SmsServices {
     }
 
     private boolean validateRange(int min, int max, int inputValue) {
-        Log.d("tag", "Validate range min : " + min + " validate range max : " + max + " validate range input val : " + inputValue);
         if (inputValue >= min && inputValue <= max) {
             return true;
         }
@@ -340,16 +332,14 @@ public class Screen_6 extends SmsServices {
     }
 
     private void initializeModel() {
-        System.out.println("-->initializeModel");
         try {
             if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FERTIGATION_FILE)) {
                 //modelList = curd_files.getFileData(Screen_5.this, ProjectUtils.CONFG_FERTIGATION_FILE);
                 baseConfigurationFeildFertigationModel = (BaseConfigurationFeildFertigationModel) curd_files.getFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE);
                 modelList = baseConfigurationFeildFertigationModel.getModelList();
-                System.out.println("--> Last enabled number = " + baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                 if (baseConfigurationFeildFertigationModel.getLastEnabledFieldNo() != -1) {
                     model = modelList.get(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
-                     if (model.isEnabled() || !model.isModelEmpty()) {
+                    if (model.isEnabled() || !model.isModelEmpty()) {
                         spinner.setSelection(model.getFieldNo() - 1);
                         wetPeriod.setText(model.getWetPeriod() + "");
                         injectPeriod.setText(model.getInjectPeriod() + "");
@@ -373,7 +363,6 @@ public class Screen_6 extends SmsServices {
                     enableFieldFertigation.setVisibility(View.VISIBLE);
                 }
             } else {
-                Toast.makeText(Screen_6.this, "NO data", Toast.LENGTH_LONG).show();
                 for (int i = 0; i < 12; i++) {
                     ConfigurationFeildFertigationModel modelData = new ConfigurationFeildFertigationModel();
                     modelData.setFieldNo(i);
@@ -411,9 +400,9 @@ public class Screen_6 extends SmsServices {
             if (typeOfAction.equals("enable")) {
                 model.setEnabled(true);
                 model.setModelEmpty(false);
-                 smsdata = smsUtils.OutSMS_6((model.getFieldNo() < 10 ? String.format("%02d", model.getFieldNo()) : model.getFieldNo() + ""), model.getWetPeriod(),
+                smsdata = smsUtils.OutSMS_6((model.getFieldNo() < 10 ? String.format("%02d", model.getFieldNo()) : model.getFieldNo() + ""), model.getWetPeriod(),
                         model.getInjectPeriod(), model.getNoIterations());
-                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
+                baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
                 enableFieldFertigation.setVisibility(View.INVISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
                 isInitial = false;
@@ -460,7 +449,7 @@ public class Screen_6 extends SmsServices {
                     checkSMS(message);
 
                 } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
-                     checkSMS(message);
+                    checkSMS(message);
                 }
 
             }
@@ -512,7 +501,6 @@ public class Screen_6 extends SmsServices {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
-                    System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
                     status.setText("Fertigation enabled for field no. "+model.getFieldNo());
                     initializeModel();
@@ -525,7 +513,6 @@ public class Screen_6 extends SmsServices {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_7_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
-                    System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
                     status.setText("Fertigation disabled for field no." +model.getFieldNo());
                     initializeModel();

@@ -1,10 +1,8 @@
 package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -12,9 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.leledevelopers.smartirrigation.models.ConfigureFieldIrrigationModel;
 import com.leledevelopers.smartirrigation.models.FiltrationModel;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
@@ -55,35 +51,30 @@ public class Screen_7 extends SmsServices {
             @Override
             public void onClick(View v) {
                 filtrationControlUnitNoDelay_1.setCursorVisible(true);
-                System.out.println("--->++---> " + filtrationControlUnitNoDelay_1.getText().toString() + " & " + model.getFcDelay_1());
             }
         });
         filtrationControlUnitNoDelay_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filtrationControlUnitNoDelay_2.setCursorVisible(true);
-                System.out.println("--->++---> " + filtrationControlUnitNoDelay_2.getText().toString() + " & " + model.getFcDelay_2());
             }
         });
         filtrationControlUnitNoDelay_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filtrationControlUnitNoDelay_3.setCursorVisible(true);
-                System.out.println("--->++---> " + filtrationControlUnitNoDelay_3.getText().toString() + " & " + model.getFcDelay_3());
             }
         });
         filtrationControlUnitOnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filtrationControlUnitOnTime.setCursorVisible(true);
-                System.out.println("--->++---> " + filtrationControlUnitOnTime.getText().toString() + " & " + model.getFcOnTime());
             }
         });
         filtrationControlUnitSeparation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filtrationControlUnitSeparation.setCursorVisible(true);
-                System.out.println("--->++---> " + filtrationControlUnitSeparation.getText().toString() + " & " + model.getFcSeperation());
             }
         });
         enableFiltration.setOnClickListener(new View.OnClickListener() {
@@ -151,11 +142,9 @@ public class Screen_7 extends SmsServices {
                         disableFiltration.setVisibility(View.INVISIBLE);
                     } else if (model.isEnabled()) {
                         if (filtrationControlUnitNoDelay_1.getText().toString().equals(model.getFcDelay_1() + "")) {
-                            System.out.println("--->++---> " + "yes");
                             isEditedDelay_1 = false;
                             isAnyViewEdited();
                         } else {
-                            System.out.println("--->++---> " + "No");
                             isEditedDelay_1 = true;
                             isAnyViewEdited();
                         }
@@ -179,11 +168,9 @@ public class Screen_7 extends SmsServices {
                         disableFiltration.setVisibility(View.INVISIBLE);
                     } else if (model.isEnabled()) {
                         if (filtrationControlUnitNoDelay_2.getText().toString().equals(model.getFcDelay_2() + "")) {
-                            System.out.println("--->++---> " + "yes");
                             isEditedDelay_2 = false;
                             isAnyViewEdited();
                         } else {
-                            System.out.println("--->++---> " + "No");
                             isEditedDelay_2 = true;
                             isAnyViewEdited();
                         }
@@ -208,11 +195,9 @@ public class Screen_7 extends SmsServices {
                         disableFiltration.setVisibility(View.INVISIBLE);
                     } else if (model.isEnabled()) {
                         if (filtrationControlUnitNoDelay_3.getText().toString().equals(model.getFcDelay_3() + "")) {
-                            System.out.println("--->++---> " + "yes");
                             isEditedDelay_3 = false;
                             isAnyViewEdited();
                         } else {
-                            System.out.println("--->++---> " + "No");
                             isEditedDelay_3 = true;
                             isAnyViewEdited();
                         }
@@ -234,11 +219,9 @@ public class Screen_7 extends SmsServices {
                         disableFiltration.setVisibility(View.INVISIBLE);
                     } else if (model.isEnabled()) {
                         if (filtrationControlUnitOnTime.getText().toString().equals(model.getFcOnTime() + "")) {
-                            System.out.println("--->++---> " + "yes");
                             isEditedOnTime = false;
                             isAnyViewEdited();
                         } else {
-                            System.out.println("--->++---> " + "No");
                             isEditedOnTime = true;
                             isAnyViewEdited();
                         }
@@ -262,11 +245,9 @@ public class Screen_7 extends SmsServices {
                         disableFiltration.setVisibility(View.INVISIBLE);
                     } else if (model.isEnabled()) {
                         if (filtrationControlUnitSeparation.getText().toString().equals(model.getFcSeperation() + "")) {
-                            System.out.println("--->++---> " + "yes");
                             isEditedSeparation = false;
                             isAnyViewEdited();
                         } else {
-                            System.out.println("--->++---> " + "No");
                             isEditedSeparation = true;
                             isAnyViewEdited();
                         }
@@ -334,7 +315,6 @@ public class Screen_7 extends SmsServices {
         if (typeOfAction.equals("enable")) {
             model.setEnabled(true);
             model.setModelEmpty(false);
-            System.out.println("after set " + model.toString());
             smsData = smsUtils.OutSMS_8(model.getFcDelay_1() + "", model.getFcDelay_2() + ""
                     , model.getFcDelay_3() + "", model.getFcOnTime() + "",
                     model.getFcSeperation() + "");
@@ -414,8 +394,6 @@ public class Screen_7 extends SmsServices {
     }
 
     private boolean validateRange(int min, int max, int inputValue) {
-        Log.d("tag", "Validate range min : " + min + " validate range max : " + max + " validate range input val : " + inputValue);
-
         if (inputValue >= min && inputValue <= max) {
             return true;
         }
@@ -427,9 +405,7 @@ public class Screen_7 extends SmsServices {
         try {
             if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE)) {
                 model = (FiltrationModel) curd_files.getFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE);
-                System.out.println("getting file " + model.toString());
                 if (model.isEnabled() || !model.isModelEmpty()) {
-                    System.out.println("isEnabled " + model.isEnabled());
                     filtrationControlUnitNoDelay_1.setText(model.getFcDelay_1() + "");
                     filtrationControlUnitNoDelay_2.setText(model.getFcDelay_2() + "");
                     filtrationControlUnitNoDelay_3.setText(model.getFcDelay_3() + "");
@@ -449,7 +425,6 @@ public class Screen_7 extends SmsServices {
                     enableFiltration.setVisibility(View.VISIBLE);
                 }
             } else {
-                Toast.makeText(Screen_7.this, "NO data", Toast.LENGTH_LONG).show();
                 model = new FiltrationModel();
                 isInitial = true;
                 disableFiltration.setVisibility(View.INVISIBLE);
@@ -536,13 +511,11 @@ public class Screen_7 extends SmsServices {
         try {
             if (message.toLowerCase().contains(SmsUtils.INSMS_8_1.toLowerCase())) {
                 b = false;
-                System.out.println("pushing to file " + model.toString());
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Water filtration activated");
                 initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_9_1.toLowerCase())) {
                 b = false;
-                System.out.println("pushing to file " + model.toString());
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Water filtration deactivated");
                 initializeModel();

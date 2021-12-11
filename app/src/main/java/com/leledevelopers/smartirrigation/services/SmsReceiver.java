@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -51,7 +52,7 @@ public class SmsReceiver {
                                 SmsMessage currentMessage = getIncomingMessage(aPdusObj, bundle);
                                 String senderNumber = currentMessage.getDisplayOriginatingAddress();
                                 String message = currentMessage.getDisplayMessageBody();
-                                 smsReceiverBroadcast.onReceiveSms(senderNumber, message);
+                                smsReceiverBroadcast.onReceiveSms(senderNumber, message);
                             }
                         } else {
                         }
@@ -95,7 +96,7 @@ public class SmsReceiver {
         }
     }
 
-    public void waitFor_1_Minute(){
+    public void waitFor_1_Minute() {
         Date date = new Date();
         long d1 = date.getTime();
 
@@ -104,8 +105,8 @@ public class SmsReceiver {
             public void run() {
                 long d2 = new Date().getTime();
 
-                long l = d2-d1;
-                smsReceiverBroadcast.checkTime((((l / (1000 * 60)) % 60))+"");
+                long l = d2 - d1;
+                smsReceiverBroadcast.checkTime((((l / (1000 * 60)) % 60)) + "");
             }
         }, 60 * 1000);
     }
@@ -116,6 +117,7 @@ public class SmsReceiver {
      */
     public interface SmsReceiverBroadcast {
         public void onReceiveSms(String phoneNumber, String message);
+
         public void checkTime(String time);
     }
 }

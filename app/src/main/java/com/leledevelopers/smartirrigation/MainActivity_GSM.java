@@ -3,13 +3,10 @@ package com.leledevelopers.smartirrigation;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 
 import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.registration.Screen_2_1;
@@ -34,14 +31,14 @@ public class MainActivity_GSM extends SmsServices {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-         super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainactivity_gsm);
         initViews();
         readUserFile();
         try {
             extraIntent = getIntent();
             bundle = extraIntent.getExtras();
-            if((bundle!=null)) {
+            if ((bundle != null)) {
                 extra = bundle.getBoolean("newUser");
             }
         } catch (Exception e) {

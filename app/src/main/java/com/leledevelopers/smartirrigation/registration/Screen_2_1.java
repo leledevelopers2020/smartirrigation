@@ -9,8 +9,6 @@ import android.os.Environment;
 import android.provider.ContactsContract;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -27,20 +25,16 @@ import androidx.annotation.Nullable;
 import com.leledevelopers.smartirrigation.MainActivity_GSM;
 import com.leledevelopers.smartirrigation.R;
 import com.leledevelopers.smartirrigation.Screen_4;
-import com.leledevelopers.smartirrigation.Screen_9;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
-import com.leledevelopers.smartirrigation.starter.splashScreen;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -51,10 +45,6 @@ public class Screen_2_1 extends SmsServices {
     private EditText oldPassword, newPassword;
     private TextView status;
     private Button gsmContact, set;
-    private final String fileName = "details.txt";
-    private final String filePath = "MyFileDir";
-    /*String filePhoneNumber = "9912473753";
-    String filePassword = "psw";*/
     private Boolean b, systemDown = false;
     SmsUtils smsUtils = new SmsUtils();
     private boolean isSetClicked = false, isGSMSelected = false, isPasswordSaved = false;
@@ -62,7 +52,7 @@ public class Screen_2_1 extends SmsServices {
     private String smsData;
     private Intent intent;
     private Bundle bundle;
-    private Boolean extra=false;
+    private Boolean extra = false;
 
 
     @Override
@@ -70,18 +60,15 @@ public class Screen_2_1 extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen21);
 
-        try
-        {
-            intent=getIntent();
-            bundle=intent.getExtras();
-            if(bundle!=null)
-                extra= bundle.getBoolean("Settings");
+        try {
+            intent = getIntent();
+            bundle = intent.getExtras();
+            if (bundle != null)
+                extra = bundle.getBoolean("Settings");
         } catch (Exception e) {
             e.printStackTrace();
         }
         initViews();
-
-        System.out.println(TAG + " into");
         this.context = getApplicationContext();
         gsmContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,7 +326,6 @@ public class Screen_2_1 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        System.out.println("message--> " + message + " " + SmsServices.phoneNumber);
         enableEditText();
         try {
             if (message.toLowerCase().contains(SmsUtils.INSMS_1_1.toLowerCase())) {
@@ -384,10 +370,7 @@ public class Screen_2_1 extends SmsServices {
     protected void onStart() {
         super.onStart();
         if (!SmsServices.phoneNumber.equals("")) {
-            System.out.println("has phone number = " + SmsServices.phoneNumber);
             isGSMSelected = true;
-        } else {
-            System.out.println("phone number = " + SmsServices.phoneNumber);
         }
         smsReceiver.setContext(getApplicationContext());
         smsReceiver.startBroadcastReceiver();
@@ -400,7 +383,6 @@ public class Screen_2_1 extends SmsServices {
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
-                System.out.println("isSetClicked  = " + isSetClicked + "\n systemDown : " + systemDown + " SmsServices.phoneNumber " + SmsServices.phoneNumber + " phoneNumber " + phoneNumber);
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && isSetClicked && !systemDown) {
                     checkSMS(message);
                 } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && isSetClicked && !systemDown) {
@@ -413,8 +395,7 @@ public class Screen_2_1 extends SmsServices {
                 if (b) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System not responding, please connect to system again.");
-
+ 
                 }
             }
 
@@ -491,7 +472,6 @@ public class Screen_2_1 extends SmsServices {
                 startActivity(new Intent(Screen_2_1.this, Screen_1.class));
                 finish();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
