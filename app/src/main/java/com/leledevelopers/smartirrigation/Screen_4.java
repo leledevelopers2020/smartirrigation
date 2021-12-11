@@ -50,7 +50,7 @@ public class Screen_4 extends SmsServices {
         configureFieldFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status.setText("Configure field fertigation");
+                status.setText("Configure Field Fertigation");
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -78,7 +78,7 @@ public class Screen_4 extends SmsServices {
         printReportFieldStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                status.setText("Print report for field status");
+                status.setText("Print report For Field Status");
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -92,8 +92,15 @@ public class Screen_4 extends SmsServices {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Screen_4.this, Screen_9.class));
-                finish();
+                status.setText("Settings");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(Screen_4.this, Screen_9.class));
+                        finish();
+                    }
+                }, 1000);
+
             }
         });
     }

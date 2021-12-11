@@ -202,7 +202,7 @@ public class Screen_10 extends SmsServices {
                 if (b) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System Down");
+                    status.setText("System not responding, please connect to system again");
                 }
             }
 
@@ -232,7 +232,7 @@ public class Screen_10 extends SmsServices {
     public void checkSMS(String message) {
         if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase())) {
             b = false;
-            status.setText("MOTOR Load Threshold is Set");
+            status.setText("Motorload thresholds set successfully.");
         }
     }
 }

@@ -126,6 +126,7 @@ public class Screen_6 extends SmsServices {
                 if (validateInput() && !systemDown) {
                     disableEditText();
                     cursorVisibility();
+                    status.setText("Enable fertigation configuration SMS Sent");
                     updateData_And_SendSMS("enable");
                     smsReceiver.waitFor_1_Minute();
                     b = true;
@@ -147,7 +148,7 @@ public class Screen_6 extends SmsServices {
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
                     b = true;
-                    status.setText("Field No " + fieldNo + " was disabled");
+                    status.setText("Disable fertigation configuration SMS Sent");
                 }
             }
         });
@@ -469,7 +470,7 @@ public class Screen_6 extends SmsServices {
                 if (b) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System Down");
+                    status.setText(" System not responding, please connect to system again");
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -513,12 +514,12 @@ public class Screen_6 extends SmsServices {
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
-                    status.setText("Fertigation Enabled");
+                    status.setText("Fertigation enabled for field no. "+model.getFieldNo());
                     initializeModel();
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_6_2.toLowerCase())) {
                 b = false;
-                status.setText("Wrong Fertigation time send, fertigation is not enabled");
+                status.setText("Incorrect values Fertigation not enabled for field no."+model.getFieldNo());
                 initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase())) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_7_1.length()).trim()) == model.getFieldNo()) {
@@ -526,7 +527,7 @@ public class Screen_6 extends SmsServices {
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     System.out.println(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
-                    status.setText("Fertigation Disabled");
+                    status.setText("Fertigation disabled for field no." +model.getFieldNo());
                     initializeModel();
                 }
             }
