@@ -5,11 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.registration.Screen_2_1;
@@ -34,9 +34,7 @@ public class MainActivity_GSM extends SmsServices {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println(Build.VERSION.SDK_INT);
-        System.out.println(SmsServices.phoneNumber.replaceAll("\\s", ""));
-        super.onCreate(savedInstanceState);
+         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainactivity_gsm);
         initViews();
         readUserFile();

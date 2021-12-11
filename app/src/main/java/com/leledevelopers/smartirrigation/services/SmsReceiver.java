@@ -9,11 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
-import android.util.Log;
-import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -55,16 +51,12 @@ public class SmsReceiver {
                                 SmsMessage currentMessage = getIncomingMessage(aPdusObj, bundle);
                                 String senderNumber = currentMessage.getDisplayOriginatingAddress();
                                 String message = currentMessage.getDisplayMessageBody();
-                                Log.d(TAG, "senderNUm = " + senderNumber + " message = " + message);
-                                Toast.makeText(context, "senderNUm = " + senderNumber + " message = " + message, Toast.LENGTH_LONG).show();
-                                smsReceiverBroadcast.onReceiveSms(senderNumber, message);
+                                 smsReceiverBroadcast.onReceiveSms(senderNumber, message);
                             }
                         } else {
-                            Log.d(TAG, "onReceive is null");
                         }
                     }
                 } catch (Exception e) {
-                    Log.d(TAG, "Exception " + e);
                 }
             }
         };
@@ -96,7 +88,7 @@ public class SmsReceiver {
     public void unRegisterBroadCasts() {
         try {
             if (broadcastReceiver != null) {
-                Log.d(TAG, "unregisterReceiver");
+
                 context.unregisterReceiver(broadcastReceiver);
             }
         } catch (Exception e) {
@@ -106,12 +98,12 @@ public class SmsReceiver {
     public void waitFor_1_Minute(){
         Date date = new Date();
         long d1 = date.getTime();
-        Log.d("SmsReceiver", "old time "+d1);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 long d2 = new Date().getTime();
-                Log.d("SmsReceiver", "new time "+d2);
+
                 long l = d2-d1;
                 smsReceiverBroadcast.checkTime((((l / (1000 * 60)) % 60))+"");
             }

@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -54,5 +55,11 @@ public class Screen_1 extends SmsServices {
         gsmButton = findViewById(R.id.screen_1_gsm_button);
         wifiButton = findViewById(R.id.screen_1_wifi_button);
         status = findViewById(R.id.screen_1_status);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        finishAffinity();
     }
 }
