@@ -27,6 +27,8 @@ public class Screen_9 extends SmsServices {
     private Button setSystemTime, getSystemTime, updatePassword, setMotorloadCutoff, back_9, save;
     private TextView status;
     DecimalFormat mFormat = new DecimalFormat("00");
+    Calendar calendar = Calendar.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +72,7 @@ public class Screen_9 extends SmsServices {
             public void onClick(View v) {
                 smsReceiver.waitFor_1_Minute();
                 b = true;
-                Calendar calendar = Calendar.getInstance();
-                DecimalFormat mFormat = new DecimalFormat("00");
+
                 String smsData = smsUtils.OutSMS_10(mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "", mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "",
                         mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ""
                         , mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE))) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND))) + "");
@@ -80,7 +81,7 @@ public class Screen_9 extends SmsServices {
                         (calendar.get(Calendar.YEAR))%100+"",calendar.get(Calendar.HOUR_OF_DAY)+""
                         ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");*/
                 sendMessage(SmsServices.phoneNumber, smsData);
-                status.setText("Message Delivered");
+                status.setText("Date Timestamp SMS Sent");
             }
         });
         getSystemTime.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +91,7 @@ public class Screen_9 extends SmsServices {
                 b = true;
                 String smsData = smsUtils.OutSMS_11;
                 sendMessage(SmsServices.phoneNumber, smsData);
-                status.setText("Message Delivered");
+                status.setText("Get System Timestamp SMS Sent");
             }
         });
         back_9.setOnClickListener(new View.OnClickListener() {
@@ -176,10 +177,11 @@ public class Screen_9 extends SmsServices {
             status.setText("System time set to current time");
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_10_2.toLowerCase())) {
             b = false;
-            status.setText("System time set failed ");
+            status.setText("Failed to set system time, please set system time again");
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_11_1.toLowerCase())) {
             b = false;
-            status.setText(message);
+            status.setText(message+(mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "/"+mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "/"
+                    +mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100))));
         }
     }
 }

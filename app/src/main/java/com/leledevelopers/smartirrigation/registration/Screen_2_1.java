@@ -125,7 +125,7 @@ public class Screen_2_1 extends SmsServices {
                             cursorVisibility();
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
                             sendMessage(SmsServices.phoneNumber, smsData);
-                            status.setText("Message Sent");
+                            status.setText("Password setting message sent");
                         } else {
                             focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
@@ -395,7 +395,7 @@ public class Screen_2_1 extends SmsServices {
                 if (b) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System Down");
+ 
                 }
             }
 
@@ -403,11 +403,13 @@ public class Screen_2_1 extends SmsServices {
     }
 
     private void enableEditText() {
+        gsmContact.setEnabled(true);
         newPassword.setEnabled(true);
         oldPassword.setEnabled(true);
     }
 
     private void disableEditText() {
+        gsmContact.setEnabled(false);
         newPassword.setEnabled(false);
         oldPassword.setEnabled(false);
     }

@@ -51,7 +51,7 @@ public class MainActivity_GSM extends SmsServices {
                     smsReceiver.waitFor_1_Minute();
                     b = true;
                     sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2);
-                    status.setText(SmsUtils.OutSMS_2 + " delivery");
+                    status.setText("Authentication SMS sent");
                 }
                 //  startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
             }
@@ -125,7 +125,7 @@ public class MainActivity_GSM extends SmsServices {
                 if (b) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System Down");
+                    status.setText("System not responding, please connect to system again.");
                 }
             }
 
@@ -148,7 +148,7 @@ public class MainActivity_GSM extends SmsServices {
     public void checkSMS(String message) {
         if (message.toLowerCase().contains(SmsUtils.INSMS_2_1.toLowerCase())) {
             b = false;
-            status.setText("Connection Successful");
+            status.setText("System Connected");
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

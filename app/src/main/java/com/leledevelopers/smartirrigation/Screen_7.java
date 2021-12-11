@@ -89,6 +89,7 @@ public class Screen_7 extends SmsServices {
                 cursorVisibility();
                 if (validateInput() && !systemDown) {
                     disableEditText();
+                    status.setText("Enable filtration SMS Sent");
                     updateData_And_SendSMS("enable");
                     smsReceiver.waitFor_1_Minute();
                     b = true;
@@ -109,7 +110,7 @@ public class Screen_7 extends SmsServices {
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
                     b = false;
-                    status.setText("Disabled");
+                    status.setText("Disable filtration SMS Sent");
                 }
             }
         });
@@ -470,7 +471,7 @@ public class Screen_7 extends SmsServices {
                 if (b) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System Down");
+                    status.setText("System not responding, please connect to system again");
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -511,12 +512,12 @@ public class Screen_7 extends SmsServices {
             if (message.toLowerCase().contains(SmsUtils.INSMS_8_1.toLowerCase())) {
                 b = false;
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
-                status.setText("Pump Filtration Activated");
+                status.setText("Water filtration activated");
                 initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_9_1.toLowerCase())) {
                 b = false;
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
-                status.setText("Pump Filtration De-Activated");
+                status.setText("Water filtration deactivated");
                 initializeModel();
             }
         } catch (IOException e) {

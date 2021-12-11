@@ -274,6 +274,7 @@ public class Screen_5 extends SmsServices {
                 if (validateInput() && !systemDown) {
                     disableEditText();
                     cursorVisibility();
+                    status.setText("Enable Irrigation configuration SMS Sent");
                     updateData_And_SendSMS("enable");
                     smsReceiver.waitFor_1_Minute();
                     b = true;
@@ -293,6 +294,7 @@ public class Screen_5 extends SmsServices {
                 }
                 if (!systemDown) {
                     disableEditText();
+                    status.setText("Disable Irrigation configuration SMS Sent");
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
                     b = true;
@@ -797,7 +799,7 @@ public class Screen_5 extends SmsServices {
                     b = false;
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
-                    status.setText(message);
+                    status.setText(message+ model.getFieldNo());
                     initializeModel();
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_5_1.toLowerCase())) {
@@ -805,7 +807,7 @@ public class Screen_5 extends SmsServices {
                     b = false;
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
-                    status.setText("Valve configuration kept on Hold");
+                    status.setText(message+model.getFieldNo());
                     initializeModel();
                 }
             }
@@ -870,7 +872,7 @@ public class Screen_5 extends SmsServices {
                     disableEditText();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System Down");
+                    status.setText("System not responding, please connect to system again");
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
