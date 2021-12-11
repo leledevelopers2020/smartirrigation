@@ -395,7 +395,7 @@ public class Screen_2_1 extends SmsServices {
                 if (b) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
- 
+                    status.setText("System not responding, please connect to system again");
                 }
             }
 
