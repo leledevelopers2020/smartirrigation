@@ -1,33 +1,19 @@
 package com.leledevelopers.smartirrigation.starter;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.leledevelopers.smartirrigation.R;
-import com.leledevelopers.smartirrigation.Screen_5;
-import com.leledevelopers.smartirrigation.models.BaseMessages;
-import com.leledevelopers.smartirrigation.models.Message;
-import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.MainActivity_GSM;
-import com.leledevelopers.smartirrigation.services.CURD_Files;
+import com.leledevelopers.smartirrigation.R;
+import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.services.SmsServices;
-import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public class splashScreen extends SmsServices {
     boolean registered; ///this value is based on database if available it is set to true or else set to false;

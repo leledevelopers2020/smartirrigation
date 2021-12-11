@@ -1,7 +1,6 @@
 package com.leledevelopers.smartirrigation;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -99,11 +98,11 @@ public class Screen_4 extends SmsServices {
     }
 
     private void filterMessages() {
-        int i=0;
+        int i = 0;
         boolean isRTC = false;
         for (Message message :
                 messages) {
-             if (message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)) {
+            if (message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)) {
                 rtcBattery.setImageResource(0);
                 rtcBattery.setImageResource(R.drawable.full_battery_green);
                 isRTC = true;
@@ -114,7 +113,7 @@ public class Screen_4 extends SmsServices {
                 isRTC = true;
             }
         }
-        if(!isRTC){
+        if (!isRTC) {
             rtcBattery.setImageResource(R.drawable.empty_battery);
         }
     }
