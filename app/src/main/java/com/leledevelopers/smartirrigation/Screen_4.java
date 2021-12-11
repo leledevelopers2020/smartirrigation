@@ -103,8 +103,7 @@ public class Screen_4 extends SmsServices {
         boolean isRTC = false;
         for (Message message :
                 messages) {
-            System.out.println("message------>>>>> "+(i++) + message.toString());
-            if (message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)) {
+             if (message.getAction().contains(SmsUtils.RTC_BATTERY_FULL_STATUS)) {
                 rtcBattery.setImageResource(0);
                 rtcBattery.setImageResource(R.drawable.full_battery_green);
                 isRTC = true;

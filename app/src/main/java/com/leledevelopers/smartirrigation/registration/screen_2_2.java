@@ -1,5 +1,6 @@
 package com.leledevelopers.smartirrigation.registration;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.leledevelopers.smartirrigation.R;
@@ -22,5 +23,11 @@ public class screen_2_2 extends SmsServices {
     @Override
     public void initViews() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(screen_2_2.this,Screen_1.class));
+        finish();
     }
 }

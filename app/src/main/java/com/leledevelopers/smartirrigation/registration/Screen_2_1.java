@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.provider.ContactsContract;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -68,7 +69,7 @@ public class Screen_2_1 extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen21);
-        System.out.println("create method 2.1");
+
         try
         {
             intent=getIntent();
@@ -79,7 +80,7 @@ public class Screen_2_1 extends SmsServices {
             e.printStackTrace();
         }
         initViews();
-        Toast.makeText(Screen_2_1.this, TAG, Toast.LENGTH_LONG).show();
+
         System.out.println(TAG + " into");
         this.context = getApplicationContext();
         gsmContact.setOnClickListener(new View.OnClickListener() {
@@ -421,13 +422,13 @@ public class Screen_2_1 extends SmsServices {
     }
 
     private void enableEditText() {
-        newPassword.setFocusableInTouchMode(true);
-        oldPassword.setFocusableInTouchMode(true);
+        newPassword.setEnabled(true);
+        oldPassword.setEnabled(true);
     }
 
     private void disableEditText() {
-        newPassword.setFocusableInTouchMode(false);
-        oldPassword.setFocusableInTouchMode(false);
+        newPassword.setEnabled(false);
+        oldPassword.setEnabled(false);
     }
 
     @Override
@@ -467,20 +468,19 @@ public class Screen_2_1 extends SmsServices {
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(Screen_2_1.this, "PLease select proper GSM number or enter correct otp/old password", Toast.LENGTH_LONG).show();
+            Toast.makeText(Screen_2_1.this, "PLease select proper GSM number", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onBackPressed() {
-
         if (!isPasswordSaved) {
             SmsServices.phoneNumber = "";
             isSetClicked = false;
             isGSMSelected = false;
             isPasswordSaved = false;
         }
-        System.out.println("TaG" + extra);
+
         try {
             if (extra) {
                 startActivity(new Intent(Screen_2_1.this, Screen_4.class));

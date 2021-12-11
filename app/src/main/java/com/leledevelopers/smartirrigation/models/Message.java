@@ -6,6 +6,7 @@ public class Message implements Serializable {
     private String action;
     private String date;
     private String time;
+    private String dateTime;
 
     public String getAction() {
         return action;
@@ -31,12 +32,21 @@ public class Message implements Serializable {
         this.time = time;
     }
 
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
                 "action='" + action + '\'' +
                 ", date='" + date + '\'' +
                 ", time='" + time + '\'' +
+                ", dateTime='" + dateTime + '\'' +
                 '}';
     }
 }

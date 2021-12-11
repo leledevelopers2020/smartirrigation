@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Screen_8 extends SmsServices {
@@ -99,7 +101,7 @@ public class Screen_8 extends SmsServices {
 
                 }
                 if (i == messages.size() - 1) {
-                    startRecyclerView(messageArrayList);
+                    sortMessages(messageArrayList);
                 }
             }
         } else if (filterType.equals("date")) {
@@ -116,10 +118,16 @@ public class Screen_8 extends SmsServices {
                     messageArrayList.add(messages.get(i));
                 }
                 if (i == messages.size() - 1) {
-                    startRecyclerView(messageArrayList);
+                    sortMessages(messageArrayList);
                 }
             }
         }
+    }
+
+    private void sortMessages(List<Message> messageArrayList) {
+        Collections.sort(messageArrayList, new SortByDate());
+        messageArrayList = reverseMessageList(messageArrayList);
+        startRecyclerView(messageArrayList);
     }
 
     private int spinnerIntValue(String value) {
@@ -177,6 +185,26 @@ public class Screen_8 extends SmsServices {
         super.onBackPressed();
         startActivity(new Intent(Screen_8.this, Screen_4.class));
         finish();
+    }
+
+    private List<Message> reverseMessageList(List<Message> messages) {
+        if (messages.size() <= 1) {
+            return messages;
+        }
+        for (int i = 0; i < messages.size() / 2; i++) {
+            Message temp1 = messages.get(i);
+            Message temp2 = messages.get(messages.size() - 1 - i);
+            messages.set(i, temp2);
+            messages.set(messages.size() - 1 - i, temp1);
+        }
+        return messages;
+    }
+
+    static class SortByDate implements Comparator<Message> {
+        @Override
+        public int compare(Message a, Message b) {
+            return a.getDateTime().compareTo(b.getDateTime());
+        }
     }
 }
 

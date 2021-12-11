@@ -146,7 +146,7 @@ public class Screen_6 extends SmsServices {
                     disableEditText();
                     updateData_And_SendSMS("disable");
                     smsReceiver.waitFor_1_Minute();
-                    b = false;
+                    b = true;
                     status.setText("Field No " + fieldNo + " was disabled");
                 }
             }
@@ -266,18 +266,18 @@ public class Screen_6 extends SmsServices {
 
     private void disableEditText() {
 
-        spinner.setFocusableInTouchMode(false);
-        wetPeriod.setFocusableInTouchMode(false);
-        injectPeriod.setFocusableInTouchMode(false);
-        noOfIterations.setFocusableInTouchMode(false);
+        spinner.setEnabled(false);
+        wetPeriod.setEnabled(false);
+        injectPeriod.setEnabled(false);
+        noOfIterations.setEnabled(false);
 
     }
 
     private void enableEditText() {
-        spinner.setFocusableInTouchMode(true);
-        wetPeriod.setFocusableInTouchMode(true);
-        injectPeriod.setFocusableInTouchMode(true);
-        noOfIterations.setFocusableInTouchMode(true);
+        spinner.setEnabled(true);
+        wetPeriod.setEnabled(true);
+        injectPeriod.setEnabled(true);
+        noOfIterations.setEnabled(true);
     }
 
     private void isAnyViewEdited() {
@@ -348,8 +348,7 @@ public class Screen_6 extends SmsServices {
                 System.out.println("--> Last enabled number = " + baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
                 if (baseConfigurationFeildFertigationModel.getLastEnabledFieldNo() != -1) {
                     model = modelList.get(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
-                    Toast.makeText(Screen_6.this, model.toString(), Toast.LENGTH_LONG).show();
-                    if (model.isEnabled() || !model.isModelEmpty()) {
+                     if (model.isEnabled() || !model.isModelEmpty()) {
                         spinner.setSelection(model.getFieldNo() - 1);
                         wetPeriod.setText(model.getWetPeriod() + "");
                         injectPeriod.setText(model.getInjectPeriod() + "");
@@ -411,11 +410,9 @@ public class Screen_6 extends SmsServices {
             if (typeOfAction.equals("enable")) {
                 model.setEnabled(true);
                 model.setModelEmpty(false);
-                System.out.println("after set " + model.toString());
-                smsdata = smsUtils.OutSMS_6((model.getFieldNo() < 10 ? String.format("%02d", model.getFieldNo()) : model.getFieldNo() + ""), model.getWetPeriod(),
+                 smsdata = smsUtils.OutSMS_6((model.getFieldNo() < 10 ? String.format("%02d", model.getFieldNo()) : model.getFieldNo() + ""), model.getWetPeriod(),
                         model.getInjectPeriod(), model.getNoIterations());
-                System.out.println("fieldNo = " + fieldNo);
-                baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
+                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
                 enableFieldFertigation.setVisibility(View.INVISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
                 isInitial = false;
@@ -460,11 +457,9 @@ public class Screen_6 extends SmsServices {
             public void onReceiveSms(String phoneNumber, String message) {
                 if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
-                    System.out.println("phoneNumber1 = " + phoneNumber);
-                    System.out.println("phoneNumber2 = " + SmsServices.phoneNumber.trim());
+
                 } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
-                    // System.out.println("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
-                    checkSMS(message);
+                     checkSMS(message);
                 }
 
             }
