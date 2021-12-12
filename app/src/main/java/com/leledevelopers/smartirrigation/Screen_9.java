@@ -28,7 +28,9 @@ public class Screen_9 extends SmsServices {
     private TextView status;
     DecimalFormat mFormat = new DecimalFormat("00");
     Calendar calendar = Calendar.getInstance();
-
+    private double randomNumber;
+    private boolean isSetTimeClicked = false;
+    private boolean isGetTimeClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +73,10 @@ public class Screen_9 extends SmsServices {
             @Override
             public void onClick(View v) {
                 disableButtons();
-                smsReceiver.waitFor_1_Minute();
+                randomNumber = Math.random();
+                smsReceiver.waitFor_1_Minute(randomNumber);
                 b = true;
+                isSetTimeClicked = true;
                 String smsData = smsUtils.OutSMS_10(mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "", mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "",
                         mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ""
                         , mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE))) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND))) + "");
@@ -88,8 +92,10 @@ public class Screen_9 extends SmsServices {
             @Override
             public void onClick(View v) {
                 disableButtons();
-                smsReceiver.waitFor_1_Minute();
+                randomNumber = Math.random();
+                smsReceiver.waitFor_1_Minute(randomNumber);
                 b = true;
+                isGetTimeClicked = true;
                 String smsData = smsUtils.OutSMS_11;
                 sendMessage(SmsServices.phoneNumber, smsData);
                 status.setText("Get System Timestamp SMS Sent");
@@ -110,16 +116,15 @@ public class Screen_9 extends SmsServices {
         });
     }
 
-    private void enableButtons()
-    {
-       spinner.setEnabled(true);
-       setSystemTime.setEnabled(true);
-       getSystemTime.setEnabled(true);
-       updatePassword.setEnabled(true);
-       setMotorloadCutoff.setEnabled(true);
+    private void enableButtons() {
+        spinner.setEnabled(true);
+        setSystemTime.setEnabled(true);
+        getSystemTime.setEnabled(true);
+        updatePassword.setEnabled(true);
+        setMotorloadCutoff.setEnabled(true);
     }
-    private void disableButtons()
-    {
+
+    private void disableButtons() {
         spinner.setEnabled(false);
         setSystemTime.setEnabled(false);
         getSystemTime.setEnabled(false);
@@ -155,12 +160,12 @@ public class Screen_9 extends SmsServices {
             }
 
             @Override
-            public void checkTime(String time) {
-                if (b) {
+            public void checkTime(double randomValue) {
+                if (b && (randomNumber == randomValue)) {
                     enableButtons();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System Down");
+                    status.setText(SmsUtils.SYSTEM_DOWN);
                     startActivity(new Intent(Screen_9.this, MainActivity_GSM.class));
                     finish();
                 }
@@ -190,17 +195,21 @@ public class Screen_9 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        enableButtons();
-        if (message.toLowerCase().contains(SmsUtils.INSMS_10_1.toLowerCase())) {
+        if (message.toLowerCase().contains(SmsUtils.INSMS_10_1.toLowerCase()) && isSetTimeClicked) {
             b = false;
+            isSetTimeClicked = false;
             status.setText("System time set to current time");
+            enableButtons();
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_10_2.toLowerCase())) {
             b = false;
             status.setText("Failed to set system time, please set system time again");
-        } else if (message.toLowerCase().contains(SmsUtils.INSMS_11_1.toLowerCase())) {
+            enableButtons();
+        } else if (message.toLowerCase().contains(SmsUtils.INSMS_11_1.toLowerCase()) && isGetTimeClicked) {
             b = false;
-            status.setText(message+(mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "/"+mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "/"
-                    +mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100))));
+            isGetTimeClicked = false;
+            status.setText(message + (mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "/" + mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "/"
+                    + mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100))));
+            enableButtons();
         }
     }
 }

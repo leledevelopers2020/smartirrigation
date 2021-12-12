@@ -24,6 +24,8 @@ public class Screen_10 extends SmsServices {
     private Button setMotorLoadThreshold, back_10;
     private TextView status;
     private boolean validate = true;
+    private double randomNumber;
+    private boolean isSetMotorLoadClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +46,12 @@ public class Screen_10 extends SmsServices {
 
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    sendMessage(SmsServices.phoneNumber,smsData);
-                    smsReceiver.waitFor_1_Minute();
+                    sendMessage(SmsServices.phoneNumber, smsData);
+                    randomNumber = Math.random();
+                    smsReceiver.waitFor_1_Minute(randomNumber);
                     b = true;
+                    isSetMotorLoadClicked = true;
                     status.setText("Message Delivered");
-
-
-
                 }
             }
         });
@@ -96,7 +97,7 @@ public class Screen_10 extends SmsServices {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    Log.d("tag",fullLoadCutOffText.getText().toString()  +"full " +fullLoadCutOffText.getText().toString().length() );
+                    Log.d("tag", fullLoadCutOffText.getText().toString() + "full " + fullLoadCutOffText.getText().toString().length());
                     if (fullLoadCutOffText.getText().toString().length() == 0 ||
                             !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffText.getText().toString())))) {
 
@@ -127,7 +128,7 @@ public class Screen_10 extends SmsServices {
 
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
-        Log.d("tag",fullLoadCutOffTextlocal +"full   "+noLoadCutoffTextlocal);
+        Log.d("tag", fullLoadCutOffTextlocal + "full   " + noLoadCutoffTextlocal);
 
         try {
             if (noLoadCutoffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
@@ -199,11 +200,11 @@ public class Screen_10 extends SmsServices {
             }
 
             @Override
-            public void checkTime(String time) {
-                if (b) {
+            public void checkTime(double randomValue) {
+                if (b && (randomNumber == randomValue)) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System not responding, please connect to system again");
+                    status.setText(SmsUtils.SYSTEM_DOWN);
                 }
             }
 
@@ -231,8 +232,9 @@ public class Screen_10 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase())) {
+        if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase()) && isSetMotorLoadClicked) {
             b = false;
+            isSetMotorLoadClicked = false;
             status.setText("Motorload thresholds set successfully.");
             handler.postDelayed(new Runnable() {
                 @Override

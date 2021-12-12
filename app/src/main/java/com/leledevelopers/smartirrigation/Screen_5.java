@@ -63,7 +63,10 @@ public class Screen_5 extends SmsServices {
     private boolean isEditedCycles = false;
     private boolean isEditedWetPeriod = false;
     private boolean isInitial = false;
+    private boolean isEnabledClicked = false;
+    private boolean isDisabledClicked = false;
     private TimePickerDialog timePickerDialog;
+    private double randomNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,13 +119,6 @@ public class Screen_5 extends SmsServices {
 
             }
         });
-        /*wetPeriod.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });*/
 
         wetPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -236,16 +232,6 @@ public class Screen_5 extends SmsServices {
 
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 timePickerDialog.updateTime(hour, min);
-                /*try {
-                    timePickerDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.d("Tag","hello this is ");
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
                 timePickerDialog.show();
             }
         });
@@ -276,8 +262,11 @@ public class Screen_5 extends SmsServices {
                     cursorVisibility();
                     status.setText("Enable Irrigation configuration SMS Sent");
                     updateData_And_SendSMS("enable");
-                    smsReceiver.waitFor_1_Minute();
+                    randomNumber = Math.random();
+                    System.out.println("randomNumber at 5th en---> " + randomNumber);
+                    smsReceiver.waitFor_1_Minute(randomNumber);
                     b = true;
+                    isEnabledClicked = true;
                 }
             }
         });
@@ -296,8 +285,11 @@ public class Screen_5 extends SmsServices {
                     disableEditText();
                     status.setText("Disable Irrigation configuration SMS Sent");
                     updateData_And_SendSMS("disable");
-                    smsReceiver.waitFor_1_Minute();
+                    randomNumber = Math.random();
+                    System.out.println("randomNumber at 5th den---> " + randomNumber);
+                    smsReceiver.waitFor_1_Minute(randomNumber);
                     b = true;
+                    isDisabledClicked = true;
                 }
             }
         });
@@ -776,22 +768,25 @@ public class Screen_5 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        enableEditText();
         try {
-            if (message.toLowerCase().contains(SmsUtils.INSMS_4_1.toLowerCase())) {
+            if (message.toLowerCase().contains(SmsUtils.INSMS_4_1.toLowerCase()) && isEnabledClicked) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_4_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
+                    isEnabledClicked = false;
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                     status.setText(message);
+                    enableEditText();
                     initializeModel();
                 }
-            } else if (message.toLowerCase().contains(SmsUtils.INSMS_5_1.toLowerCase())) {
+            } else if (message.toLowerCase().contains(SmsUtils.INSMS_5_1.toLowerCase()) && isDisabledClicked) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_5_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
+                    isDisabledClicked = false;
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                     status.setText(message);
+                    enableEditText();
                     initializeModel();
                 }
             }
@@ -851,12 +846,13 @@ public class Screen_5 extends SmsServices {
             }
 
             @Override
-            public void checkTime(String time) {
-                if (b) {
+            public void checkTime(double randomValue) {
+                System.out.println("rValue at 5th screen ---> " + randomValue + " and current value " + randomNumber + " and b = " + b + " and randomNumber vs rValue " + (randomNumber == randomValue));
+                if (b && (randomNumber == randomValue)) {
                     disableEditText();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System not responding, please connect to system again");
+                    status.setText(SmsUtils.SYSTEM_DOWN);
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -881,6 +877,7 @@ public class Screen_5 extends SmsServices {
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+
     }
 
     @Override
