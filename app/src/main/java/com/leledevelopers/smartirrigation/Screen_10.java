@@ -43,7 +43,7 @@ public class Screen_10 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (validateInput(noLoadCutoffText.getText().toString(), fullLoadCutOffText.getText().toString()) && !systemDown) {
-
+                    disableEditText();
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
                     sendMessage(SmsServices.phoneNumber, smsData);
@@ -203,8 +203,16 @@ public class Screen_10 extends SmsServices {
             public void checkTime(double randomValue) {
                 if (b && (randomNumber == randomValue)) {
                     systemDown = true;
+                    disableEditText();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Screen_10.this, Screen_9.class));
+                            finish();
+                        }
+                    }, 5000);
                 }
             }
 
@@ -232,17 +240,12 @@ public class Screen_10 extends SmsServices {
     }
 
     public void checkSMS(String message) {
+        enableEditText();
         if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase()) && isSetMotorLoadClicked) {
             b = false;
             isSetMotorLoadClicked = false;
             status.setText("Motorload thresholds set successfully.");
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(Screen_10.this, Screen_9.class));
-                    finish();
-                }
-            }, 1000);
+
         }
     }
 }
