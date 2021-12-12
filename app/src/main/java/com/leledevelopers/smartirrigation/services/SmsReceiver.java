@@ -96,19 +96,13 @@ public class SmsReceiver {
         }
     }
 
-    public void waitFor_1_Minute() {
-        Date date = new Date();
-        long d1 = date.getTime();
-
+    public void waitFor_1_Minute(double random) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                long d2 = new Date().getTime();
-
-                long l = d2 - d1;
-                smsReceiverBroadcast.checkTime((((l / (1000 * 60)) % 60)) + "");
+                smsReceiverBroadcast.checkTime(random);
             }
-        }, 60 * 1000);
+        }, 60 * 2000);
     }
 
     /**
@@ -118,6 +112,6 @@ public class SmsReceiver {
     public interface SmsReceiverBroadcast {
         public void onReceiveSms(String phoneNumber, String message);
 
-        public void checkTime(String time);
+        public void checkTime(double randomValue);
     }
 }

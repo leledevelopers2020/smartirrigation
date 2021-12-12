@@ -28,6 +28,7 @@ public class MainActivity_GSM extends SmsServices {
     private Boolean b, extra = false, systemDown = false;
     private Intent extraIntent;
     private Bundle bundle;
+    private double randomNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,8 @@ public class MainActivity_GSM extends SmsServices {
             public void onClick(View v) {
                 disbaleButtons();
                 if (!systemDown) {
-                    smsReceiver.waitFor_1_Minute();
+                    randomNumber = Math.random();
+                    smsReceiver.waitFor_1_Minute(randomNumber);
                     b = true;
                     sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2);
                     status.setText("Authentication SMS sent");
@@ -67,17 +69,16 @@ public class MainActivity_GSM extends SmsServices {
         });
     }
 
-    private void enableButtons()
-    {
+    private void enableButtons() {
         connect.setEnabled(true);
         resetConnection.setEnabled(true);
     }
 
-    private void disbaleButtons()
-    {
+    private void disbaleButtons() {
         connect.setEnabled(false);
         resetConnection.setEnabled(false);
     }
+
     private void openDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure, You wanted to reset the data");
@@ -134,12 +135,12 @@ public class MainActivity_GSM extends SmsServices {
             }
 
             @Override
-            public void checkTime(String time) {
-                if (b) {
+            public void checkTime(double randomValue) {
+                if (b && (randomNumber == randomValue)) {
                     systemDown = true;
                     enableButtons();
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System not responding, please connect to system again.");
+                    status.setText(SmsUtils.SYSTEM_DOWN);
 
                 }
             }

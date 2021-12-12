@@ -48,6 +48,9 @@ public class Screen_6 extends SmsServices {
     private boolean isEditedNoOfIterations = false;
     private boolean isEditedWetPeriod = false;
     private boolean isInitial = false;
+    private boolean isEnabledClicked = false;
+    private boolean isDisabledClicked = false;
+    private double randomNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,10 +125,12 @@ public class Screen_6 extends SmsServices {
                 if (validateInput() && !systemDown) {
                     disableEditText();
                     cursorVisibility();
-                    status.setText("Enable fertigation configuration SMS Sent");
                     updateData_And_SendSMS("enable");
-                    smsReceiver.waitFor_1_Minute();
+                    randomNumber = Math.random();
+                    smsReceiver.waitFor_1_Minute(randomNumber);
                     b = true;
+                    isEnabledClicked = true;
+                    status.setText("Enable fertigation configuration SMS Sent");
                 }
             }
         });
@@ -142,8 +147,10 @@ public class Screen_6 extends SmsServices {
                 if (!systemDown) {
                     disableEditText();
                     updateData_And_SendSMS("disable");
-                    smsReceiver.waitFor_1_Minute();
+                    randomNumber = Math.random();
+                    smsReceiver.waitFor_1_Minute(randomNumber);
                     b = true;
+                    isDisabledClicked = true;
                     status.setText("Disable fertigation configuration SMS Sent");
                 }
             }
@@ -455,11 +462,11 @@ public class Screen_6 extends SmsServices {
             }
 
             @Override
-            public void checkTime(String time) {
-                if (b) {
+            public void checkTime(double randomValue) {
+                if (b && (randomNumber == randomValue)) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText(" System not responding, please connect to system again");
+                    status.setText(SmsUtils.SYSTEM_DOWN);
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -495,26 +502,30 @@ public class Screen_6 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        enableEditText();
         try {
-            if (message.toLowerCase().contains(SmsUtils.INSMS_6_1.toLowerCase())) {
+            if (message.toLowerCase().contains(SmsUtils.INSMS_6_1.toLowerCase()) && isEnabledClicked) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
+                    isEnabledClicked = false;
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
-                    status.setText("Fertigation enabled for field no. "+model.getFieldNo());
+                    status.setText("Fertigation enabled for field no. " + model.getFieldNo());
+                    enableEditText();
                     initializeModel();
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_6_2.toLowerCase())) {
                 b = false;
-                status.setText("Incorrect values Fertigation not enabled for field no."+model.getFieldNo());
+                status.setText("Incorrect values Fertigation not enabled for field no." + model.getFieldNo());
+                enableEditText();
                 initializeModel();
-            } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase())) {
+            } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase()) && isDisabledClicked) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_7_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
+                    isDisabledClicked = false;
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
-                    status.setText("Fertigation disabled for field no." +model.getFieldNo());
+                    status.setText("Fertigation disabled for field no." + model.getFieldNo());
+                    enableEditText();
                     initializeModel();
                 }
             }

@@ -53,6 +53,7 @@ public class Screen_2_1 extends SmsServices {
     private Intent intent;
     private Bundle bundle;
     private Boolean extra = false;
+    private double randomNumber;
 
 
     @Override
@@ -118,7 +119,8 @@ public class Screen_2_1 extends SmsServices {
                     if (!systemDown) {
 
                         if (validateInput(oldPassword.getText().toString(), newPassword.getText().toString())) {
-                            smsReceiver.waitFor_1_Minute();
+                            randomNumber = Math.random();
+                            smsReceiver.waitFor_1_Minute(randomNumber);
                             b = true;
                             disableEditText();
                             isSetClicked = true;
@@ -374,12 +376,6 @@ public class Screen_2_1 extends SmsServices {
         }
         smsReceiver.setContext(getApplicationContext());
         smsReceiver.startBroadcastReceiver();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        smsReceiver.registerBroadCasts();
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
@@ -391,16 +387,22 @@ public class Screen_2_1 extends SmsServices {
             }
 
             @Override
-            public void checkTime(String time) {
-                if (b) {
+            public void checkTime(double randomValue) {
+                if (b && (randomNumber == randomValue)) {
                     systemDown = true;
                     disableEditText();
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System not responding, please connect to system again");
+                    status.setText(SmsUtils.SYSTEM_DOWN);
                 }
             }
 
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        smsReceiver.registerBroadCasts();
     }
 
     private void enableEditText() {
