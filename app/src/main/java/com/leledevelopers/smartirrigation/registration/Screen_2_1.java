@@ -394,6 +394,7 @@ public class Screen_2_1 extends SmsServices {
             public void checkTime(String time) {
                 if (b) {
                     systemDown = true;
+                    enableEditText();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System not responding, please connect to system again");
                 }
@@ -406,12 +407,14 @@ public class Screen_2_1 extends SmsServices {
         gsmContact.setEnabled(true);
         newPassword.setEnabled(true);
         oldPassword.setEnabled(true);
+        set.setEnabled(true);
     }
 
     private void disableEditText() {
         gsmContact.setEnabled(false);
         newPassword.setEnabled(false);
         oldPassword.setEnabled(false);
+        set.setEnabled(false);
     }
 
     @Override

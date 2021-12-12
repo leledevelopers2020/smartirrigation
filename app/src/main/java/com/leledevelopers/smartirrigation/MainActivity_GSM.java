@@ -47,6 +47,7 @@ public class MainActivity_GSM extends SmsServices {
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disbaleButtons();
                 if (!systemDown) {
                     smsReceiver.waitFor_1_Minute();
                     b = true;
@@ -66,6 +67,17 @@ public class MainActivity_GSM extends SmsServices {
         });
     }
 
+    private void enableButtons()
+    {
+        connect.setEnabled(true);
+        resetConnection.setEnabled(true);
+    }
+
+    private void disbaleButtons()
+    {
+        connect.setEnabled(false);
+        resetConnection.setEnabled(false);
+    }
     private void openDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure, You wanted to reset the data");
@@ -75,6 +87,7 @@ public class MainActivity_GSM extends SmsServices {
                     public void onClick(DialogInterface arg0, int arg1) {
                         new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
                         status.setText("Reset Successful");
+                        disbaleButtons();
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -124,8 +137,10 @@ public class MainActivity_GSM extends SmsServices {
             public void checkTime(String time) {
                 if (b) {
                     systemDown = true;
+                    enableButtons();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System not responding, please connect to system again.");
+
                 }
             }
 
