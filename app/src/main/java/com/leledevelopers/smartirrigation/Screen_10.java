@@ -2,7 +2,6 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,6 +24,8 @@ public class Screen_10 extends SmsServices {
     private Button setMotorLoadThreshold, back_10;
     private TextView status;
     private boolean validate = true;
+    private double randomNumber;
+    private boolean isSetMotorLoadClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +46,12 @@ public class Screen_10 extends SmsServices {
 
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    sendMessage(SmsServices.phoneNumber,smsData);
-                    smsReceiver.waitFor_1_Minute();
+                    sendMessage(SmsServices.phoneNumber, smsData);
+                    randomNumber = Math.random();
+                    smsReceiver.waitFor_1_Minute(randomNumber);
                     b = true;
+                    isSetMotorLoadClicked = true;
                     status.setText("Message Delivered");
-
-
-
                 }
             }
         });
@@ -97,7 +97,7 @@ public class Screen_10 extends SmsServices {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    Log.d("tag",fullLoadCutOffText.getText().toString()  +"full " +fullLoadCutOffText.getText().toString().length() );
+                    Log.d("tag", fullLoadCutOffText.getText().toString() + "full " + fullLoadCutOffText.getText().toString().length());
                     if (fullLoadCutOffText.getText().toString().length() == 0 ||
                             !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffText.getText().toString())))) {
 
@@ -128,7 +128,7 @@ public class Screen_10 extends SmsServices {
 
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
-        Log.d("tag",fullLoadCutOffTextlocal +"full   "+noLoadCutoffTextlocal);
+        Log.d("tag", fullLoadCutOffTextlocal + "full   " + noLoadCutoffTextlocal);
 
         try {
             if (noLoadCutoffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
@@ -175,15 +175,13 @@ public class Screen_10 extends SmsServices {
     }
 
     private void enableEditText() {
-        noLoadCutoffText.setEnabled(true);
-        fullLoadCutOffText.setEnabled(true);
-        setMotorLoadThreshold.setEnabled(true);
+        noLoadCutoffText.setFocusableInTouchMode(true);
+        fullLoadCutOffText.setFocusableInTouchMode(true);
     }
 
     private void disableEditText() {
-        noLoadCutoffText.setEnabled(false);
-        fullLoadCutOffText.setEnabled(false);
-        setMotorLoadThreshold.setEnabled(false);
+        noLoadCutoffText.setFocusableInTouchMode(false);
+        fullLoadCutOffText.setFocusableInTouchMode(false);
     }
 
     @Override
@@ -207,14 +205,6 @@ public class Screen_10 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(Screen_10.this, MainActivity_GSM.class));
-                            finish();
-                        }
-                    }, 5000);
                 }
             }
 
@@ -242,9 +232,10 @@ public class Screen_10 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase())) {
+        if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase()) && isSetMotorLoadClicked) {
             b = false;
-            status.setText("Motorload thresholds set successfully");
+            isSetMotorLoadClicked = false;
+            status.setText("Motorload thresholds set successfully.");
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
