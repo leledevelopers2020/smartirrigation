@@ -860,7 +860,7 @@ public class Screen_5 extends SmsServices {
                             startActivity(new Intent(Screen_5.this, MainActivity_GSM.class));
                             finish();
                         }
-                    }, 2000);
+                    }, 5000);
                 }
             }
         });

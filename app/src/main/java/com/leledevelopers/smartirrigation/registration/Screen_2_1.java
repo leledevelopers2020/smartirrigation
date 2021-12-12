@@ -390,7 +390,7 @@ public class Screen_2_1 extends SmsServices {
             public void checkTime(double randomValue) {
                 if (b && (randomNumber == randomValue)) {
                     systemDown = true;
-                    enableEditText();
+                    disableEditText();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
                 }
