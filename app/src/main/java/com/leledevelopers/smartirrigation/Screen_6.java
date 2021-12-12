@@ -514,7 +514,7 @@ public class Screen_6 extends SmsServices {
                     b = false;
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
-                    status.setText("Fertigation disabled for field no."  );
+                    status.setText("Fertigation disabled for field no." +model.getFieldNo());
                     initializeModel();
                 }
             }
