@@ -202,12 +202,11 @@ public class Screen_10 extends SmsServices {
             }
 
             @Override
-            public void checkTime(String time) {
-                if (b) {
-                    disableEditText();
+            public void checkTime(double randomValue) {
+                if (b && (randomNumber == randomValue)) {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
-                    status.setText("System not responding, please connect to system again");
+                    status.setText(SmsUtils.SYSTEM_DOWN);
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override

@@ -6,25 +6,23 @@ package com.leledevelopers.smartirrigation.utils;
  */
 public class SmsUtils {
     // SMS responses from controller
-    public static final String INSMS_1_1= "Admin set successfully";
-    public static final String INSMS_1_2="Wrong password entered";
-    public static final String INSMS_1_3="You are no more Admin now.New Admin is set to <GSM no.>";
-    public static final String INSMS_2_1="System Connected";
-    public static final String INSMS_2_2="Authentication failed, please reset connection";
-    public static final String INSMS_3_1="Password changed successfully";
-    public static final String INSMS_4_1="Irrigation configured for field no.";
-    public static final String INSMS_5_1="Irrigation configuration disabled for field no.";
-    public static final String INSMS_6_1="Fertigation enabled for field no.";
-    public static final String INSMS_6_2="Incorrect values.Fertigation not enabled for field no.";
-    public static final String INSMS_7_1="Fertigation disabled for field no.";
-    public static final String INSMS_8_1="Water filtration activated";
-    public static final String INSMS_9_1="Water filtration deactivated";
-    public static final String INSMS_10_1="RTC is set to current Timestamp";
-    public static final String INSMS_10_2="Incorrect Timestamp found";
-    public static final String INSMS_11_1="System Time:";
-    public static final String INSMS_12_1="Motorload thresholds set sucessfully";
-    public static final String RTC_BATTERY_LOW_STATUS = "Please replace RTC battery";
-    public static final String RTC_BATTERY_FULL_STATUS = "RTC Battery Replaced, Please Set Time";
+    public static final String INSMS_1_1 = "Admin set successfully";
+    public static final String INSMS_1_2 = "Wrong password entered";
+    public static final String INSMS_1_3 = "You are no more Admin now.New Admin is set to <GSM no.>";
+    public static final String INSMS_2_1 = "System Connected";
+    public static final String INSMS_2_2 = "Authentication failed, please reset connection";
+    public static final String INSMS_3_1 = "Password changed successfully";
+    public static final String INSMS_4_1 = "Irrigation configured for field no.";
+    public static final String INSMS_5_1 = "Irrigation configuration disabled for field no.";
+    public static final String INSMS_6_1 = "Fertigation enabled for field no.";
+    public static final String INSMS_6_2 = "Incorrect values.Fertigation not enabled for field no.";
+    public static final String INSMS_7_1 = "Fertigation disabled for field no.";
+    public static final String INSMS_8_1 = "Water filtration activated";
+    public static final String INSMS_9_1 = "Water filtration deactivated";
+    public static final String INSMS_10_1 = "RTC is set to current Timestamp";
+    public static final String INSMS_10_2 = "Incorrect Timestamp found";
+    public static final String INSMS_11_1 = "System Time:";
+    public static final String INSMS_12_1 = "Motorload thresholds set sucessfully.";
 
 
     //Sms to controller from mobile devices
