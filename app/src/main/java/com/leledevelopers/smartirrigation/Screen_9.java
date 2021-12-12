@@ -48,8 +48,7 @@ public class Screen_9 extends SmsServices {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                startActivity(new Intent(Screen_9.this, MainActivity_GSM.class));
-                finish();
+
             }
         });
         setMotorloadCutoff.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +60,7 @@ public class Screen_9 extends SmsServices {
         updatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 Intent intent = new Intent(Screen_9.this, Screen_2_1.class);
                 intent.putExtra("Settings", true);
                 startActivity(intent);
@@ -70,9 +70,9 @@ public class Screen_9 extends SmsServices {
         setSystemTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 smsReceiver.waitFor_1_Minute();
                 b = true;
-
                 String smsData = smsUtils.OutSMS_10(mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "", mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "",
                         mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ""
                         , mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE))) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND))) + "");
@@ -87,6 +87,7 @@ public class Screen_9 extends SmsServices {
         getSystemTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButtons();
                 smsReceiver.waitFor_1_Minute();
                 b = true;
                 String smsData = smsUtils.OutSMS_11;
@@ -109,6 +110,22 @@ public class Screen_9 extends SmsServices {
         });
     }
 
+    private void enableButtons()
+    {
+       spinner.setEnabled(true);
+       setSystemTime.setEnabled(true);
+       getSystemTime.setEnabled(true);
+       updatePassword.setEnabled(true);
+       setMotorloadCutoff.setEnabled(true);
+    }
+    private void disableButtons()
+    {
+        spinner.setEnabled(false);
+        setSystemTime.setEnabled(false);
+        getSystemTime.setEnabled(false);
+        updatePassword.setEnabled(false);
+        setMotorloadCutoff.setEnabled(false);
+    }
 
     @Override
     public void initViews() {
@@ -140,6 +157,7 @@ public class Screen_9 extends SmsServices {
             @Override
             public void checkTime(String time) {
                 if (b) {
+                    enableButtons();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System Down");
@@ -172,6 +190,7 @@ public class Screen_9 extends SmsServices {
     }
 
     public void checkSMS(String message) {
+        enableButtons();
         if (message.toLowerCase().contains(SmsUtils.INSMS_10_1.toLowerCase())) {
             b = false;
             status.setText("System time set to current time");

@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -32,6 +33,7 @@ public class Screen_10 extends SmsServices {
         setMotorLoadThreshold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cursorVisibility();
                 try {
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -39,15 +41,16 @@ public class Screen_10 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (validateInput(noLoadCutoffText.getText().toString(), fullLoadCutOffText.getText().toString()) && !systemDown) {
-                    cursorVisibility();
+
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    // sendMessage(SmsServices.phoneNumber,smsData);
+                    sendMessage(SmsServices.phoneNumber,smsData);
                     smsReceiver.waitFor_1_Minute();
                     b = true;
                     status.setText("Message Delivered");
-                    startActivity(new Intent(Screen_10.this, Screen_9.class));
-                    finish();
+
+
+
                 }
             }
         });
@@ -81,7 +84,7 @@ public class Screen_10 extends SmsServices {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     if (noLoadCutoffText.getText().toString().length() == 0 ||
-                            validateRange(0, 1024, Integer.parseInt(noLoadCutoffText.getText().toString()))) {
+                            !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffText.getText().toString())))) {
                         noLoadCutoffText.getText().clear();
                         noLoadCutoffText.setError("Enter a valid value");
 
@@ -93,9 +96,9 @@ public class Screen_10 extends SmsServices {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-
+                    Log.d("tag",fullLoadCutOffText.getText().toString()  +"full " +fullLoadCutOffText.getText().toString().length() );
                     if (fullLoadCutOffText.getText().toString().length() == 0 ||
-                            validateRange(0, 1024, Integer.parseInt(fullLoadCutOffText.getText().toString()))) {
+                            !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffText.getText().toString())))) {
 
                         fullLoadCutOffText.getText().clear();
                         fullLoadCutOffText.setError("Enter a valid value");
@@ -124,14 +127,15 @@ public class Screen_10 extends SmsServices {
 
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
+        Log.d("tag",fullLoadCutOffTextlocal +"full   "+noLoadCutoffTextlocal);
 
         try {
-            if (noLoadCutoffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffText.getText().toString())))) {
+            if (noLoadCutoffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
                 noLoadCutoffText.getText().clear();
                 noLoadCutoffText.setError("Enter a valid value");
                 validate = false;
             }
-            if (fullLoadCutOffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffText.getText().toString())))) {
+            if (fullLoadCutOffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffTextlocal)))) {
 
                 fullLoadCutOffText.getText().clear();
                 fullLoadCutOffText.setError("Enter a valid value");
@@ -230,6 +234,13 @@ public class Screen_10 extends SmsServices {
         if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase())) {
             b = false;
             status.setText("Motorload thresholds set successfully.");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(Screen_10.this, Screen_9.class));
+                    finish();
+                }
+            }, 1000);
         }
     }
 }
