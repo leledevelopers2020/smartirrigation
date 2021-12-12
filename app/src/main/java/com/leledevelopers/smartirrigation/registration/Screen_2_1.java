@@ -394,7 +394,7 @@ public class Screen_2_1 extends SmsServices {
             public void checkTime(String time) {
                 if (b) {
                     systemDown = true;
-                    enableEditText();
+                    disableEditText();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System not responding, please connect to system again");
                 }

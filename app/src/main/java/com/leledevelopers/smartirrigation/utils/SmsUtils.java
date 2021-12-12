@@ -22,7 +22,7 @@ public class SmsUtils {
     public static final String INSMS_10_1="RTC is set to current Timestamp";
     public static final String INSMS_10_2="Incorrect Timestamp found";
     public static final String INSMS_11_1="System Time:";
-    public static final String INSMS_12_1="Motorload thresholds set sucessfully.";
+    public static final String INSMS_12_1="Motorload thresholds set sucessfully";
     public static final String RTC_BATTERY_LOW_STATUS = "Please replace RTC battery";
     public static final String RTC_BATTERY_FULL_STATUS = "RTC Battery Replaced, Please Set Time";
 

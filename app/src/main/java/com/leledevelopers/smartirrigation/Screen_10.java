@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -174,13 +175,15 @@ public class Screen_10 extends SmsServices {
     }
 
     private void enableEditText() {
-        noLoadCutoffText.setFocusableInTouchMode(true);
-        fullLoadCutOffText.setFocusableInTouchMode(true);
+        noLoadCutoffText.setEnabled(true);
+        fullLoadCutOffText.setEnabled(true);
+        setMotorLoadThreshold.setEnabled(true);
     }
 
     private void disableEditText() {
-        noLoadCutoffText.setFocusableInTouchMode(false);
-        fullLoadCutOffText.setFocusableInTouchMode(false);
+        noLoadCutoffText.setEnabled(false);
+        fullLoadCutOffText.setEnabled(false);
+        setMotorLoadThreshold.setEnabled(false);
     }
 
     @Override
@@ -201,9 +204,18 @@ public class Screen_10 extends SmsServices {
             @Override
             public void checkTime(String time) {
                 if (b) {
+                    disableEditText();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText("System not responding, please connect to system again");
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Screen_10.this, MainActivity_GSM.class));
+                            finish();
+                        }
+                    }, 5000);
                 }
             }
 
@@ -233,7 +245,7 @@ public class Screen_10 extends SmsServices {
     public void checkSMS(String message) {
         if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase())) {
             b = false;
-            status.setText("Motorload thresholds set successfully.");
+            status.setText("Motorload thresholds set successfully");
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
