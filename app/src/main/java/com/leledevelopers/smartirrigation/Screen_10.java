@@ -209,8 +209,8 @@ public class Screen_10 extends SmsServices {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            startActivity(new Intent(Screen_10.this, Screen_9.class));
-                            finish();
+                            startActivity(new Intent(Screen_10.this, MainActivity_GSM.class));
+                            finishAffinity();
                         }
                     }, 5000);
                 }
