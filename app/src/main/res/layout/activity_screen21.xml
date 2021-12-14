@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/title_bar_bg"
+
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintTop_toTopOf="parent">
 
