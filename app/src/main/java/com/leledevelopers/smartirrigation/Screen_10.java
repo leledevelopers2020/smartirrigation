@@ -43,10 +43,10 @@ public class Screen_10 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (validateInput(noLoadCutoffText.getText().toString(), fullLoadCutOffText.getText().toString()) && !systemDown) {
-
+                    disableEditText();
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    sendMessage(SmsServices.phoneNumber, smsData);
+                  //  sendMessage(SmsServices.phoneNumber, smsData);
                     randomNumber = Math.random();
                     smsReceiver.waitFor_1_Minute(randomNumber);
                     b = true;
@@ -128,23 +128,23 @@ public class Screen_10 extends SmsServices {
 
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
-        Log.d("tag", fullLoadCutOffTextlocal + "full   " + noLoadCutoffTextlocal);
+        Log.d("tag", fullLoadCutOffTextlocal + "full" + noLoadCutoffTextlocal+"no");
 
         try {
-            if (noLoadCutoffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
-                noLoadCutoffText.getText().clear();
+            if (noLoadCutoffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal))))
+            {   noLoadCutoffText.getText().clear();
                 noLoadCutoffText.setError("Enter a valid value");
                 validate = false;
             }
-            if (fullLoadCutOffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffTextlocal)))) {
-
-                fullLoadCutOffText.getText().clear();
+            if (fullLoadCutOffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffTextlocal))))
+            { fullLoadCutOffText.getText().clear();
                 fullLoadCutOffText.setError("Enter a valid value");
                 validate = false;
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        Log.d("tag",validate+"");
         return validate;
     }
 
@@ -203,8 +203,16 @@ public class Screen_10 extends SmsServices {
             public void checkTime(double randomValue) {
                 if (b && (randomNumber == randomValue)) {
                     systemDown = true;
+                    disableEditText();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Screen_10.this, MainActivity_GSM.class));
+                            finishAffinity();
+                        }
+                    }, 5000);
                 }
             }
 
@@ -232,17 +240,12 @@ public class Screen_10 extends SmsServices {
     }
 
     public void checkSMS(String message) {
+        enableEditText();
         if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase()) && isSetMotorLoadClicked) {
             b = false;
             isSetMotorLoadClicked = false;
             status.setText("Motorload thresholds set successfully.");
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(Screen_10.this, Screen_9.class));
-                    finish();
-                }
-            }, 1000);
+
         }
     }
 }
