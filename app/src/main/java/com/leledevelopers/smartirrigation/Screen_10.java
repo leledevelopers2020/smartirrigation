@@ -131,7 +131,7 @@ public class Screen_10 extends SmsServices {
         Log.d("tag", fullLoadCutOffTextlocal + "full" + noLoadCutoffTextlocal+"no");
 
         try {
-            if (noLoadCutoffTextlocal.equals("")|| !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal))))
+            if (noLoadCutoffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal))))
             {   noLoadCutoffText.getText().clear();
                 noLoadCutoffText.setError("Enter a valid value");
                 validate = false;
