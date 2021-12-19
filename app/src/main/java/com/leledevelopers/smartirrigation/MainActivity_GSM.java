@@ -231,7 +231,7 @@ public class MainActivity_GSM extends SmsServices {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        finishAffinity();
 
     }
 }

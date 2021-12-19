@@ -225,8 +225,7 @@ public class Screen_9 extends SmsServices {
             b = false;
             isGetTimeClicked = false;
             status.setText(SmsUtils.INSMS_11_1 + (mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "/" + mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "/"
-                    + mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100))));
-            enableViews();
+
         }
     }
 }

@@ -55,6 +55,7 @@
             android:layout_gravity="center"
             android:layout_weight="0.1"
             android:padding="25dp"
+            android:textSize="20dp"
             android:text=" Motor Load Threshold Set up"
             android:textColor="@color/black"
             android:textStyle="bold" />

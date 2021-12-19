@@ -41,6 +41,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/lltop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="55dp"
@@ -54,7 +55,9 @@
             android:layout_gravity="center"
             android:layout_weight="0.1"
             android:gravity="center"
+            android:layout_marginTop="20dp"
             android:textSize="20dp"
+            android:layout_marginBottom="@id/lltop"
             android:text="Configure Field Fertigation"
             android:textStyle="bold" />
 

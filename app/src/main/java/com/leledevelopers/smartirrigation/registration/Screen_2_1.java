@@ -126,8 +126,7 @@ public class Screen_2_1 extends SmsServices {
                             isSetClicked = true;
                             cursorVisibility();
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
-                            sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber);
-                            status.setText("Password setting message sent");
+ 
                         } else {
                             focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
