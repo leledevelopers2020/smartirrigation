@@ -44,6 +44,7 @@ public class Screen_10 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (validateInput(noLoadCutoffText.getText().toString(), fullLoadCutOffText.getText().toString()) && !systemDown) {
+                    disableViews();
                     randomNumber = Math.random();
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
@@ -247,8 +248,10 @@ public class Screen_10 extends SmsServices {
 
     public void checkSMS(String message) {
         if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase()) && isSetMotorLoadClicked) {
+            enableViews();
             b = false;
             isSetMotorLoadClicked = false;
+            enableViews();
             status.setText("Motorload thresholds set successfully.");
             handler.postDelayed(new Runnable() {
                 @Override

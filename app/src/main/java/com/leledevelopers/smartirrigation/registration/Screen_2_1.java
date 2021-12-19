@@ -344,9 +344,9 @@ public class Screen_2_1 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        enableViews();
         try {
             if (message.toLowerCase().contains(SmsUtils.INSMS_1_1.toLowerCase())) {
+                enableViews();
                 b = false;
                 saveFileDetails();
                 createConfgFiles();
@@ -362,10 +362,12 @@ public class Screen_2_1 extends SmsServices {
                     }
                 }, 1000);
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_1_2.toLowerCase())) {
+                enableViews();
                 b = false;
                 status.setText("Wrong password entered");
                 oldPassword.requestFocus();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_3_1.toLowerCase())) {
+                enableViews();
                 b = false;
                 status.setText("Password changed successfully");
                 isPasswordSaved = true;
