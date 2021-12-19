@@ -36,6 +36,7 @@ public class Screen_9 extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen9);
+        this.context = getApplicationContext();
         initViews();
         adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.languagesArray, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -62,7 +63,7 @@ public class Screen_9 extends SmsServices {
         updatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableButtons();
+                disableViews();
                 Intent intent = new Intent(Screen_9.this, Screen_2_1.class);
                 intent.putExtra("Settings", true);
                 startActivity(intent);
@@ -72,10 +73,10 @@ public class Screen_9 extends SmsServices {
         setSystemTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableButtons();
+                disableViews();
                 randomNumber = Math.random();
-                smsReceiver.waitFor_1_Minute(randomNumber);
-                b = true;
+                //smsReceiver.waitFor_1_Minute(randomNumber);
+                //b = true;
                 isSetTimeClicked = true;
                 String smsData = smsUtils.OutSMS_10(mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "", mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "",
                         mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ""
@@ -84,20 +85,20 @@ public class Screen_9 extends SmsServices {
                 /*String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
                         (calendar.get(Calendar.YEAR))%100+"",calendar.get(Calendar.HOUR_OF_DAY)+""
                         ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");*/
-                sendMessage(SmsServices.phoneNumber, smsData);
+                sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber);
                 status.setText("Date Timestamp SMS Sent");
             }
         });
         getSystemTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableButtons();
+                disableViews();
                 randomNumber = Math.random();
-                smsReceiver.waitFor_1_Minute(randomNumber);
-                b = true;
+                //smsReceiver.waitFor_1_Minute(randomNumber);
+                //b = true;
                 isGetTimeClicked = true;
                 String smsData = smsUtils.OutSMS_11;
-                sendMessage(SmsServices.phoneNumber, smsData);
+                sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber);
                 status.setText("Get System Timestamp SMS Sent");
             }
         });
@@ -116,21 +117,6 @@ public class Screen_9 extends SmsServices {
         });
     }
 
-    private void enableButtons() {
-        spinner.setEnabled(true);
-        setSystemTime.setEnabled(true);
-        getSystemTime.setEnabled(true);
-        updatePassword.setEnabled(true);
-        setMotorloadCutoff.setEnabled(true);
-    }
-
-    private void disableButtons() {
-        spinner.setEnabled(false);
-        setSystemTime.setEnabled(false);
-        getSystemTime.setEnabled(false);
-        updatePassword.setEnabled(false);
-        setMotorloadCutoff.setEnabled(false);
-    }
 
     @Override
     public void initViews() {
@@ -142,6 +128,24 @@ public class Screen_9 extends SmsServices {
         status = findViewById(R.id.screen_9_status);
         save = findViewById(R.id.save);
         back_9 = findViewById(R.id.back_9);
+    }
+
+    @Override
+    public void enableViews() {
+        spinner.setEnabled(true);
+        setSystemTime.setEnabled(true);
+        getSystemTime.setEnabled(true);
+        updatePassword.setEnabled(true);
+        setMotorloadCutoff.setEnabled(true);
+    }
+
+    @Override
+    public void disableViews() {
+        spinner.setEnabled(false);
+        setSystemTime.setEnabled(false);
+        getSystemTime.setEnabled(false);
+        updatePassword.setEnabled(false);
+        setMotorloadCutoff.setEnabled(false);
     }
 
     @Override
@@ -162,7 +166,7 @@ public class Screen_9 extends SmsServices {
             @Override
             public void checkTime(double randomValue) {
                 if (b && (randomNumber == randomValue)) {
-                    enableButtons();
+                    enableViews();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
@@ -171,6 +175,19 @@ public class Screen_9 extends SmsServices {
                 }
             }
 
+        });
+
+        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+            @Override
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
+                if (smsDeliveredStatus) {
+                    b = true;
+                } else {
+                    isGetTimeClicked = false;
+                    isSetTimeClicked = false;
+                }
+            }
         });
     }
 
@@ -199,18 +216,16 @@ public class Screen_9 extends SmsServices {
             b = false;
             isSetTimeClicked = false;
             status.setText("System time set to current time");
-            enableButtons();
+            enableViews();
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_10_2.toLowerCase())) {
             b = false;
             status.setText("Failed to set system time, please set system time again");
-            enableButtons();
+            enableViews();
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_11_1.toLowerCase()) && isGetTimeClicked) {
             b = false;
             isGetTimeClicked = false;
             status.setText(SmsUtils.INSMS_11_1 + (mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "/" + mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "/"
-                    + mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)))+" "+mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ":"
-                    + mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE))) + ":"+ mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND))));
-            enableButtons();
+
         }
     }
 }

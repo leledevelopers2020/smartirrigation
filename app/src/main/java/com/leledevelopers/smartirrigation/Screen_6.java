@@ -56,6 +56,7 @@ public class Screen_6 extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen6);
+        this.context = getApplicationContext();
         initViews();
         adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -123,12 +124,13 @@ public class Screen_6 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (validateInput() && !systemDown) {
-                    disableEditText();
+                    disableViews();
                     cursorVisibility();
+
                     updateData_And_SendSMS("enable");
                     randomNumber = Math.random();
-                    smsReceiver.waitFor_1_Minute(randomNumber);
-                    b = true;
+                    //smsReceiver.waitFor_1_Minute(randomNumber);
+                    //b = true;
                     isEnabledClicked = true;
                     status.setText("Enable fertigation configuration SMS Sent");
                 }
@@ -145,11 +147,11 @@ public class Screen_6 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (!systemDown) {
-                    disableEditText();
+                    disableViews();
                     updateData_And_SendSMS("disable");
                     randomNumber = Math.random();
-                    smsReceiver.waitFor_1_Minute(randomNumber);
-                    b = true;
+                    //smsReceiver.waitFor_1_Minute(randomNumber);
+                    //b = true;
                     isDisabledClicked = true;
                     status.setText("Disable fertigation configuration SMS Sent");
                 }
@@ -266,21 +268,23 @@ public class Screen_6 extends SmsServices {
         status = findViewById(R.id.screen_6_status);
     }
 
-    private void disableEditText() {
-
-        spinner.setEnabled(false);
-        wetPeriod.setEnabled(false);
-        injectPeriod.setEnabled(false);
-        noOfIterations.setEnabled(false);
-
-    }
-
-    private void enableEditText() {
+    @Override
+    public void enableViews() {
         spinner.setEnabled(true);
         wetPeriod.setEnabled(true);
         injectPeriod.setEnabled(true);
         noOfIterations.setEnabled(true);
+
     }
+
+    @Override
+    public void disableViews() {
+        spinner.setEnabled(false);
+        wetPeriod.setEnabled(false);
+        injectPeriod.setEnabled(false);
+        noOfIterations.setEnabled(false);
+    }
+
 
     private void isAnyViewEdited() {
         if (isEditedNoOfIterations || isEditedInjectPeriod || isEditedWetPeriod) {
@@ -421,7 +425,7 @@ public class Screen_6 extends SmsServices {
                 //enableFieldFertigation.setVisibility(View.VISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
             }
-            sendMessage(SmsServices.phoneNumber, smsdata);
+            sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber);
             modelList.set(fieldNo - 1, model);
             isEditedInjectPeriod = false;
             isEditedNoOfIterations = false;
@@ -479,6 +483,29 @@ public class Screen_6 extends SmsServices {
             }
 
         });
+
+        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+            @Override
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
+                if (smsDeliveredStatus) {
+                    b = true;
+                } else {
+                    System.out.println("isEnabledClicked = " + isEnabledClicked);
+                    System.out.println("isDisabledClicked = " + isDisabledClicked);
+                    System.out.println("isInitial = " + isInitial);
+                   /* if (isEnabledClicked) {
+                        enableFertigation.setVisibility(View.VISIBLE);
+                    }
+                    if (isDisabledClicked) {
+                        disableFertigation.setVisibility(View.VISIBLE);
+                    }*/
+                    isEnabledClicked = false;
+                    isDisabledClicked = false;
+                    initializeModel();
+                }
+            }
+        });
     }
 
     @Override
@@ -510,13 +537,13 @@ public class Screen_6 extends SmsServices {
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
                     status.setText("Fertigation enabled for field no. " + model.getFieldNo());
-                    enableEditText();
+                    enableViews();
                     initializeModel();
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_6_2.toLowerCase())) {
                 b = false;
                 status.setText("Incorrect values Fertigation not enabled for field no." + model.getFieldNo());
-                enableEditText();
+                enableViews();
                 initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase()) && isDisabledClicked) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_7_1.length()).trim()) == model.getFieldNo()) {
@@ -525,7 +552,7 @@ public class Screen_6 extends SmsServices {
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
                     status.setText("Fertigation disabled for field no." + model.getFieldNo());
-                    enableEditText();
+                    enableViews();
                     initializeModel();
                 }
             }

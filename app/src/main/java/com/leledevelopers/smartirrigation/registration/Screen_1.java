@@ -57,6 +57,16 @@ public class Screen_1 extends SmsServices {
     }
 
     @Override
+    public void enableViews() {
+
+    }
+
+    @Override
+    public void disableViews() {
+
+    }
+
+    @Override
     public void onBackPressed() {
         finishAffinity();
     }

@@ -1,14 +1,24 @@
 package com.leledevelopers.smartirrigation.services;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.telephony.SmsManager;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -38,19 +48,53 @@ public abstract class SmsServices extends AppCompatActivity {
     protected CURD_Files<Message> createSMSFile = new CURD_FilesImpl<Message>();
     protected List<Message> messageList;
     protected BaseMessages baseMessages;
+    private SmsServiceBroadcast smsServiceBroadcast = null;
 
     /**
      * This method should contain the code send SMS
      *
      * @return void
      */
-    public void sendMessage(String phoneNumber, String message) {
-        //   String phoneNumber=txt_pNumber.getText().toString().trim();
-        //    String Message=txt_message.getAccessibilityClassName().toString().trim();
-        if (!phoneNumber.equals("") || message != null || !message.equals("")) {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+
+    public void sendMessage(String phoneNumber, String message, TextView view, SmsReceiver smsReceiver, double randomNumber) {
+        SmsSender smsSender = new SmsSender();
+        System.out.println("---> " + smsReceiver.toString() + " " + android.os.Build.VERSION.SDK_INT);
+        smsSender.sendMessage(phoneNumber, message, this.context, view);
+        smsSender.setSmsSenderBroadcast(new SmsSender.SmsSenderBroadcast() {
+            @Override
+            public void onReceiveStatus(boolean smsDeliveredStatus) {
+                System.out.println("service smsDeliveredStatus = " + smsDeliveredStatus);
+                if (smsDeliveredStatus) {
+                    smsReceiver.waitFor_1_Minute(randomNumber);
+                } else {
+                    enableViews();
+                }
+                smsServiceBroadcast.onReceiveSmsDeliveredStatus(smsDeliveredStatus);
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private List<SubscriptionInfo> getServiceProviders(Context context) {
+        List localList = null;
+        SubscriptionManager localSubscriptionManager = SubscriptionManager.from(context);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return localList;
         }
+        if (localSubscriptionManager.getActiveSubscriptionInfoCount() > 1) {
+            localList = localSubscriptionManager.getActiveSubscriptionInfoList();
+            SubscriptionInfo simInfo1 = (SubscriptionInfo) localList.get(0);
+            SubscriptionInfo simInfo2 = (SubscriptionInfo) localList.get(1);
+            System.out.println("simInfo1 " + simInfo1.getSubscriptionId() + " , " + simInfo1.getNumber() + " , " + simInfo1.getSubscriptionType());
+            System.out.println("simInfo2 " + simInfo2.getSubscriptionId() + " , " + simInfo2.getNumber() + " , " + simInfo2.getSubscriptionType());
+            //SendSMS From SIM One
+            //SmsManager.getSmsManagerForSubscriptionId(simInfo1.getSubscriptionId()).sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+
+            //SendSMS From SIM Two
+            //SmsManager.getSmsManagerForSubscriptionId(simInfo2.getSubscriptionId()).sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+        }
+
+        return localList;
     }
 
     /**
@@ -59,6 +103,10 @@ public abstract class SmsServices extends AppCompatActivity {
      * @return void
      */
     abstract public void initViews();
+
+    abstract public void enableViews();
+
+    abstract public void disableViews();
 
     /**
      * This method access the required permissions
@@ -72,7 +120,8 @@ public abstract class SmsServices extends AppCompatActivity {
                         Manifest.permission.READ_CONTACTS,
                         Manifest.permission.SEND_SMS,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE
                 }, ProjectUtils.SMS_REQUEST_CODE);
     }
 
@@ -87,7 +136,8 @@ public abstract class SmsServices extends AppCompatActivity {
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) +
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) +
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) +
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) +
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
                 == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
@@ -223,12 +273,11 @@ public abstract class SmsServices extends AppCompatActivity {
         return updatedList;
     }
 
-    /*public String getPhoneNumber() {
-        return phoneNumber;
+    public interface SmsServiceBroadcast {
+        public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus);
     }
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-*/
 
+    public void setSmsServiceBroadcast(SmsServiceBroadcast smsServiceBroadcast) {
+        this.smsServiceBroadcast = smsServiceBroadcast;
+    }
 }

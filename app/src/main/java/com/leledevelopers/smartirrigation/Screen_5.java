@@ -72,6 +72,7 @@ public class Screen_5 extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen5);
+        this.context = getApplicationContext();
         initViews();
         // spinner of field no
         fieldNoArray = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
@@ -258,14 +259,14 @@ public class Screen_5 extends SmsServices {
                     e.printStackTrace();
                 }
                 if (validateInput() && !systemDown) {
-                    disableEditText();
+                    disableViews();
                     cursorVisibility();
                     status.setText("Enable Irrigation configuration SMS Sent");
                     updateData_And_SendSMS("enable");
                     randomNumber = Math.random();
-                    System.out.println("randomNumber at 5th en---> " + randomNumber);
-                    smsReceiver.waitFor_1_Minute(randomNumber);
-                    b = true;
+                    System.out.println("randomNumber at 5th en---> " + randomNumber + " isInitial = " + isInitial);
+                    //smsReceiver.waitFor_1_Minute(randomNumber);
+                    //b = true;
                     isEnabledClicked = true;
                 }
             }
@@ -282,13 +283,13 @@ public class Screen_5 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (!systemDown) {
-                    disableEditText();
+                    disableViews();
                     status.setText("Disable Irrigation configuration SMS Sent");
                     updateData_And_SendSMS("disable");
                     randomNumber = Math.random();
-                    System.out.println("randomNumber at 5th den---> " + randomNumber);
-                    smsReceiver.waitFor_1_Minute(randomNumber);
-                    b = true;
+                    System.out.println("randomNumber at 5th den---> " + randomNumber + " isInitial = " + isInitial);
+                    //smsReceiver.waitFor_1_Minute(randomNumber);
+                    //b = true;
                     isDisabledClicked = true;
                 }
             }
@@ -478,30 +479,6 @@ public class Screen_5 extends SmsServices {
 
     }
 
-    private void disableEditText() {
-        spinner.setEnabled(false);
-        valveOnPeriod.setEnabled(false);
-        valveOffPeriod.setEnabled(false);
-        soilDryness.setEnabled(false);
-        soilWetness.setEnabled(false);
-        motorOnTime.setEnabled(false);
-        priority.setEnabled(false);
-        cycles.setEnabled(false);
-        wetPeriod.setEnabled(false);
-    }
-
-    private void enableEditText() {
-        spinner.setEnabled(true);
-        valveOnPeriod.setEnabled(true);
-        valveOffPeriod.setEnabled(true);
-        soilDryness.setEnabled(true);
-        soilWetness.setEnabled(true);
-        motorOnTime.setEnabled(true);
-        priority.setEnabled(true);
-        cycles.setEnabled(true);
-        wetPeriod.setEnabled(true);
-    }
-
     private boolean validateInput() {
 
         if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
@@ -586,6 +563,32 @@ public class Screen_5 extends SmsServices {
         disableFertigation = findViewById(R.id.disableFertigation5);
         back_5 = findViewById(R.id.back_5);
         status = findViewById(R.id.screen_5_status);
+    }
+
+    @Override
+    public void enableViews() {
+        spinner.setEnabled(true);
+        valveOnPeriod.setEnabled(true);
+        valveOffPeriod.setEnabled(true);
+        soilDryness.setEnabled(true);
+        soilWetness.setEnabled(true);
+        motorOnTime.setEnabled(true);
+        priority.setEnabled(true);
+        cycles.setEnabled(true);
+        wetPeriod.setEnabled(true);
+    }
+
+    @Override
+    public void disableViews() {
+        spinner.setEnabled(false);
+        valveOnPeriod.setEnabled(false);
+        valveOffPeriod.setEnabled(false);
+        soilDryness.setEnabled(false);
+        soilWetness.setEnabled(false);
+        motorOnTime.setEnabled(false);
+        priority.setEnabled(false);
+        cycles.setEnabled(false);
+        wetPeriod.setEnabled(false);
     }
 
     private void cursorVisibility() {
@@ -751,7 +754,7 @@ public class Screen_5 extends SmsServices {
                 //enableFertigation.setVisibility(View.VISIBLE);
                 disableFertigation.setVisibility(View.INVISIBLE);
             }
-            sendMessage(SmsServices.phoneNumber, smsdata);
+            sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber);
             modelList.set(fieldNo - 1, model);
             isEditedValveOnPeriod = false;
             isEditedValveOffPeriod = false;
@@ -776,7 +779,7 @@ public class Screen_5 extends SmsServices {
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                     status.setText(message);
-                    enableEditText();
+                    enableViews();
                     initializeModel();
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_5_1.toLowerCase()) && isDisabledClicked) {
@@ -786,7 +789,7 @@ public class Screen_5 extends SmsServices {
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                     status.setText(message);
-                    enableEditText();
+                    enableViews();
                     initializeModel();
                 }
             }
@@ -849,7 +852,7 @@ public class Screen_5 extends SmsServices {
             public void checkTime(double randomValue) {
                 System.out.println("rValue at 5th screen ---> " + randomValue + " and current value " + randomNumber + " and b = " + b + " and randomNumber vs rValue " + (randomNumber == randomValue));
                 if (b && (randomNumber == randomValue)) {
-                    disableEditText();
+                    disableViews();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
@@ -861,6 +864,29 @@ public class Screen_5 extends SmsServices {
                             finish();
                         }
                     }, 5000);
+                }
+            }
+        });
+
+        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+            @Override
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
+                if (smsDeliveredStatus) {
+                    b = true;
+                } else {
+                    System.out.println("isEnabledClicked = " + isEnabledClicked);
+                    System.out.println("isDisabledClicked = " + isDisabledClicked);
+                    System.out.println("isInitial = " + isInitial);
+                   /* if (isEnabledClicked) {
+                        enableFertigation.setVisibility(View.VISIBLE);
+                    }
+                    if (isDisabledClicked) {
+                        disableFertigation.setVisibility(View.VISIBLE);
+                    }*/
+                    isEnabledClicked = false;
+                    isDisabledClicked = false;
+                    initializeModel();
                 }
             }
         });

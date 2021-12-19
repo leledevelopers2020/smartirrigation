@@ -165,6 +165,16 @@ public class Screen_8 extends SmsServices {
     }
 
     @Override
+    public void enableViews() {
+
+    }
+
+    @Override
+    public void disableViews() {
+
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(Screen_8.this, Screen_4.class));

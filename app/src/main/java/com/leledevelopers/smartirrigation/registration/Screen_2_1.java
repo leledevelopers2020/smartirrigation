@@ -120,15 +120,13 @@ public class Screen_2_1 extends SmsServices {
 
                         if (validateInput(oldPassword.getText().toString(), newPassword.getText().toString())) {
                             randomNumber = Math.random();
-                            smsReceiver.waitFor_1_Minute(randomNumber);
-                            b = true;
-                            disableEditText();
+                            //smsReceiver.waitFor_1_Minute(randomNumber);
+                            //b = true;
+                            disableViews();
                             isSetClicked = true;
                             cursorVisibility();
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
-                            sendMessage(SmsServices.phoneNumber, smsData);
-
-                            status.setText("Admin registration SMS sent");
+ 
                         } else {
                             focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
@@ -302,6 +300,22 @@ public class Screen_2_1 extends SmsServices {
         }
     }
 
+    @Override
+    public void enableViews() {
+        gsmContact.setEnabled(true);
+        newPassword.setEnabled(true);
+        oldPassword.setEnabled(true);
+        set.setEnabled(true);
+    }
+
+    @Override
+    public void disableViews() {
+        gsmContact.setEnabled(false);
+        newPassword.setEnabled(false);
+        oldPassword.setEnabled(false);
+        set.setEnabled(false);
+    }
+
     private void cursorVisibility() {
         try {
             oldPassword.setCursorVisible(false);
@@ -329,9 +343,9 @@ public class Screen_2_1 extends SmsServices {
     }
 
     public void checkSMS(String message) {
-        enableEditText();
         try {
             if (message.toLowerCase().contains(SmsUtils.INSMS_1_1.toLowerCase())) {
+                enableViews();
                 b = false;
                 saveFileDetails();
                 createConfgFiles();
@@ -347,10 +361,12 @@ public class Screen_2_1 extends SmsServices {
                     }
                 }, 1000);
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_1_2.toLowerCase())) {
+                enableViews();
                 b = false;
                 status.setText("Wrong password entered");
                 oldPassword.requestFocus();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_3_1.toLowerCase())) {
+                enableViews();
                 b = false;
                 status.setText("Password changed successfully");
                 isPasswordSaved = true;
@@ -391,12 +407,24 @@ public class Screen_2_1 extends SmsServices {
             public void checkTime(double randomValue) {
                 if (b && (randomNumber == randomValue)) {
                     systemDown = true;
-                    disableEditText();
+                    disableViews();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
                 }
             }
 
+        });
+
+        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+            @Override
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
+                if (smsDeliveredStatus) {
+                    b = true;
+                } else {
+                    isSetClicked = false;
+                }
+            }
         });
     }
 
@@ -406,19 +434,6 @@ public class Screen_2_1 extends SmsServices {
         smsReceiver.registerBroadCasts();
     }
 
-    private void enableEditText() {
-        gsmContact.setEnabled(true);
-        newPassword.setEnabled(true);
-        oldPassword.setEnabled(true);
-        set.setEnabled(true);
-    }
-
-    private void disableEditText() {
-        gsmContact.setEnabled(false);
-        newPassword.setEnabled(false);
-        oldPassword.setEnabled(false);
-        set.setEnabled(false);
-    }
 
     @Override
     protected void onPause() {
