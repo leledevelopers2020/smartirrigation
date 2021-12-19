@@ -61,6 +61,16 @@ public class splashScreen extends SmsServices {
         //nothing
     }
 
+    @Override
+    public void enableViews() {
+
+    }
+
+    @Override
+    public void disableViews() {
+
+    }
+
     private void readUserFile() {
         File file = new File(splashScreen.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
         if (file.exists()) {

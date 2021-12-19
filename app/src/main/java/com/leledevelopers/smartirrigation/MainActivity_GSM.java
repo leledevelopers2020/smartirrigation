@@ -34,6 +34,7 @@ public class MainActivity_GSM extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainactivity_gsm);
+        this.context = getApplicationContext();
         initViews();
         readUserFile();
         try {
@@ -48,13 +49,14 @@ public class MainActivity_GSM extends SmsServices {
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disbaleButtons();
+                disableViews();
                 if (!systemDown) {
                     randomNumber = Math.random();
-                    smsReceiver.waitFor_1_Minute(randomNumber);
-                    b = true;
-                    sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2);
-                    status.setText("Authentication SMS sent");
+                    //smsReceiver.waitFor_1_Minute(randomNumber);
+                    //b = true;
+                    System.out.println("--> " + smsReceiver.toString());
+                    sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2, status, smsReceiver, randomNumber);
+                    //status.setText("Authentication SMS sent");
                 }
                 //  startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
             }
@@ -69,16 +71,6 @@ public class MainActivity_GSM extends SmsServices {
         });
     }
 
-    private void enableButtons() {
-        connect.setEnabled(true);
-        resetConnection.setEnabled(true);
-    }
-
-    private void disbaleButtons() {
-        connect.setEnabled(false);
-        resetConnection.setEnabled(false);
-    }
-
     private void openDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure, You wanted to reset the data");
@@ -88,7 +80,7 @@ public class MainActivity_GSM extends SmsServices {
                     public void onClick(DialogInterface arg0, int arg1) {
                         new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
                         status.setText("Reset Successful");
-                        disbaleButtons();
+                        disableViews();
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -120,6 +112,18 @@ public class MainActivity_GSM extends SmsServices {
     }
 
     @Override
+    public void enableViews() {
+        connect.setEnabled(true);
+        resetConnection.setEnabled(true);
+    }
+
+    @Override
+    public void disableViews() {
+        connect.setEnabled(false);
+        resetConnection.setEnabled(false);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         smsReceiver.setContext(getApplicationContext());
@@ -138,13 +142,24 @@ public class MainActivity_GSM extends SmsServices {
             public void checkTime(double randomValue) {
                 if (b && (randomNumber == randomValue)) {
                     systemDown = true;
-                    enableButtons();
+                    enableViews();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
 
                 }
             }
 
+        });
+
+        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+            @Override
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
+                if (smsDeliveredStatus) {
+                    b = true;
+                    status.setText("Authentication SMS sent");
+                }
+            }
         });
     }
 

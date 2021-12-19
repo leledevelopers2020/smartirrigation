@@ -27,12 +27,22 @@ public class screen_2_2 extends SmsServices {
      */
     @Override
     public void initViews() {
-        status=findViewById(R.id.screen_2_2_status);
+        status = findViewById(R.id.screen_2_2_status);
+    }
+
+    @Override
+    public void enableViews() {
+
+    }
+
+    @Override
+    public void disableViews() {
+
     }
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(screen_2_2.this,Screen_1.class));
+        startActivity(new Intent(screen_2_2.this, Screen_1.class));
         finish();
     }
 }

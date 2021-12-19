@@ -47,6 +47,7 @@ public class Screen_7 extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen7);
+        this.context = getApplicationContext();
         initViews();
         initializeModel();
 
@@ -91,11 +92,11 @@ public class Screen_7 extends SmsServices {
                 }
                 cursorVisibility();
                 if (validateInput() && !systemDown) {
-                    disableEditText();
-                    updateData_And_SendSMS("enable");
+                    disableViews();
                     randomNumber = Math.random();
-                    smsReceiver.waitFor_1_Minute(randomNumber);
-                    b = true;
+                    updateData_And_SendSMS("enable");
+                    //smsReceiver.waitFor_1_Minute(randomNumber);
+                    //b = true;
                     isEnabledClicked = true;
                     status.setText("Enable filtration SMS Sent");
                 }
@@ -111,11 +112,11 @@ public class Screen_7 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (!systemDown) {
-                    disableEditText();
-                    updateData_And_SendSMS("disable");
+                    disableViews();
                     randomNumber = Math.random();
-                    smsReceiver.waitFor_1_Minute(randomNumber);
-                    b = false;
+                    updateData_And_SendSMS("disable");
+                   // smsReceiver.waitFor_1_Minute(randomNumber);
+                   // b = false;
                     isDisabledClicked = true;
                     status.setText("Disable filtration SMS Sent");
                 }
@@ -295,20 +296,22 @@ public class Screen_7 extends SmsServices {
         status = findViewById(R.id.screen_7_status);
     }
 
-    private void disableEditText() {
-        filtrationControlUnitNoDelay_1.setEnabled(false);
-        filtrationControlUnitNoDelay_2.setEnabled(false);
-        filtrationControlUnitNoDelay_3.setEnabled(false);
-        filtrationControlUnitOnTime.setEnabled(false);
-        filtrationControlUnitSeparation.setEnabled(false);
-    }
-
-    private void enableEditText() {
+    @Override
+    public void enableViews() {
         filtrationControlUnitNoDelay_1.setEnabled(true);
         filtrationControlUnitNoDelay_2.setEnabled(true);
         filtrationControlUnitNoDelay_3.setEnabled(true);
         filtrationControlUnitOnTime.setEnabled(true);
         filtrationControlUnitSeparation.setEnabled(true);
+    }
+
+    @Override
+    public void disableViews() {
+        filtrationControlUnitNoDelay_1.setEnabled(false);
+        filtrationControlUnitNoDelay_2.setEnabled(false);
+        filtrationControlUnitNoDelay_3.setEnabled(false);
+        filtrationControlUnitOnTime.setEnabled(false);
+        filtrationControlUnitSeparation.setEnabled(false);
     }
 
 
@@ -335,7 +338,7 @@ public class Screen_7 extends SmsServices {
             //enableFiltration.setVisibility(View.VISIBLE);
             disableFiltration.setVisibility(View.INVISIBLE);
         }
-        sendMessage(SmsServices.phoneNumber, smsData);
+        sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver,randomNumber);
         isEditedDelay_1 = false;
         isEditedDelay_2 = false;
         isEditedDelay_3 = false;
@@ -491,6 +494,29 @@ public class Screen_7 extends SmsServices {
             }
 
         });
+
+        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+            @Override
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+                System.out.println("non service page smsDeliveredStatus - "+smsDeliveredStatus);
+                if(smsDeliveredStatus){
+                    b = true;
+                } else {
+                    System.out.println("isEnabledClicked = "+isEnabledClicked);
+                    System.out.println("isDisabledClicked = "+isDisabledClicked);
+                    System.out.println("isInitial = "+isInitial);
+                   /* if (isEnabledClicked) {
+                        enableFertigation.setVisibility(View.VISIBLE);
+                    }
+                    if (isDisabledClicked) {
+                        disableFertigation.setVisibility(View.VISIBLE);
+                    }*/
+                    isEnabledClicked = false;
+                    isDisabledClicked = false;
+                    initializeModel();
+                }
+            }
+        });
     }
 
     @Override
@@ -520,14 +546,14 @@ public class Screen_7 extends SmsServices {
                 isEnabledClicked = false;
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Water filtration activated");
-                enableEditText();
+                enableViews();
                 initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_9_1.toLowerCase()) && isDisabledClicked) {
                 b = false;
                 isDisabledClicked = false;
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Water filtration deactivated");
-                enableEditText();
+                enableViews();
                 initializeModel();
             }
         } catch (IOException e) {

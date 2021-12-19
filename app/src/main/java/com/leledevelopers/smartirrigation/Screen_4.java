@@ -137,6 +137,16 @@ public class Screen_4 extends SmsServices {
     }
 
     @Override
+    public void enableViews() {
+
+    }
+
+    @Override
+    public void disableViews() {
+
+    }
+
+    @Override
     public void onBackPressed() {
         AlertDialog.Builder exit = new AlertDialog.Builder(this);
         exit.setMessage("Are you sure do you want to exit")
