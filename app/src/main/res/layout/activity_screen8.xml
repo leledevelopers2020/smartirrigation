@@ -42,6 +42,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/lltop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
@@ -54,6 +55,9 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="5dp"
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="@id/lltop"
             android:text="Report of Field Status"
             android:textStyle="bold" />
 
