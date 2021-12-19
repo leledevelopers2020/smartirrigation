@@ -127,7 +127,7 @@ public class Screen_2_1 extends SmsServices {
                             cursorVisibility();
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
                             sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber);
-                            status.setText("Password setting message sent");
+                            status.setText("Admin registration SMS sent");
                         } else {
                             focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
