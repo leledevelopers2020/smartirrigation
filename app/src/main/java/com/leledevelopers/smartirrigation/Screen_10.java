@@ -251,7 +251,6 @@ public class Screen_10 extends SmsServices {
             enableViews();
             b = false;
             isSetMotorLoadClicked = false;
-            enableViews();
             status.setText("Motorload thresholds set successfully.");
             handler.postDelayed(new Runnable() {
                 @Override
