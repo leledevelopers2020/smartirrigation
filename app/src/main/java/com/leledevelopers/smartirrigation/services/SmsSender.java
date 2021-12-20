@@ -49,44 +49,29 @@ public class SmsSender extends AppCompatActivity {
                 System.out.println("code-----> " + getResultCode());
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(context, "SMS sent",
-                                Toast.LENGTH_SHORT).show();
                         view.setText("SMS sent");
-                        //smsSenderBroadcast.onReceiveStatus(true);
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(context, "Generic failure",
-                                Toast.LENGTH_SHORT).show();
                         view.setText("Generic failure");
                         smsSenderBroadcast.onReceiveStatus(false);
                         break;
                     case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(context, "No service",
-                                Toast.LENGTH_SHORT).show();
                         view.setText("No service");
                         smsSenderBroadcast.onReceiveStatus(false);
                         break;
                     case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(context, "Null PDU",
-                                Toast.LENGTH_SHORT).show();
                         view.setText("Null PDU");
                         smsSenderBroadcast.onReceiveStatus(false);
                         break;
                     case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(context, "Radio off",
-                                Toast.LENGTH_SHORT).show();
-                        view.setText("Radio off");
+                        view.setText("Radio off, Failed to send SMS");
                         smsSenderBroadcast.onReceiveStatus(false);
                         break;
                     case SmsManager.RESULT_MODEM_ERROR:
-                        Toast.makeText(context, "Failed to Send SMS, Please check your SMS plan",
-                                Toast.LENGTH_SHORT).show();
                         view.setText("Failed to Send SMS, Please check your SMS plan");
                         smsSenderBroadcast.onReceiveStatus(false);
                         break;
                     case SmsManager.RESULT_RIL_INVALID_STATE:
-                        Toast.makeText(context, "Internal Error",
-                                Toast.LENGTH_SHORT).show();
                         view.setText("Failed to Send SMS, Internal Error");
                         smsSenderBroadcast.onReceiveStatus(false);
                         break;
@@ -102,14 +87,10 @@ public class SmsSender extends AppCompatActivity {
                 System.out.println("code---> " + getResultCode());
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(context, "SMS delivered",
-                                Toast.LENGTH_SHORT).show();
                         view.setText("SMS Delivered");
                         smsSenderBroadcast.onReceiveStatus(true);
                         break;
                     case Activity.RESULT_CANCELED:
-                        Toast.makeText(context, "SMS not delivered",
-                                Toast.LENGTH_SHORT).show();
                         view.setText("SMS not delivered");
                         smsSenderBroadcast.onReceiveStatus(false);
                         break;
