@@ -545,7 +545,15 @@ public class Screen_6 extends SmsServices {
                 status.setText("Incorrect values Fertigation not enabled for field no." + model.getFieldNo());
                 enableViews();
                 initializeModel();
-            } else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase()) && isDisabledClicked) {
+            }
+            else if(message.toLowerCase().contains(SmsUtils.INSMS_6_3.toLowerCase()))
+            {
+                b=false;
+                status.setText(message+model.getFieldNo());
+                enableViews();
+                initializeModel();
+            }
+            else if (message.toLowerCase().contains(SmsUtils.INSMS_7_1.toLowerCase()) && isDisabledClicked) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_7_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
                     isDisabledClicked = false;

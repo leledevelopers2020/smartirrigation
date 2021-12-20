@@ -132,12 +132,12 @@ public class Screen_10 extends SmsServices {
         Log.d("tag", fullLoadCutOffTextlocal + "full   " + noLoadCutoffTextlocal);
 
         try {
-            if (noLoadCutoffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
+            if (noLoadCutoffTextlocal.equals( "") || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
                 noLoadCutoffText.getText().clear();
                 noLoadCutoffText.setError("Enter a valid value");
                 validate = false;
             }
-            if (fullLoadCutOffTextlocal == "" || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffTextlocal)))) {
+            if (fullLoadCutOffTextlocal.equals( "") || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffTextlocal)))) {
 
                 fullLoadCutOffText.getText().clear();
                 fullLoadCutOffText.setError("Enter a valid value");

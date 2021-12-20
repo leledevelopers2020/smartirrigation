@@ -401,7 +401,7 @@ public class Screen_5 extends SmsServices {
                 if (!hasFocus) {
                     if (!(priority.getText().toString().matches(regex) &&
                             priority.getText().toString().length() >= 1 &&
-                            validateRange(1, 9, Integer.parseInt(priority.getText().toString())))) {
+                            validateRange(1, 12, Integer.parseInt(priority.getText().toString())))) {
                         priority.getText().clear();
                         priority.setError("Enter a valid value");
 
