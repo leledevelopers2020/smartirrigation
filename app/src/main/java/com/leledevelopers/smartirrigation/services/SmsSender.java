@@ -34,8 +34,8 @@ public class SmsSender extends AppCompatActivity {
         this.smsSenderBroadcast = smsSenderBroadcast;
     }
 
-    public void sendMessage(String phoneNumber, String message, Context context, TextView view) {
-        System.out.println("--> in " + " " + phoneNumber + " " +message);
+    public void sendMessage(String phoneNumber, String message, Context context, TextView view, String screen_Specific_Sms) {
+        System.out.println("--> in " + " " + phoneNumber + " " + message);
         PendingIntent sentPI = PendingIntent.getBroadcast(context, 0,
                 new Intent(SENT), 0);
 
@@ -49,7 +49,7 @@ public class SmsSender extends AppCompatActivity {
                 System.out.println("code-----> " + getResultCode());
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        view.setText("SMS sent");
+                        view.setText(screen_Specific_Sms + "sent");
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         view.setText("Generic failure");
@@ -87,11 +87,11 @@ public class SmsSender extends AppCompatActivity {
                 System.out.println("code---> " + getResultCode());
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        view.setText("SMS Delivered");
+                        view.setText(screen_Specific_Sms + "Delivered");
                         smsSenderBroadcast.onReceiveStatus(true);
                         break;
                     case Activity.RESULT_CANCELED:
-                        view.setText("SMS not delivered");
+                        view.setText(screen_Specific_Sms + "not delivered");
                         smsSenderBroadcast.onReceiveStatus(false);
                         break;
                 }
@@ -141,8 +141,8 @@ public class SmsSender extends AppCompatActivity {
 
                 SmsManager.getSmsManagerForSubscriptionId(simInfo1.getSubscriptionId()).sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
             } else {*/
-                SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
             //}
         }
 
@@ -159,7 +159,7 @@ public class SmsSender extends AppCompatActivity {
             localList = localSubscriptionManager.getActiveSubscriptionInfoList();
             SubscriptionInfo simInfo1 = (SubscriptionInfo) localList.get(0);
             SubscriptionInfo simInfo2 = (SubscriptionInfo) localList.get(1);
-           //SendSMS From SIM One
+            //SendSMS From SIM One
             //SmsManager.getSmsManagerForSubscriptionId(simInfo1.getSubscriptionId()).sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
 
             //SendSMS From SIM Two

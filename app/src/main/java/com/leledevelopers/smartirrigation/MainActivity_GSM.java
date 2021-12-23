@@ -55,7 +55,7 @@ public class MainActivity_GSM extends SmsServices {
                     //smsReceiver.waitFor_1_Minute(randomNumber);
                     //b = true;
                     System.out.println("--> " + smsReceiver.toString());
-                    sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2, status, smsReceiver, randomNumber);
+                    sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2, status, smsReceiver, randomNumber,"Authentication SMS ");
                     //status.setText("Authentication SMS sent");
                 }
                 //  startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));

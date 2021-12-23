@@ -85,8 +85,8 @@ public class Screen_9 extends SmsServices {
                 /*String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
                         (calendar.get(Calendar.YEAR))%100+"",calendar.get(Calendar.HOUR_OF_DAY)+""
                         ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");*/
-                sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber);
-                status.setText("Date Timestamp SMS Sent");
+                sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber,"Date Timestamp SMS ");
+                //status.setText("Date Timestamp SMS Sent");
             }
         });
         getSystemTime.setOnClickListener(new View.OnClickListener() {
@@ -98,8 +98,8 @@ public class Screen_9 extends SmsServices {
                 //b = true;
                 isGetTimeClicked = true;
                 String smsData = smsUtils.OutSMS_11;
-                sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber);
-                status.setText("Get System Timestamp SMS Sent");
+                sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber,"Get System Timestamp SMS ");
+                //status.setText("Get System Timestamp SMS Sent");
             }
         });
         back_9.setOnClickListener(new View.OnClickListener() {

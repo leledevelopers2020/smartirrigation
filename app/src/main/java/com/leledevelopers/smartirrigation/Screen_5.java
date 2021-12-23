@@ -261,8 +261,8 @@ public class Screen_5 extends SmsServices {
                 if (validateInput() && !systemDown) {
                     disableViews();
                     cursorVisibility();
-                    status.setText("Enable Irrigation configuration SMS Sent");
-                    updateData_And_SendSMS("enable");
+                    //status.setText("Enable Irrigation configuration SMS Sent");
+                    updateData_And_SendSMS("enable","Enable Irrigation configuration SMS ");
                     randomNumber = Math.random();
                     System.out.println("randomNumber at 5th en---> " + randomNumber + " isInitial = " + isInitial);
                     //smsReceiver.waitFor_1_Minute(randomNumber);
@@ -285,7 +285,7 @@ public class Screen_5 extends SmsServices {
                 if (!systemDown) {
                     disableViews();
                     status.setText("Disable Irrigation configuration SMS Sent");
-                    updateData_And_SendSMS("disable");
+                    updateData_And_SendSMS("disable","Disable Irrigation configuration SMS ");
                     randomNumber = Math.random();
                     System.out.println("randomNumber at 5th den---> " + randomNumber + " isInitial = " + isInitial);
                     //smsReceiver.waitFor_1_Minute(randomNumber);
@@ -720,7 +720,7 @@ public class Screen_5 extends SmsServices {
         }
     }
 
-    private void updateData_And_SendSMS(String typeOfAction) {
+    private void updateData_And_SendSMS(String typeOfAction,String screen_Specific_SMS) {
         if (!spinner.getSelectedItem().toString().trim().equals("Pick one")) {
             String smsdata;
             fieldNo = Integer.parseInt(spinner.getSelectedItem().toString());
@@ -754,7 +754,7 @@ public class Screen_5 extends SmsServices {
                 //enableFertigation.setVisibility(View.VISIBLE);
                 disableFertigation.setVisibility(View.INVISIBLE);
             }
-            sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber);
+            sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber,screen_Specific_SMS);
             modelList.set(fieldNo - 1, model);
             isEditedValveOnPeriod = false;
             isEditedValveOffPeriod = false;

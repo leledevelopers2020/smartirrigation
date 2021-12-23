@@ -48,11 +48,11 @@ public class Screen_10 extends SmsServices {
                     randomNumber = Math.random();
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber);
+                    sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber,"Message ");
                     //smsReceiver.waitFor_1_Minute(randomNumber);
                     //b = true;
                     isSetMotorLoadClicked = true;
-                    status.setText("Message Delivered");
+                    //status.setText("Message Delivered");
                 }
             }
         });

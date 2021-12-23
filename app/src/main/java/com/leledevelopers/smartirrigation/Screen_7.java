@@ -94,11 +94,11 @@ public class Screen_7 extends SmsServices {
                 if (validateInput() && !systemDown) {
                     disableViews();
                     randomNumber = Math.random();
-                    updateData_And_SendSMS("enable");
+                    updateData_And_SendSMS("enable","Enable filtration SMS ");
                     //smsReceiver.waitFor_1_Minute(randomNumber);
                     //b = true;
                     isEnabledClicked = true;
-                    status.setText("Enable filtration SMS Sent");
+                    //status.setText("Enable filtration SMS Sent");
                 }
             }
         });
@@ -114,11 +114,11 @@ public class Screen_7 extends SmsServices {
                 if (!systemDown) {
                     disableViews();
                     randomNumber = Math.random();
-                    updateData_And_SendSMS("disable");
+                    updateData_And_SendSMS("disable","Disable filtration SMS ");
                    // smsReceiver.waitFor_1_Minute(randomNumber);
                    // b = false;
                     isDisabledClicked = true;
-                    status.setText("Disable filtration SMS Sent");
+                    //status.setText("Disable filtration SMS Sent");
                 }
             }
         });
@@ -315,7 +315,7 @@ public class Screen_7 extends SmsServices {
     }
 
 
-    private void updateData_And_SendSMS(String typeOfAction) {
+    private void updateData_And_SendSMS(String typeOfAction,String screen_Specific_SMS) {
         String smsData;
         model.setFcDelay_1(Integer.parseInt(filtrationControlUnitNoDelay_1.getText().toString()));
         model.setFcDelay_2(Integer.parseInt(filtrationControlUnitNoDelay_2.getText().toString()));
@@ -338,7 +338,7 @@ public class Screen_7 extends SmsServices {
             //enableFiltration.setVisibility(View.VISIBLE);
             disableFiltration.setVisibility(View.INVISIBLE);
         }
-        sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver,randomNumber);
+        sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver,randomNumber,screen_Specific_SMS);
         isEditedDelay_1 = false;
         isEditedDelay_2 = false;
         isEditedDelay_3 = false;

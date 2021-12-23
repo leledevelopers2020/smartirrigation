@@ -127,12 +127,12 @@ public class Screen_6 extends SmsServices {
                     disableViews();
                     cursorVisibility();
 
-                    updateData_And_SendSMS("enable");
+                    updateData_And_SendSMS("enable","Enable fertigation configuration SMS ");
                     randomNumber = Math.random();
                     //smsReceiver.waitFor_1_Minute(randomNumber);
                     //b = true;
                     isEnabledClicked = true;
-                    status.setText("Enable fertigation configuration SMS Sent");
+                    //status.setText("Enable fertigation configuration SMS Sent");
                 }
             }
         });
@@ -148,12 +148,12 @@ public class Screen_6 extends SmsServices {
                 }
                 if (!systemDown) {
                     disableViews();
-                    updateData_And_SendSMS("disable");
+                    updateData_And_SendSMS("disable","Disable fertigation configuration SMS ");
                     randomNumber = Math.random();
                     //smsReceiver.waitFor_1_Minute(randomNumber);
                     //b = true;
                     isDisabledClicked = true;
-                    status.setText("Disable fertigation configuration SMS Sent");
+                    //status.setText("Disable fertigation configuration SMS Sent");
                 }
             }
         });
@@ -399,7 +399,7 @@ public class Screen_6 extends SmsServices {
         model = null;
     }
 
-    private void updateData_And_SendSMS(String typeOfAction) {
+    private void updateData_And_SendSMS(String typeOfAction,String screen_Specific_SMS) {
         if (!spinner.getSelectedItem().toString().trim().equals("Pick one")) {
             String smsdata;
             fieldNo = Integer.parseInt(spinner.getSelectedItem().toString());
@@ -425,7 +425,7 @@ public class Screen_6 extends SmsServices {
                 //enableFieldFertigation.setVisibility(View.VISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
             }
-            sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber);
+            sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber,screen_Specific_SMS);
             modelList.set(fieldNo - 1, model);
             isEditedInjectPeriod = false;
             isEditedNoOfIterations = false;

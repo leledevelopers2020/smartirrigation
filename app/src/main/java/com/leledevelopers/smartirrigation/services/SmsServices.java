@@ -1,18 +1,12 @@
 package com.leledevelopers.smartirrigation.services;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.telephony.SmsManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.widget.TextView;
@@ -56,10 +50,10 @@ public abstract class SmsServices extends AppCompatActivity {
      * @return void
      */
 
-    public void sendMessage(String phoneNumber, String message, TextView view, SmsReceiver smsReceiver, double randomNumber) {
+    public void sendMessage(String phoneNumber, String message, TextView view, SmsReceiver smsReceiver, double randomNumber, String screen_Specific_Sms) {
         SmsSender smsSender = new SmsSender();
         System.out.println("---> " + smsReceiver.toString() + " " + android.os.Build.VERSION.SDK_INT);
-        smsSender.sendMessage(phoneNumber, message, this.context, view);
+        smsSender.sendMessage(phoneNumber, message, this.context, view, screen_Specific_Sms);
         smsSender.setSmsSenderBroadcast(new SmsSender.SmsSenderBroadcast() {
             @Override
             public void onReceiveStatus(boolean smsDeliveredStatus) {
