@@ -502,15 +502,6 @@ public class Screen_7 extends SmsServices {
                 if(smsDeliveredStatus){
                     b = true;
                 } else {
-                    System.out.println("isEnabledClicked = "+isEnabledClicked);
-                    System.out.println("isDisabledClicked = "+isDisabledClicked);
-                    System.out.println("isInitial = "+isInitial);
-                   /* if (isEnabledClicked) {
-                        enableFertigation.setVisibility(View.VISIBLE);
-                    }
-                    if (isDisabledClicked) {
-                        disableFertigation.setVisibility(View.VISIBLE);
-                    }*/
                     isEnabledClicked = false;
                     isDisabledClicked = false;
                     initializeModel();

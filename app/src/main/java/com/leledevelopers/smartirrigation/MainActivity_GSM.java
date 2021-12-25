@@ -157,7 +157,7 @@ public class MainActivity_GSM extends SmsServices {
                 System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
                     b = true;
-                    status.setText("Authentication SMS sent");
+                   // status.setText("Authentication SMS sent");
                 }
             }
         });
