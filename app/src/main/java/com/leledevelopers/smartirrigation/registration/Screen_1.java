@@ -21,7 +21,13 @@ public class Screen_1 extends SmsServices {
         setContentView(R.layout.activity_screen1);
         initViews();
         this.context = getApplicationContext();
-        accessPermissions();
+        try {
+            accessPermissions();
+        }
+        catch(Exception e)
+        {
+            accessPermissions();
+        }
         gsmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
