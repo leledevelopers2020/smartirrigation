@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +31,7 @@ public class Screen_8 extends SmsServices {
     Spinner fieldSpinner, allSMSSpinner;
     RecyclerView recyclerView;
     List<Message> messages = new ArrayList<Message>();
+    TextView nodata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,9 +117,17 @@ public class Screen_8 extends SmsServices {
     }
 
     private void sortMessages(List<Message> messageArrayList) {
-        Collections.sort(messageArrayList, new SortByDate());
-        messageArrayList = reverseMessageList(messageArrayList);
-        startRecyclerView(messageArrayList);
+        if(messageArrayList.size() != 0){
+            nodata.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+            Collections.sort(messageArrayList, new SortByDate());
+            messageArrayList = reverseMessageList(messageArrayList);
+            startRecyclerView(messageArrayList);
+        } else {
+            nodata.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     private int spinnerIntValue(String value) {
@@ -162,6 +172,7 @@ public class Screen_8 extends SmsServices {
         printAllSMM = findViewById(R.id.printAllSMM);
         recyclerView = findViewById(R.id.displaySMS);
         back_8 = findViewById(R.id.back_8);
+        nodata = findViewById(R.id.no_data);
     }
 
     @Override
