@@ -126,13 +126,8 @@ public class Screen_6 extends SmsServices {
                 if (validateInput() && !systemDown) {
                     disableViews();
                     cursorVisibility();
-
                     updateData_And_SendSMS("enable","Enable fertigation configuration SMS ");
-                    randomNumber = Math.random();
-                    //smsReceiver.waitFor_1_Minute(randomNumber);
-                    //b = true;
                     isEnabledClicked = true;
-                    //status.setText("Enable fertigation configuration SMS Sent");
                 }
             }
         });
@@ -150,10 +145,7 @@ public class Screen_6 extends SmsServices {
                     disableViews();
                     updateData_And_SendSMS("disable","Disable fertigation configuration SMS ");
                     randomNumber = Math.random();
-                    //smsReceiver.waitFor_1_Minute(randomNumber);
-                    //b = true;
                     isDisabledClicked = true;
-                    //status.setText("Disable fertigation configuration SMS Sent");
                 }
             }
         });
@@ -425,7 +417,9 @@ public class Screen_6 extends SmsServices {
                 //enableFieldFertigation.setVisibility(View.VISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
             }
+            randomNumber = Math.random();
             sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber,screen_Specific_SMS);
+            System.out.println("screen 6 "+randomNumber);
             modelList.set(fieldNo - 1, model);
             isEditedInjectPeriod = false;
             isEditedNoOfIterations = false;
@@ -478,7 +472,7 @@ public class Screen_6 extends SmsServices {
                             startActivity(new Intent(Screen_6.this, MainActivity_GSM.class));
                             finish();
                         }
-                    }, 2000);
+                    }, 3000);
                 }
             }
 

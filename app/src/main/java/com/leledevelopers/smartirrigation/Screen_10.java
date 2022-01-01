@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,11 +49,8 @@ public class Screen_10 extends SmsServices {
                     randomNumber = Math.random();
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber,"Message ");
-                    //smsReceiver.waitFor_1_Minute(randomNumber);
-                    //b = true;
+                    sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber, "Message ");
                     isSetMotorLoadClicked = true;
-                    //status.setText("Message Delivered");
                 }
             }
         });
@@ -112,9 +110,7 @@ public class Screen_10 extends SmsServices {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-
                     try {
-
                         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     } catch (Exception e) {
@@ -132,12 +128,12 @@ public class Screen_10 extends SmsServices {
         Log.d("tag", fullLoadCutOffTextlocal + "full   " + noLoadCutoffTextlocal);
 
         try {
-            if (noLoadCutoffTextlocal.equals( "") || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
+            if (noLoadCutoffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
                 noLoadCutoffText.getText().clear();
                 noLoadCutoffText.setError("Enter a valid value");
                 validate = false;
             }
-            if (fullLoadCutOffTextlocal.equals( "") || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffTextlocal)))) {
+            if (fullLoadCutOffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffTextlocal)))) {
 
                 fullLoadCutOffText.getText().clear();
                 fullLoadCutOffText.setError("Enter a valid value");
@@ -179,12 +175,23 @@ public class Screen_10 extends SmsServices {
     public void enableViews() {
         noLoadCutoffText.setFocusableInTouchMode(true);
         fullLoadCutOffText.setFocusableInTouchMode(true);
+        //disable views
+        noLoadCutoffText.setEnabled(true);
+        fullLoadCutOffText.setEnabled(true);
+        //setMotorLoadThreshold.setEnabled(true);
+        setMotorLoadThreshold.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void disableViews() {
         noLoadCutoffText.setFocusableInTouchMode(false);
         fullLoadCutOffText.setFocusableInTouchMode(false);
+
+        //disable views
+        noLoadCutoffText.setEnabled(false);
+        fullLoadCutOffText.setEnabled(false);
+        //setMotorLoadThreshold.setEnabled(false);
+        setMotorLoadThreshold.setVisibility(View.INVISIBLE);
     }
 
 
@@ -207,8 +214,17 @@ public class Screen_10 extends SmsServices {
             public void checkTime(double randomValue) {
                 if (b && (randomNumber == randomValue)) {
                     systemDown = true;
+                    disableViews();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Screen_10.this, Screen_9.class));
+                            finish();
+                        }
+                    }, 3000);
                 }
             }
         });
@@ -248,8 +264,8 @@ public class Screen_10 extends SmsServices {
 
     public void checkSMS(String message) {
         if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase()) && isSetMotorLoadClicked) {
-            enableViews();
             b = false;
+            enableViews();
             isSetMotorLoadClicked = false;
             status.setText("Motorload thresholds set successfully.");
             handler.postDelayed(new Runnable() {

@@ -261,12 +261,7 @@ public class Screen_5 extends SmsServices {
                 if (validateInput() && !systemDown) {
                     disableViews();
                     cursorVisibility();
-                    //status.setText("Enable Irrigation configuration SMS Sent");
                     updateData_And_SendSMS("enable","Enable Irrigation configuration SMS ");
-                    randomNumber = Math.random();
-                    System.out.println("randomNumber at 5th en---> " + randomNumber + " isInitial = " + isInitial);
-                    //smsReceiver.waitFor_1_Minute(randomNumber);
-                    //b = true;
                     isEnabledClicked = true;
                 }
             }
@@ -286,10 +281,6 @@ public class Screen_5 extends SmsServices {
                     disableViews();
                     status.setText("Disable Irrigation configuration SMS Sent");
                     updateData_And_SendSMS("disable","Disable Irrigation configuration SMS ");
-                    randomNumber = Math.random();
-                    System.out.println("randomNumber at 5th den---> " + randomNumber + " isInitial = " + isInitial);
-                    //smsReceiver.waitFor_1_Minute(randomNumber);
-                    //b = true;
                     isDisabledClicked = true;
                 }
             }
@@ -754,7 +745,9 @@ public class Screen_5 extends SmsServices {
                 //enableFertigation.setVisibility(View.VISIBLE);
                 disableFertigation.setVisibility(View.INVISIBLE);
             }
+            randomNumber = Math.random();
             sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber,screen_Specific_SMS);
+            System.out.println("screen 5 "+randomNumber);
             modelList.set(fieldNo - 1, model);
             isEditedValveOnPeriod = false;
             isEditedValveOffPeriod = false;
@@ -863,7 +856,7 @@ public class Screen_5 extends SmsServices {
                             startActivity(new Intent(Screen_5.this, MainActivity_GSM.class));
                             finish();
                         }
-                    }, 5000);
+                    }, 3000);
                 }
             }
         });
