@@ -103,7 +103,7 @@ public class SmsReceiver {
                 smsReceiverBroadcast.checkTime(random);
                 System.out.println("random value = "+random+ " , services "+services.toString());
             }
-        }, 60 * 500);
+        }, 60 * 2000);
     }
 
     /**
