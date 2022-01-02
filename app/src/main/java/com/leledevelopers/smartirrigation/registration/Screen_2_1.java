@@ -54,6 +54,7 @@ public class Screen_2_1 extends SmsServices {
     private Bundle bundle;
     private Boolean extra = false;
     private double randomNumber;
+    private static boolean scrren_2_1_Visible = false;
 
 
     @Override
@@ -408,7 +409,7 @@ public class Screen_2_1 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                if (b && (randomNumber == randomValue)) {
+                if (b && (randomNumber == randomValue) && scrren_2_1_Visible) {
                     systemDown = true;
                     disableViews();
                     smsReceiver.unRegisterBroadCasts();
@@ -423,6 +424,7 @@ public class Screen_2_1 extends SmsServices {
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
                 System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
+                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
                 } else {
                     isSetClicked = false;
@@ -435,6 +437,7 @@ public class Screen_2_1 extends SmsServices {
     protected void onResume() {
         super.onResume();
         smsReceiver.registerBroadCasts();
+        scrren_2_1_Visible = true;
     }
 
 
@@ -442,6 +445,7 @@ public class Screen_2_1 extends SmsServices {
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+        scrren_2_1_Visible = false;
     }
 
     private void createConfgFiles() throws IOException {

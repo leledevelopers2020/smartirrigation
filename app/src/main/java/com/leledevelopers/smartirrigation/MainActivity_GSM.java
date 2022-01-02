@@ -29,6 +29,7 @@ public class MainActivity_GSM extends SmsServices {
     private Intent extraIntent;
     private Bundle bundle;
     private double randomNumber;
+    private static boolean Mainacitivity_GSM_Visible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +141,9 @@ public class MainActivity_GSM extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                if (b && (randomNumber == randomValue)) {
+                System.out.println("At main screen randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , Mainacitivity_GSM_Visible = "+Mainacitivity_GSM_Visible);
+                if (b && (randomNumber == randomValue) && Mainacitivity_GSM_Visible) {
+                    System.out.println("Main screen b = "+b);
                     systemDown = true;
                     enableViews();
                     smsReceiver.unRegisterBroadCasts();
@@ -156,6 +159,7 @@ public class MainActivity_GSM extends SmsServices {
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
                 System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
+                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
                    // status.setText("Authentication SMS sent");
                 }
@@ -167,13 +171,14 @@ public class MainActivity_GSM extends SmsServices {
     protected void onResume() {
         super.onResume();
         smsReceiver.registerBroadCasts();
-
+        Mainacitivity_GSM_Visible = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+        Mainacitivity_GSM_Visible = false;
     }
 
     public void checkSMS(String message) {

@@ -52,14 +52,14 @@ public abstract class SmsServices extends AppCompatActivity {
 
     public void sendMessage(String phoneNumber, String message, TextView view, SmsReceiver smsReceiver, double randomNumber, String screen_Specific_Sms) {
         SmsSender smsSender = new SmsSender();
-        System.out.println("---> " + smsReceiver.toString() + " " + android.os.Build.VERSION.SDK_INT);
+        System.out.println("---> " + smsReceiver.toString());
         smsSender.sendMessage(phoneNumber, message, this.context, view, screen_Specific_Sms);
         smsSender.setSmsSenderBroadcast(new SmsSender.SmsSenderBroadcast() {
             @Override
             public void onReceiveStatus(boolean smsDeliveredStatus) {
                 System.out.println("service smsDeliveredStatus = " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
-                    smsReceiver.waitFor_1_Minute(randomNumber);
+                    //smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                 } else {
                     enableViews();
                 }

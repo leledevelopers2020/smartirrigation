@@ -27,6 +27,7 @@ public class Screen_10 extends SmsServices {
     private boolean validate = true;
     private double randomNumber;
     private boolean isSetMotorLoadClicked = false;
+    private static boolean screen_10_Visible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class Screen_10 extends SmsServices {
                     randomNumber = Math.random();
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber, "Message ");
+                    sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber, "Motorload threshold message ");
                     isSetMotorLoadClicked = true;
                 }
             }
@@ -212,7 +213,9 @@ public class Screen_10 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                if (b && (randomNumber == randomValue)) {
+                System.out.println("At screen_10 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_10_Visible = "+screen_10_Visible);
+                if (b && (randomNumber == randomValue) && screen_10_Visible) {
+                    System.out.println("screen_10 b = "+b);
                     systemDown = true;
                     disableViews();
                     smsReceiver.unRegisterBroadCasts();
@@ -232,8 +235,9 @@ public class Screen_10 extends SmsServices {
         this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
-                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
+                //System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
+                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
                 } else {
                     isSetMotorLoadClicked = false;
@@ -246,13 +250,14 @@ public class Screen_10 extends SmsServices {
     protected void onResume() {
         super.onResume();
         smsReceiver.registerBroadCasts();
-
+        screen_10_Visible = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+        screen_10_Visible = false;
     }
 
     @Override
@@ -271,8 +276,8 @@ public class Screen_10 extends SmsServices {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(Screen_10.this, Screen_9.class));
                     finish();
+                    startActivity(new Intent(Screen_10.this, Screen_9.class));
                 }
             }, 1000);
         }

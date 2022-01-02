@@ -51,6 +51,7 @@ public class Screen_6 extends SmsServices {
     private boolean isEnabledClicked = false;
     private boolean isDisabledClicked = false;
     private double randomNumber;
+    private static boolean screen_6_Visible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -461,7 +462,9 @@ public class Screen_6 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                if (b && (randomNumber == randomValue)) {
+                System.out.println("At screen_6 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_6_Visible = "+screen_6_Visible);
+                if (b && (randomNumber == randomValue) && screen_6_Visible) {
+                    System.out.println("screen_6 b = "+b);
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
@@ -483,6 +486,7 @@ public class Screen_6 extends SmsServices {
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
                 System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
+                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
                 } else {
                     isEnabledClicked = false;
@@ -497,13 +501,20 @@ public class Screen_6 extends SmsServices {
     protected void onResume() {
         super.onResume();
         smsReceiver.registerBroadCasts();
-
+        screen_6_Visible = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+        screen_6_Visible = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("screen 6 onDestroy");
     }
 
     @Override

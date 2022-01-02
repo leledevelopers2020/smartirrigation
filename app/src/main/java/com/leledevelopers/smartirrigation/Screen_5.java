@@ -67,6 +67,7 @@ public class Screen_5 extends SmsServices {
     private boolean isDisabledClicked = false;
     private TimePickerDialog timePickerDialog;
     private double randomNumber;
+    private static boolean screen_5_Visible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -843,8 +844,8 @@ public class Screen_5 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                System.out.println("rValue at 5th screen ---> " + randomValue + " and current value " + randomNumber + " and b = " + b + " and randomNumber vs rValue " + (randomNumber == randomValue));
-                if (b && (randomNumber == randomValue)) {
+                System.out.println("At screen_5 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_6_Visible = "+screen_5_Visible);
+                if (b && (randomNumber == randomValue) && screen_5_Visible) {
                     disableViews();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
@@ -866,6 +867,7 @@ public class Screen_5 extends SmsServices {
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
                 System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
+                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
                 } else {
                     isEnabledClicked = false;
@@ -880,14 +882,14 @@ public class Screen_5 extends SmsServices {
     protected void onResume() {
         super.onResume();
         smsReceiver.registerBroadCasts();
-
+        screen_5_Visible = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
-
+        screen_5_Visible = false;
     }
 
     @Override

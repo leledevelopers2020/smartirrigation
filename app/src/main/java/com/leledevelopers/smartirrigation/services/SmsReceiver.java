@@ -96,13 +96,14 @@ public class SmsReceiver {
         }
     }
 
-    public void waitFor_1_Minute(double random) {
+    public void waitFor_1_Minute(double random,SmsReceiver services) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 smsReceiverBroadcast.checkTime(random);
+                System.out.println("random value = "+random+ " , services "+services.toString());
             }
-        }, 60 * 2000);
+        }, 60 * 500);
     }
 
     /**
