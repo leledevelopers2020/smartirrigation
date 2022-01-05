@@ -8,9 +8,9 @@ public class SmsUtils {
     // SMS responses from controller
     public static final String INSMS_1_1 = "Admin set successfully";
     public static final String INSMS_1_2 = "Wrong password entered";
-    public static final String INSMS_1_3 = "You are no more Admin now.New Admin is set to <GSM no.>";
+    public static final String INSMS_1_3 = "You are no more Admin now.New Admin is set to ";
     public static final String INSMS_2_1 = "System Connected";
-    public static final String INSMS_2_2 = "Authentication failed, please reset connection";
+    public static final String INSMS_2_2 = "Authentication failed";
     public static final String INSMS_3_1 = "Password changed successfully";
     public static final String INSMS_4_1 = "Irrigation configured for field no.";
     public static final String INSMS_5_1 = "Irrigation configuration disabled for field no.";
@@ -22,7 +22,7 @@ public class SmsUtils {
     public static final String INSMS_9_1 = "Water filtration deactivated";
     public static final String INSMS_10_1 = "RTC is set to current Timestamp";
     public static final String INSMS_10_2 = "Incorrect Timestamp found";
-    public static final String INSMS_11_1 = "System Time:";
+    public static final String INSMS_11_1 = "Current Time:";
     public static final String INSMS_12_1 = "Motorload thresholds set sucessfully";
     public static final String RTC_BATTERY_LOW_STATUS = "Please replace RTC battery";
     public static final String RTC_BATTERY_FULL_STATUS = "New RTC battery found,please Set Time";

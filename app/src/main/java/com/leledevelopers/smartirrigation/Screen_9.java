@@ -31,6 +31,7 @@ public class Screen_9 extends SmsServices {
     private double randomNumber;
     private boolean isSetTimeClicked = false;
     private boolean isGetTimeClicked = false;
+    private static boolean screen_9_Visible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +166,7 @@ public class Screen_9 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                if (b && (randomNumber == randomValue)) {
+                if (b && (randomNumber == randomValue)&& screen_9_Visible) {
                     enableViews();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
@@ -195,6 +196,7 @@ public class Screen_9 extends SmsServices {
     protected void onResume() {
         super.onResume();
         smsReceiver.registerBroadCasts();
+        screen_9_Visible = true;
 
     }
 
@@ -202,6 +204,7 @@ public class Screen_9 extends SmsServices {
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+        screen_9_Visible = false;
     }
 
     @Override

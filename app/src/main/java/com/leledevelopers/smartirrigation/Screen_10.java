@@ -50,7 +50,7 @@ public class Screen_10 extends SmsServices {
                     randomNumber = Math.random();
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
                             fullLoadCutOffText.getText().toString());
-                    sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber, "Motorload threshold message ");
+                    sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber, "Motorload threshold settings SMS ");
                     isSetMotorLoadClicked = true;
                 }
             }
@@ -213,7 +213,7 @@ public class Screen_10 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                System.out.println("At screen_10 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_10_Visible = "+screen_10_Visible);
+             //   System.out.println("At screen_10 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_10_Visible = "+screen_10_Visible);
                 if (b && (randomNumber == randomValue) && screen_10_Visible) {
                     System.out.println("screen_10 b = "+b);
                     systemDown = true;
