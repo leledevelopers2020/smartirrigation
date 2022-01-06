@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -171,8 +172,15 @@ public class Screen_9 extends SmsServices {
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
-                    startActivity(new Intent(Screen_9.this, MainActivity_GSM.class));
-                    finish();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(Screen_9.this, MainActivity_GSM.class));
+                            finish();
+                        }
+                    }, 3000);
+
                 }
             }
 
@@ -183,6 +191,7 @@ public class Screen_9 extends SmsServices {
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
                 System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
+                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
                 } else {
                     isGetTimeClicked = false;
@@ -228,7 +237,7 @@ public class Screen_9 extends SmsServices {
             b = false;
             isGetTimeClicked = false;
             status.setText(SmsUtils.INSMS_11_1 + (mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "/" + mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "/"
-                    + mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)) + mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)))+" "+mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ":"
+                    + mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)))+" "+mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ":"
                     + mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE))) + ":"+ mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND))));
             enableViews();
         }

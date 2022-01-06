@@ -215,7 +215,7 @@ public class Screen_10 extends SmsServices {
             public void checkTime(double randomValue) {
              //   System.out.println("At screen_10 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_10_Visible = "+screen_10_Visible);
                 if (b && (randomNumber == randomValue) && screen_10_Visible) {
-                    System.out.println("screen_10 b = "+b);
+                  //  System.out.println("screen_10 b = "+b);
                     systemDown = true;
                     disableViews();
                     smsReceiver.unRegisterBroadCasts();

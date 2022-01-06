@@ -87,11 +87,11 @@ public class SmsSender extends AppCompatActivity {
                 System.out.println("code---> " + getResultCode());
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        view.setText(screen_Specific_Sms + "Delivered");
+                     //   view.setText(screen_Specific_Sms + "Delivered");
                         smsSenderBroadcast.onReceiveStatus(true);
                         break;
                     case Activity.RESULT_CANCELED:
-                        view.setText(screen_Specific_Sms + "not delivered");
+                    //    view.setText(screen_Specific_Sms + "not delivered");
                         smsSenderBroadcast.onReceiveStatus(false);
                         break;
                 }

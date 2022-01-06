@@ -139,7 +139,8 @@
             android:layout_weight="0.3"
             android:gravity="center"
             android:hint="Status"
-            android:textColor="@color/sandcolor" />
+            android:textColor="@color/sandcolor"
+            android:textColorHint="@color/sandcolor"/>
 
         <Button
             android:id="@+id/save"
