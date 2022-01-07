@@ -145,7 +145,7 @@ public class MainActivity_GSM extends SmsServices {
                 if (b && (randomNumber == randomValue) && Mainacitivity_GSM_Visible) {
                     System.out.println("Main screen b = "+b);
                     systemDown = true;
-                    enableViews();
+                    disableViews();
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
 
