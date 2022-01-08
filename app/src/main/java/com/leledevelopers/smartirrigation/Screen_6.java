@@ -318,9 +318,9 @@ public class Screen_6 extends SmsServices {
             injectPeriod.setError("Enter a valid value");
             return false;
         }
-        if (!noOfIterations.getText().toString().matches(regex)
+        if (!(noOfIterations.getText().toString().matches(regex)
                 && noOfIterations.getText().toString().length()==1
-        &&(validateRange(1, 5, Integer.parseInt(noOfIterations.getText().toString())))) {
+        &&validateRange(1, 5, Integer.parseInt(noOfIterations.getText().toString())))) {
             noOfIterations.getText().clear();
             noOfIterations.setError("Enter a valid value");
             return false;
