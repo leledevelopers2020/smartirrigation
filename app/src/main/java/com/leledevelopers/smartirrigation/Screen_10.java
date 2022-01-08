@@ -24,7 +24,7 @@ public class Screen_10 extends SmsServices {
     EditText noLoadCutoffText, fullLoadCutOffText;
     private Button setMotorLoadThreshold, back_10;
     private TextView status;
-    private boolean validate = true;
+
     private double randomNumber;
     private boolean isSetMotorLoadClicked = false;
     private static boolean screen_10_Visible = false;
@@ -45,7 +45,10 @@ public class Screen_10 extends SmsServices {
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
+                Log.d("tag",noLoadCutoffText.getText().toString()+"noLoadCutoffText"+fullLoadCutOffText.getText().toString()+ "yes i am there");
                 if (validateInput(noLoadCutoffText.getText().toString(), fullLoadCutOffText.getText().toString()) && !systemDown) {
+
+                    Log.d("tag",noLoadCutoffText.getText().toString()+"noLoadCutoffText"+fullLoadCutOffText.getText().toString()+ "yes i am there");
                     disableViews();
                     randomNumber = Math.random();
                     String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
@@ -127,15 +130,16 @@ public class Screen_10 extends SmsServices {
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
         Log.d("tag", fullLoadCutOffTextlocal + "full   " + noLoadCutoffTextlocal);
-
+         boolean validate = true;
         try {
             if (noLoadCutoffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
+                System.out.println("hello no load");
                 noLoadCutoffText.getText().clear();
                 noLoadCutoffText.setError("Enter a valid value");
                 validate = false;
             }
             if (fullLoadCutOffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffTextlocal)))) {
-
+                System.out.println("hello full load");
                 fullLoadCutOffText.getText().clear();
                 fullLoadCutOffText.setError("Enter a valid value");
                 validate = false;
