@@ -231,9 +231,9 @@ public class Screen_10 extends SmsServices {
                             Intent intent=(new Intent(Screen_10.this, MainActivity_GSM.class));
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
-                           // finish();
+
                         }
-                    }, 3000);
+                    }, 5000);
                 }
             }
         });
@@ -285,7 +285,7 @@ public class Screen_10 extends SmsServices {
                     startActivity(new Intent(Screen_10.this, Screen_9.class));
                     finish();
                 }
-            }, 4000);
+            }, 5000);
         }
     }
 }

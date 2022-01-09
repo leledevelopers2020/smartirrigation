@@ -153,8 +153,10 @@ public class Screen_6 extends SmsServices {
         back_6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Screen_6.this, Screen_4.class));
-                finish();
+                Intent intentB=(new Intent(Screen_6.this, Screen_4.class));
+                intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentB);
+
             }
         });
         wetPeriod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -474,10 +476,12 @@ public class Screen_6 extends SmsServices {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            startActivity(new Intent(Screen_6.this, MainActivity_GSM.class));
-                            finish();
+                            Intent intentS=(new Intent(Screen_6.this, MainActivity_GSM.class));
+                            intentS.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intentS);
+
                         }
-                    }, 3000);
+                    }, 5000);
                 }
             }
 

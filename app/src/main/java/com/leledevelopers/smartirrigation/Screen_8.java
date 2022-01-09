@@ -76,8 +76,9 @@ public class Screen_8 extends SmsServices {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                startActivity(new Intent(Screen_8.this, Screen_4.class));
-                finish();
+                Intent intentB=(new Intent(Screen_8.this, Screen_4.class));
+                intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentB);
             }
         });
     }
@@ -188,8 +189,9 @@ public class Screen_8 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(Screen_8.this, Screen_4.class));
-        finish();
+        Intent intentB=(new Intent(Screen_8.this, Screen_4.class));
+        intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intentB);
     }
 
     private List<Message> reverseMessageList(List<Message> messages) {

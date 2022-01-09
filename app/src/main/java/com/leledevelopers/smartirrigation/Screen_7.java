@@ -132,8 +132,10 @@ public class Screen_7 extends SmsServices {
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-                startActivity(new Intent(Screen_7.this, Screen_4.class));
-                finish();
+
+                Intent intentB=(new Intent(Screen_7.this, Screen_4.class));
+                intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentB);
             }
         });
         filtrationControlUnitNoDelay_1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -489,10 +491,10 @@ public class Screen_7 extends SmsServices {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            startActivity(new Intent(Screen_7.this, MainActivity_GSM.class));
-                            finish();
-                        }
-                    }, 2000);
+                            Intent intentS=(new Intent(Screen_7.this, MainActivity_GSM.class));
+                            intentS.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intentS);                        }
+                    }, 5000);
                 }
             }
 
@@ -531,8 +533,9 @@ public class Screen_7 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(Screen_7.this, Screen_4.class));
-        finish();
+        Intent intentB=(new Intent(Screen_7.this, Screen_4.class));
+        intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intentB);
     }
 
     public void checkSMS(String message) {

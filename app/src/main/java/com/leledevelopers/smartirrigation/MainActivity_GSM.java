@@ -85,8 +85,10 @@ public class MainActivity_GSM extends SmsServices {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                startActivity(new Intent(MainActivity_GSM.this, Screen_1.class));
-                                finish();
+                                Intent intentR=(new Intent(MainActivity_GSM.this, Screen_1.class));
+                                intentR.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intentR);
+
                             }
                         }, 1000);
                     }
@@ -189,15 +191,15 @@ public class MainActivity_GSM extends SmsServices {
                 @Override
                 public void run() {
                     if (extra) {
-                        Intent intent = new Intent(MainActivity_GSM.this, Screen_9.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
+                        Intent intent9 = new Intent(MainActivity_GSM.this, Screen_9.class);
+                        intent9.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent9);
+
                     } else {
-                        Intent intent = new Intent(MainActivity_GSM.this, Screen_4.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
+                        Intent intentM = new Intent(MainActivity_GSM.this, Screen_4.class);
+                        intentM.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intentM);
+
                     }
                 }
             }, 1000);
