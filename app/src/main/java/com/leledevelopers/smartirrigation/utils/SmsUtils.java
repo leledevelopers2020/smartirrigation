@@ -7,11 +7,11 @@ package com.leledevelopers.smartirrigation.utils;
 public class SmsUtils {
     // SMS responses from controller
     public static final String INSMS_1_1 = "Admin set successfully";
-    public static final String INSMS_1_2 = "Wrong password entered";
+    public static final String INSMS_1_2 = "Wrong login code entered";
     public static final String INSMS_1_3 = "You are no more Admin now. New Admin is set to";
     public static final String INSMS_2_1 = "System Connected";
     public static final String INSMS_2_2 = "Authentication failed";
-    public static final String INSMS_3_1 = "Password changed successfully";
+    public static final String INSMS_3_1 = "Login code changed successfully";
     public static final String INSMS_4_1 = "Irrigation configured for field no.";
     public static final String INSMS_5_1 = "Irrigation configuration disabled for field no.";
     public static final String INSMS_6_1 = "Fertigation enabled for field no.";
