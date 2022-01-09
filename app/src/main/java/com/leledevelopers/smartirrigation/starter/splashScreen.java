@@ -24,7 +24,7 @@ public class splashScreen extends SmsServices {
         setContentView(R.layout.activity_splash_screen);
         this.context = getApplicationContext();
 
-        accessPermissions();
+        //accessPermissions();
 
         File file = new File(splashScreen.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
         if (file.exists()) {
