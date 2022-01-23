@@ -144,6 +144,7 @@ public class Screen_6 extends SmsServices {
                 }
                 if (!systemDown) {
                     disableViews();
+                    status.setText("Disable fertigation configuration SMS sent");
                     updateData_And_SendSMS("disable","Disable fertigation configuration SMS ");
                     randomNumber = Math.random();
                     isDisabledClicked = true;

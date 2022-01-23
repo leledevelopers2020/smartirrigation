@@ -97,6 +97,7 @@ public class SmsReceiver {
     }
 
     public void waitFor_1_Minute(double random,SmsReceiver services) {
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

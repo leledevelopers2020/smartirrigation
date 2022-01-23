@@ -115,6 +115,7 @@ public class Screen_7 extends SmsServices {
                 if (!systemDown) {
                     disableViews();
                     randomNumber = Math.random();
+                    status.setText("Disable filtration SMS sent");
                     updateData_And_SendSMS("disable","Disable filtration SMS ");
                    // smsReceiver.waitFor_1_Minute(randomNumber);
                    // b = false;
