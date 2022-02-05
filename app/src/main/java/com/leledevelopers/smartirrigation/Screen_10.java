@@ -20,14 +20,17 @@ public class Screen_10 extends SmsServices {
     private static final String TAG = Screen_10.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private SmsUtils smsUtils = new SmsUtils();
-    private Boolean b, systemDown = false;
+    private Boolean b=false, systemDown = false;
     EditText noLoadCutoffText, fullLoadCutOffText;
     private Button setMotorLoadThreshold, back_10;
     private TextView status;
-
-    private double randomNumber;
+    private Handler handler = new Handler();
+    private double randomNumber=-1;
     private boolean isSetMotorLoadClicked = false;
     private static boolean screen_10_Visible = false;
+
+    private  StringBuffer activityMessage=new StringBuffer("");
+    private  boolean handlerActivated=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +48,12 @@ public class Screen_10 extends SmsServices {
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-                Log.d("tag",noLoadCutoffText.getText().toString()+"noLoadCutoffText"+fullLoadCutOffText.getText().toString()+ "yes i am there");
-                if (validateInput(noLoadCutoffText.getText().toString(), fullLoadCutOffText.getText().toString()) && !systemDown) {
-
-                    Log.d("tag",noLoadCutoffText.getText().toString()+"noLoadCutoffText"+fullLoadCutOffText.getText().toString()+ "yes i am there");
+                 if (validateInput(noLoadCutoffText.getText().toString(), fullLoadCutOffText.getText().toString()) && !systemDown) {
                     disableViews();
+                     status.setText("Motorload threshold settings SMS sent");
                     randomNumber = Math.random();
-                    String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),
-                            fullLoadCutOffText.getText().toString());
+                    activityMessage.replace(0,activityMessage.length(),"Motorload threshold settings SMS ");
+                    String smsData = smsUtils.OutSMS_12(noLoadCutoffText.getText().toString(),fullLoadCutOffText.getText().toString());
                     sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber, "Motorload threshold settings SMS ");
                     isSetMotorLoadClicked = true;
                 }
@@ -67,6 +68,7 @@ public class Screen_10 extends SmsServices {
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
+                randomNumber=-1;
                 startActivity(new Intent(Screen_10.this, Screen_9.class));
                 finish();
             }
@@ -130,7 +132,7 @@ public class Screen_10 extends SmsServices {
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
         Log.d("tag", fullLoadCutOffTextlocal + "full   " + noLoadCutoffTextlocal);
-         boolean validate = true;
+        boolean validate = true;
         try {
             if (noLoadCutoffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
                 System.out.println("hello no load");
@@ -217,17 +219,19 @@ public class Screen_10 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-             //   System.out.println("At screen_10 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_10_Visible = "+screen_10_Visible);
+                //   System.out.println("At screen_10 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_10_Visible = "+screen_10_Visible);
                 if (b && (randomNumber == randomValue) && screen_10_Visible) {
-                  //  System.out.println("screen_10 b = "+b);
+                    //  System.out.println("screen_10 b = "+b);
                     systemDown = true;
                     disableViews();
+                    handlerActivated=false;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            randomNumber=-1;
                             Intent intent=(new Intent(Screen_10.this, MainActivity_GSM.class));
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -240,11 +244,16 @@ public class Screen_10 extends SmsServices {
 
         this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
-            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message) {
                 //System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
+                    if(message.equals(activityMessage.toString()) && !(handlerActivated))
+
+                    {
+                    handlerActivated=true;
                     smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
+                    }
                 } else {
                     isSetMotorLoadClicked = false;
                 }
@@ -269,6 +278,7 @@ public class Screen_10 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        randomNumber=-1;
         startActivity(new Intent(Screen_10.this, Screen_9.class));
         finish();
     }
@@ -276,6 +286,7 @@ public class Screen_10 extends SmsServices {
     public void checkSMS(String message) {
         if (message.toLowerCase().contains(SmsUtils.INSMS_12_1.toLowerCase()) && isSetMotorLoadClicked) {
             b = false;
+            handlerActivated=false;
             enableViews();
             isSetMotorLoadClicked = false;
             status.setText("Motorload thresholds set successfully.");

@@ -1,14 +1,17 @@
 package com.leledevelopers.smartirrigation;
 
+import android.animation.TimeAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leledevelopers.smartirrigation.registration.Screen_2_1;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
@@ -22,22 +25,26 @@ public class Screen_9 extends SmsServices {
     private static final String TAG = Screen_9.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private SmsUtils smsUtils = new SmsUtils();
-    private Boolean b, systemDown = false;
+    private Boolean b=false, systemDown = false;
     private Spinner spinner;
     private ArrayAdapter<CharSequence> adapter;
     private Button setSystemTime, getSystemTime, updatePassword, setMotorloadCutoff, back_9, save;
     private TextView status;
     DecimalFormat mFormat = new DecimalFormat("00");
     Calendar calendar = Calendar.getInstance();
-    private double randomNumber;
+    private double randomNumber=-1;
     private boolean isSetTimeClicked = false;
     private boolean isGetTimeClicked = false;
     private static boolean screen_9_Visible = false;
+    private  Looper looper;
 
+    private  StringBuffer activityMessage=new StringBuffer("");
+    private  boolean handlerActivated=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen9);
+
         this.context = getApplicationContext();
         initViews();
         adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.languagesArray, android.R.layout.simple_spinner_dropdown_item);
@@ -84,12 +91,12 @@ public class Screen_9 extends SmsServices {
                 String smsData = smsUtils.OutSMS_10(mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "", mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "",
                         mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ""
                         , mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE))) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND))) + "");
-
+                activityMessage.replace(0,activityMessage.length(),"Date Timestamp SMS ");
                 /*String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
                         (calendar.get(Calendar.YEAR))%100+"",calendar.get(Calendar.HOUR_OF_DAY)+""
                         ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");*/
                 sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber,"Date Timestamp SMS ");
-                //status.setText("Date Timestamp SMS Sent");
+                 status.setText("Date Timestamp SMS Sent");
             }
         });
         getSystemTime.setOnClickListener(new View.OnClickListener() {
@@ -99,10 +106,11 @@ public class Screen_9 extends SmsServices {
                 randomNumber = Math.random();
                 //smsReceiver.waitFor_1_Minute(randomNumber);
                 //b = true;
+                activityMessage.replace(0,activityMessage.length(),"Get System Timestamp SMS ");
                 isGetTimeClicked = true;
                 String smsData = smsUtils.OutSMS_11;
                 sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber,"Get System Timestamp SMS ");
-                //status.setText("Get System Timestamp SMS Sent");
+                 status.setText("Get System Timestamp SMS Sent");
             }
         });
         back_9.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +122,7 @@ public class Screen_9 extends SmsServices {
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
+                randomNumber=-1;
                 Intent intentB=(new Intent(Screen_9.this, Screen_4.class));
                 intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intentB);
@@ -172,12 +181,14 @@ public class Screen_9 extends SmsServices {
                 if (b && (randomNumber == randomValue)&& screen_9_Visible) {
                     enableViews();
                     systemDown = true;
+                    handlerActivated=false;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            randomNumber=-1;
                             Intent intentS=(new Intent(Screen_9.this, MainActivity_GSM.class));
                             intentS.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intentS);
@@ -191,9 +202,12 @@ public class Screen_9 extends SmsServices {
 
         this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
-            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message) {
                 System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
+                    if(message.equals(activityMessage.toString()) &&!(handlerActivated))
+                    //status.setText(message+" sent");
+                        handlerActivated=true;
                     smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
                 } else {
@@ -222,6 +236,9 @@ public class Screen_9 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+//        looper.quit();
+        randomNumber=-1;
         Intent intentB=(new Intent(Screen_9.this, Screen_4.class));
         intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intentB);
@@ -230,15 +247,18 @@ public class Screen_9 extends SmsServices {
     public void checkSMS(String message) {
         if (message.toLowerCase().contains(SmsUtils.INSMS_10_1.toLowerCase()) && isSetTimeClicked) {
             b = false;
+            handlerActivated=false;
             isSetTimeClicked = false;
             status.setText("System time set to current time");
             enableViews();
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_10_2.toLowerCase())) {
             b = false;
+            handlerActivated=false;
             status.setText("Failed to set system time, please set system time again");
             enableViews();
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_11_1.toLowerCase()) && isGetTimeClicked) {
             b = false;
+            handlerActivated=false;
             isGetTimeClicked = false;
             status.setText(SmsUtils.INSMS_11_1 + (mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "/" + mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "/"
                     + mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)))+" "+mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ":"

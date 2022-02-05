@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.widget.TextView;
@@ -35,14 +36,14 @@ import java.util.Locale;
  * @author Narsing Rao.K
  */
 public abstract class SmsServices extends AppCompatActivity {
-    protected Handler handler = new Handler();
+
 
     protected Context context;
     protected static String phoneNumber = "";
     protected CURD_Files<Message> createSMSFile = new CURD_FilesImpl<Message>();
     protected List<Message> messageList;
     protected BaseMessages baseMessages;
-    private SmsServiceBroadcast smsServiceBroadcast = null;
+    public SmsServiceBroadcast smsServiceBroadcast = null;
 
     /**
      * This method should contain the code send SMS
@@ -50,10 +51,10 @@ public abstract class SmsServices extends AppCompatActivity {
      * @return void
      */
 
-    public void sendMessage(String phoneNumber, String message, TextView view, SmsReceiver smsReceiver, double randomNumber, String screen_Specific_Sms) {
+     public void sendMessage(String phoneNumber, String message, TextView view, SmsReceiver smsReceiver, double randomNumber, String screen_Specific_Sms) {
         SmsSender smsSender = new SmsSender();
         System.out.println("---> " + smsReceiver.toString());
-        smsSender.sendMessage(phoneNumber, message, this.context, view, screen_Specific_Sms);
+        smsSender.sendMessage(phoneNumber, message, this.context /*view*/, screen_Specific_Sms);
         smsSender.setSmsSenderBroadcast(new SmsSender.SmsSenderBroadcast() {
             @Override
             public void onReceiveStatus(boolean smsDeliveredStatus) {
@@ -63,7 +64,7 @@ public abstract class SmsServices extends AppCompatActivity {
                 } else {
                     enableViews();
                 }
-                smsServiceBroadcast.onReceiveSmsDeliveredStatus(smsDeliveredStatus);
+                smsServiceBroadcast.onReceiveSmsDeliveredStatus(smsDeliveredStatus,screen_Specific_Sms);
             }
         });
     }
@@ -268,7 +269,7 @@ public abstract class SmsServices extends AppCompatActivity {
     }
 
     public interface SmsServiceBroadcast {
-        public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus);
+        public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message);
     }
 
     public void setSmsServiceBroadcast(SmsServiceBroadcast smsServiceBroadcast) {

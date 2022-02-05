@@ -2,6 +2,7 @@ package com.leledevelopers.smartirrigation.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,7 +11,7 @@ import com.leledevelopers.smartirrigation.R;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 
 public class Screen_1 extends SmsServices {
-
+    private  Handler handler = new Handler();
     private static final String TAG = Screen_1.class.getSimpleName();
     private Button gsmButton, wifiButton;
     private TextView status;

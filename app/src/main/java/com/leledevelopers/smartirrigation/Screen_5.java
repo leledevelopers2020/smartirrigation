@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.text.format.DateFormat;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Screen_5 extends SmsServices {
     private static final String TAG = Screen_5.class.getSimpleName();
@@ -46,7 +50,7 @@ public class Screen_5 extends SmsServices {
     EditText valveOnPeriod, valveOffPeriod, soilDryness, soilWetness, priority, cycles;
     private TextView status, motorOnTime;
     private Button enableFertigation, disableFertigation, back_5;
-    private Boolean b, systemDown = false;
+    private Boolean b=false, systemDown = false;
     private ConfigureFieldIrrigationModel model;
     private CURD_Files<ConfigureFieldIrrigationModel> curd_files = new CURD_FilesImpl<ConfigureFieldIrrigationModel>();
     private List<ConfigureFieldIrrigationModel> modelList = new ArrayList<ConfigureFieldIrrigationModel>();
@@ -66,8 +70,12 @@ public class Screen_5 extends SmsServices {
     private boolean isEnabledClicked = false;
     private boolean isDisabledClicked = false;
     private TimePickerDialog timePickerDialog;
-    private double randomNumber;
+    private double randomNumber=-1;
     private static boolean screen_5_Visible = false;
+    private Timer timer,timer3;
+    private int counter=0;
+    private  boolean handlerActivated=false;
+    private  StringBuffer activityMessage=new StringBuffer("");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -264,6 +272,8 @@ public class Screen_5 extends SmsServices {
                 if (validateInput() && !systemDown) {
                     disableViews();
                     cursorVisibility();
+                    status.setText("Enable Irrigation configuration SMS Sent");
+                    activityMessage.replace(0,activityMessage.length(),"Enable Irrigation configuration SMS ") ;
                     updateData_And_SendSMS("enable","Enable Irrigation configuration SMS ");
                     isEnabledClicked = true;
                 }
@@ -283,6 +293,8 @@ public class Screen_5 extends SmsServices {
                 if (!systemDown) {
                     disableViews();
                     status.setText("Disable Irrigation configuration SMS Sent");
+                    randomNumber=Math.random();
+                    activityMessage.replace(0,activityMessage.length(),"Disable Irrigation configuration SMS ");
                     updateData_And_SendSMS("disable","Disable Irrigation configuration SMS ");
                     isDisabledClicked = true;
                 }
@@ -771,6 +783,7 @@ public class Screen_5 extends SmsServices {
             if (message.toLowerCase().contains(SmsUtils.INSMS_4_1.toLowerCase()) && isEnabledClicked) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_4_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
+                    handlerActivated=false;
                     isEnabledClicked = false;
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
@@ -785,6 +798,9 @@ public class Screen_5 extends SmsServices {
                     baseConfigureFieldIrrigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
                     status.setText(message);
+
+                    counter = 0;
+                    handlerActivated=false;
                     enableViews();
                     initializeModel();
                 }
@@ -846,12 +862,12 @@ public class Screen_5 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                System.out.println("At screen_5 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_6_Visible = "+screen_5_Visible);
-                if (b && (randomNumber == randomValue) && screen_5_Visible) {
+                 if (b && (randomNumber == randomValue) && screen_5_Visible) {
                     disableViews();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
+                    handlerActivated=false;
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -867,11 +883,18 @@ public class Screen_5 extends SmsServices {
 
         this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
-            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
-                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
-                if (smsDeliveredStatus) {
-                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
-                    b = true;
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message) {
+                 if (smsDeliveredStatus   ) {
+                    if(message.equals(activityMessage.toString())&& !(handlerActivated))
+                    {
+                        System.out.println("checking messages");
+                   //     status.setText(message + " sent");
+                        smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
+                        b = true;
+                        handlerActivated=true;
+
+
+                    }
                 } else {
                     isEnabledClicked = false;
                     isDisabledClicked = false;
@@ -903,4 +926,24 @@ public class Screen_5 extends SmsServices {
         startActivity(intentB);
 
     }
+
+    private void startTimer(){
+        System.out.println("Timer Started "+counter);
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                counter ++;
+
+             //   cancelTimer();
+                System.out.println("Timer up = " + counter);
+
+
+            }
+        },0,60*1000);
+
+    }
+
+
 }

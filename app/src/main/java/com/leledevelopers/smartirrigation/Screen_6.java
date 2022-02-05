@@ -20,6 +20,7 @@ import com.leledevelopers.smartirrigation.models.ConfigurationFeildFertigationMo
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
+import com.leledevelopers.smartirrigation.services.SmsTesting;
 import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
@@ -31,7 +32,7 @@ import java.util.List;
 public class Screen_6 extends SmsServices {
     private static final String TAG = Screen_6.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
-    private Boolean b, systemDown = false;
+    private Boolean b=false, systemDown = false;
     private Spinner spinner;
     EditText wetPeriod, injectPeriod, noOfIterations;
     private Button enableFieldFertigation, disableFieldFertigation, back_6;
@@ -50,9 +51,11 @@ public class Screen_6 extends SmsServices {
     private boolean isInitial = false;
     private boolean isEnabledClicked = false;
     private boolean isDisabledClicked = false;
-    private double randomNumber;
+    private boolean handlerActivated=false;
+    private double randomNumber=-1;
     private static boolean screen_6_Visible = false;
-
+    private  SmsTesting smsTesting=new SmsTesting();
+    private  StringBuffer activityMessage=new StringBuffer("");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +82,6 @@ public class Screen_6 extends SmsServices {
                         disableFieldFertigation.setVisibility(View.INVISIBLE);
                         enableFieldFertigation.setVisibility(View.VISIBLE);
                     }
-                    //disableFieldFertigation.setVisibility(View.VISIBLE);
-                    //enableFieldFertigation.setVisibility(View.INVISIBLE);
                     isInitial = false;
                 } else {
                     isInitial = true;
@@ -125,8 +126,10 @@ public class Screen_6 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (validateInput() && !systemDown) {
+                    status.setText("Enable fertigation configuration SMS sent");
                     disableViews();
                     cursorVisibility();
+                    activityMessage.replace(0,activityMessage.length(),"Enable fertigation configuration SMS ");
                     updateData_And_SendSMS("enable","Enable fertigation configuration SMS ");
                     isEnabledClicked = true;
                 }
@@ -143,9 +146,11 @@ public class Screen_6 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (!systemDown) {
-                    disableViews();
                     status.setText("Disable fertigation configuration SMS sent");
+                    disableViews();
+                    activityMessage.replace(0,activityMessage.length(),"Disable fertigation configuration SMS ");
                     updateData_And_SendSMS("disable","Disable fertigation configuration SMS ");
+
                     randomNumber = Math.random();
                     isDisabledClicked = true;
                 }
@@ -154,6 +159,7 @@ public class Screen_6 extends SmsServices {
         back_6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                randomNumber=-1;
                 Intent intentB=(new Intent(Screen_6.this, Screen_4.class));
                 intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intentB);
@@ -323,7 +329,7 @@ public class Screen_6 extends SmsServices {
         }
         if (!(noOfIterations.getText().toString().matches(regex)
                 && noOfIterations.getText().toString().length()==1
-        &&validateRange(1, 5, Integer.parseInt(noOfIterations.getText().toString())))) {
+                &&validateRange(1, 5, Integer.parseInt(noOfIterations.getText().toString())))) {
             noOfIterations.getText().clear();
             noOfIterations.setError("Enter a valid value");
             return false;
@@ -343,8 +349,7 @@ public class Screen_6 extends SmsServices {
     private void initializeModel() {
         try {
             if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_FERTIGATION_FILE)) {
-                //modelList = curd_files.getFileData(Screen_5.this, ProjectUtils.CONFG_FERTIGATION_FILE);
-                baseConfigurationFeildFertigationModel = (BaseConfigurationFeildFertigationModel) curd_files.getFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE);
+                 baseConfigurationFeildFertigationModel = (BaseConfigurationFeildFertigationModel) curd_files.getFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE);
                 modelList = baseConfigurationFeildFertigationModel.getModelList();
                 if (baseConfigurationFeildFertigationModel.getLastEnabledFieldNo() != -1) {
                     model = modelList.get(baseConfigurationFeildFertigationModel.getLastEnabledFieldNo());
@@ -420,11 +425,11 @@ public class Screen_6 extends SmsServices {
                 model.setModelEmpty(false);
                 smsdata = smsUtils.OutSMS_7((fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo + ""));
                 baseConfigurationFeildFertigationModel.setLastEnabledFieldNo(fieldNo - 1);
-                //enableFieldFertigation.setVisibility(View.VISIBLE);
                 disableFieldFertigation.setVisibility(View.INVISIBLE);
             }
             randomNumber = Math.random();
-            sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber,screen_Specific_SMS);
+            SmsTesting.contextPri=getApplicationContext();
+            smsTesting.sendMessageBox(SmsServices.phoneNumber, smsdata,   randomNumber,screen_Specific_SMS);
             System.out.println("screen 6 "+randomNumber);
             modelList.set(fieldNo - 1, model);
             isEditedInjectPeriod = false;
@@ -469,18 +474,19 @@ public class Screen_6 extends SmsServices {
             public void checkTime(double randomValue) {
                 System.out.println("At screen_6 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_6_Visible = "+screen_6_Visible);
                 if (b && (randomNumber == randomValue) && screen_6_Visible) {
-                    System.out.println("screen_6 b = "+b);
+                    disableViews();
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
+                    handlerActivated=false;
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            randomNumber=-1;
                             Intent intentS=(new Intent(Screen_6.this, MainActivity_GSM.class));
                             intentS.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intentS);
-
                         }
                     }, 5000);
                 }
@@ -488,16 +494,21 @@ public class Screen_6 extends SmsServices {
 
         });
 
-        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+        smsTesting.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
-            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
-                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus,String message) {
                 if (smsDeliveredStatus) {
-                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
-                    b = true;
+                    if(message.equals(activityMessage.toString()) && !(handlerActivated) ) {
+                            handlerActivated=true;
+                         //   status.setText(message + " sent");
+                            smsReceiver.waitFor_1_Minute(randomNumber, smsReceiver);
+                            b = true;
+                        }
                 } else {
+                    status.setText(message+" sending failed");
                     isEnabledClicked = false;
                     isDisabledClicked = false;
+                    enableViews();
                     initializeModel();
                 }
             }
@@ -518,15 +529,11 @@ public class Screen_6 extends SmsServices {
         screen_6_Visible = false;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        System.out.println("screen 6 onDestroy");
-    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        randomNumber=-1;
         startActivity(new Intent(Screen_6.this, Screen_4.class));
         finish();
     }
@@ -536,6 +543,7 @@ public class Screen_6 extends SmsServices {
             if (message.toLowerCase().contains(SmsUtils.INSMS_6_1.toLowerCase()) && isEnabledClicked) {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_6_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
+                    handlerActivated=false;
                     isEnabledClicked = false;
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
@@ -545,6 +553,7 @@ public class Screen_6 extends SmsServices {
                 }
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_6_2.toLowerCase())) {
                 b = false;
+                handlerActivated=false;
                 status.setText("Incorrect values Fertigation not enabled for field no." + model.getFieldNo());
                 enableViews();
                 initializeModel();
@@ -552,6 +561,7 @@ public class Screen_6 extends SmsServices {
             else if(message.toLowerCase().contains(SmsUtils.INSMS_6_3.toLowerCase()))
             {
                 b=false;
+                handlerActivated=false;
                 status.setText(message+model.getFieldNo());
                 enableViews();
                 initializeModel();
@@ -560,6 +570,7 @@ public class Screen_6 extends SmsServices {
                 if (Integer.parseInt(message.substring(SmsUtils.INSMS_7_1.length()).trim()) == model.getFieldNo()) {
                     b = false;
                     isDisabledClicked = false;
+                    handlerActivated=false;
                     baseConfigurationFeildFertigationModel.setModelList(modelList);
                     curd_files.updateFile(Screen_6.this, ProjectUtils.CONFG_FERTIGATION_FILE, baseConfigurationFeildFertigationModel);
                     status.setText("Fertigation disabled for field no." + model.getFieldNo());

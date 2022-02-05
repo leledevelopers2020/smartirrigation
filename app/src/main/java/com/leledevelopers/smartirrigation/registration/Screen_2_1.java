@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -41,7 +42,7 @@ import java.util.regex.Pattern;
 public class Screen_2_1 extends SmsServices {
     private static final String TAG = Screen_2_1.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
-
+    private  Handler handler = new Handler();
     private EditText oldPassword, newPassword;
     private TextView status;
     private Button gsmContact, set;
@@ -53,8 +54,11 @@ public class Screen_2_1 extends SmsServices {
     private Intent intent;
     private Bundle bundle;
     private Boolean extra = false;
-    private double randomNumber;
+    private double randomNumber=-1;
     private static boolean scrren_2_1_Visible = false;
+
+    private  StringBuffer activityMessage=new StringBuffer("");
+    private  boolean handlerActivated=false;
 
 
     @Override
@@ -126,9 +130,10 @@ public class Screen_2_1 extends SmsServices {
                             disableViews();
                             isSetClicked = true;
                             cursorVisibility();
+                            activityMessage.replace(0,activityMessage.length(),"Admin registration SMS ");
                             smsData = smsUtils.OutSMS_1(oldPassword.getText().toString(), newPassword.getText().toString());
                             sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber,"Admin registration SMS ");
-                            //status.setText("Admin registration SMS sent");
+                            status.setText("Admin registration SMS sent");
                         } else {
                             focus(oldPassword.getText().toString(), newPassword.getText().toString());
                         }
@@ -351,9 +356,11 @@ public class Screen_2_1 extends SmsServices {
             if (message.toLowerCase().contains(SmsUtils.INSMS_1_1.toLowerCase())) {
                 enableViews();
                 b = false;
+                handlerActivated=false;
                 saveFileDetails();
                 createConfgFiles();
                 status.setText("Admin set successfully");
+                  handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -367,11 +374,13 @@ public class Screen_2_1 extends SmsServices {
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_1_2.toLowerCase())) {
                 enableViews();
                 b = false;
+                handlerActivated=false;
                 status.setText("Wrong password entered");
                 oldPassword.requestFocus();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_3_1.toLowerCase())) {
                 enableViews();
                 b = false;
+                handlerActivated=false;
                 status.setText("Password changed successfully");
                 isPasswordSaved = true;
                 saveFileDetails();
@@ -412,6 +421,8 @@ public class Screen_2_1 extends SmsServices {
                 if (b && (randomNumber == randomValue) && scrren_2_1_Visible) {
                     systemDown = true;
                     disableViews();
+                    handlerActivated=false;
+                    randomNumber=-1;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
                 }
@@ -421,11 +432,15 @@ public class Screen_2_1 extends SmsServices {
 
         this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
-            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message) {
                 System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
-                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
-                    b = true;
+                    if(message.equals(activityMessage.toString()) && !(handlerActivated)){
+                       // status.setText(message+ " sent");
+                        smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
+                        b = true;
+                    }
+
                 } else {
                     isSetClicked = false;
                 }
@@ -486,10 +501,11 @@ public class Screen_2_1 extends SmsServices {
     @Override
     public void onBackPressed() {
         if (!isPasswordSaved) {
-           // SmsServices.phoneNumber = "";
+            // SmsServices.phoneNumber = "";
             isSetClicked = false;
             isGSMSelected = false;
             isPasswordSaved = false;
+            randomNumber=-1;
         }
 
         try {

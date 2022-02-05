@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,12 +25,15 @@ public class MainActivity_GSM extends SmsServices {
     private static final String TAG = MainActivity_GSM.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private TextView smsLabel, status;
+    private Handler handler = new Handler();
     private Button connect, resetConnection;
-    private Boolean b, extra = false, systemDown = false;
+    private Boolean b=false, extra = false, systemDown = false;
     private Intent extraIntent;
     private Bundle bundle;
     private double randomNumber;
     private static boolean Mainacitivity_GSM_Visible = false;
+    private  StringBuffer activityMessage=new StringBuffer("");
+    private  boolean handlerActivated=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,12 @@ public class MainActivity_GSM extends SmsServices {
         setContentView(R.layout.activity_mainactivity_gsm);
         this.context = getApplicationContext();
         initViews();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("checking handler backfgrnd service");
+            }
+        },10000);
         readUserFile();
         try {
             extraIntent = getIntent();
@@ -53,11 +63,9 @@ public class MainActivity_GSM extends SmsServices {
                 disableViews();
                 if (!systemDown) {
                     randomNumber = Math.random();
-                    //smsReceiver.waitFor_1_Minute(randomNumber);
-                    //b = true;
-                    System.out.println("--> " + smsReceiver.toString());
-                    sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2, status, smsReceiver, randomNumber,"Authentication SMS ");
-                    //status.setText("Authentication SMS sent");
+                    activityMessage.replace(0,activityMessage.length(),"Authentication SMS ");
+                     sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2, status, smsReceiver, randomNumber,"Authentication SMS ");
+                    status.setText("Authentication SMS sent");
                 }
                 //  startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
             }
@@ -145,7 +153,7 @@ public class MainActivity_GSM extends SmsServices {
             public void checkTime(double randomValue) {
                 System.out.println("At main screen randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , Mainacitivity_GSM_Visible = "+Mainacitivity_GSM_Visible);
                 if (b && (randomNumber == randomValue) && Mainacitivity_GSM_Visible) {
-                    System.out.println("Main screen b = "+b);
+                    handlerActivated=false;
                     systemDown = true;
                     disableViews();
                     smsReceiver.unRegisterBroadCasts();
@@ -158,12 +166,16 @@ public class MainActivity_GSM extends SmsServices {
 
         this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
-            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus,String message) {
                 System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
                 if (smsDeliveredStatus) {
-                    smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
-                    b = true;
-                   // status.setText("Authentication SMS sent");
+                    if(message.equals(activityMessage.toString()) && !(handlerActivated)){
+                        smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
+                        handlerActivated=true;
+                        b = true;
+                        // status.setText("Authentication SMS sent");
+                    }
+
                 }
             }
         });
@@ -185,6 +197,7 @@ public class MainActivity_GSM extends SmsServices {
 
     public void checkSMS(String message) {
         if (message.toLowerCase().contains(SmsUtils.INSMS_2_1.toLowerCase())) {
+            handlerActivated=false;
             b = false;
             status.setText("System Connected");
             handler.postDelayed(new Runnable() {
@@ -205,6 +218,7 @@ public class MainActivity_GSM extends SmsServices {
             }, 1000);
         } else if (message.toLowerCase().contains(SmsUtils.INSMS_2_2.toLowerCase())) {
             b = false;
+            handlerActivated=false;
             status.setText("Admin Changed, please reauthenticate device");
             handler.postDelayed(new Runnable() {
                 @Override
@@ -239,6 +253,6 @@ public class MainActivity_GSM extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
+        randomNumber-=1;
     }
 }

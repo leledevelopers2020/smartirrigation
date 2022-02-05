@@ -121,7 +121,7 @@
                 android:inputType="number"
                 android:background="@drawable/underline"
                 android:layout_marginTop="5dp"
-                android:maxLength="4"
+                android:maxLength="2"
                 android:imeOptions="actionNext"/>
         </LinearLayout>
 

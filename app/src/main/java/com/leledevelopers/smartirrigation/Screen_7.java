@@ -15,6 +15,7 @@ import com.leledevelopers.smartirrigation.models.FiltrationModel;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
+import com.leledevelopers.smartirrigation.services.SmsTesting;
 import com.leledevelopers.smartirrigation.services.impl.CURD_FilesImpl;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
@@ -24,7 +25,7 @@ import java.io.IOException;
 public class Screen_7 extends SmsServices {
     private static final String TAG = Screen_7.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
-    private Boolean b, systemDown = false;
+    private Boolean b=false, systemDown = false;
     EditText filtrationControlUnitNoDelay_1, filtrationControlUnitNoDelay_2, filtrationControlUnitNoDelay_3;
     EditText filtrationControlUnitOnTime, filtrationControlUnitSeparation;
     private Button enableFiltration, disableFiltration, back_7;
@@ -41,9 +42,11 @@ public class Screen_7 extends SmsServices {
     private boolean isInitial = false;
     private boolean isEnabledClicked = false;
     private boolean isDisabledClicked = false;
-    private double randomNumber;
+    private double randomNumber=-1;
     private static boolean screen_7_Visible = false;
-
+    private SmsTesting smsTesting=new SmsTesting();
+    private  StringBuffer activityMessage=new StringBuffer("");
+    private  boolean handlerActivated=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +96,9 @@ public class Screen_7 extends SmsServices {
                 }
                 cursorVisibility();
                 if (validateInput() && !systemDown) {
-                    disableViews();
+                    status.setText("Enable filtration SMS sent");
+                    activityMessage.replace(0,activityMessage.length(),"Enable filtration SMS");
+                            disableViews();
                     randomNumber = Math.random();
                     updateData_And_SendSMS("enable","Enable filtration SMS ");
                     //smsReceiver.waitFor_1_Minute(randomNumber);
@@ -113,14 +118,15 @@ public class Screen_7 extends SmsServices {
                     // TODO: handle exception
                 }
                 if (!systemDown) {
+                    status.setText("Disable filtration SMS sent");
                     disableViews();
                     randomNumber = Math.random();
-                    status.setText("Disable filtration SMS sent");
+                    activityMessage.replace(0,activityMessage.length(),"Disable filtration SMS ");
                     updateData_And_SendSMS("disable","Disable filtration SMS ");
-                   // smsReceiver.waitFor_1_Minute(randomNumber);
-                   // b = false;
+                    // smsReceiver.waitFor_1_Minute(randomNumber);
+                    // b = false;
                     isDisabledClicked = true;
-                    //status.setText("Disable filtration SMS Sent");
+                    status.setText("Disable filtration SMS Sent");
                 }
             }
         });
@@ -133,7 +139,7 @@ public class Screen_7 extends SmsServices {
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-
+                randomNumber=-1;
                 Intent intentB=(new Intent(Screen_7.this, Screen_4.class));
                 intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intentB);
@@ -342,7 +348,8 @@ public class Screen_7 extends SmsServices {
             //enableFiltration.setVisibility(View.VISIBLE);
             disableFiltration.setVisibility(View.INVISIBLE);
         }
-        sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver,randomNumber,screen_Specific_SMS);
+        SmsTesting.contextPri=getApplicationContext();
+        smsTesting.sendMessageBox(SmsServices.phoneNumber, smsData,    randomNumber,screen_Specific_SMS);
         isEditedDelay_1 = false;
         isEditedDelay_2 = false;
         isEditedDelay_3 = false;
@@ -484,7 +491,9 @@ public class Screen_7 extends SmsServices {
             public void checkTime(double randomValue) {
                 System.out.println("At screen_7 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_7_Visible = "+screen_7_Visible);
                 if (b && (randomNumber == randomValue) && screen_7_Visible) {
-                    System.out.println("screen_7 b = "+b);
+
+                    disableViews();
+                    handlerActivated=false;
                     systemDown = true;
                     smsReceiver.unRegisterBroadCasts();
                     status.setText(SmsUtils.SYSTEM_DOWN);
@@ -492,6 +501,7 @@ public class Screen_7 extends SmsServices {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            randomNumber=-1;
                             Intent intentS=(new Intent(Screen_7.this, MainActivity_GSM.class));
                             intentS.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intentS);                        }
@@ -501,16 +511,22 @@ public class Screen_7 extends SmsServices {
 
         });
 
-        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+        smsTesting.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
-            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus) {
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message) {
                 System.out.println("non service page smsDeliveredStatus - "+smsDeliveredStatus);
                 if(smsDeliveredStatus){
+                    if(message.equals(activityMessage.toString())&& !(handlerActivated))
+                            {
+                                handlerActivated=true;
                     smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
+                    }
                 } else {
+                    status.setText(message+" sending failed");
                     isEnabledClicked = false;
                     isDisabledClicked = false;
+                    enableViews();
                     initializeModel();
                 }
             }
@@ -534,6 +550,7 @@ public class Screen_7 extends SmsServices {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        randomNumber=-1;
         Intent intentB=(new Intent(Screen_7.this, Screen_4.class));
         intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intentB);
@@ -543,6 +560,7 @@ public class Screen_7 extends SmsServices {
         try {
             if (message.toLowerCase().contains(SmsUtils.INSMS_8_1.toLowerCase()) && isEnabledClicked) {
                 b = false;
+                handlerActivated=false;
                 isEnabledClicked = false;
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Water filtration activated");
@@ -550,6 +568,7 @@ public class Screen_7 extends SmsServices {
                 initializeModel();
             } else if (message.toLowerCase().contains(SmsUtils.INSMS_9_1.toLowerCase()) && isDisabledClicked) {
                 b = false;
+                handlerActivated=false;
                 isDisabledClicked = false;
                 curd_files.updateFile(getApplicationContext(), ProjectUtils.CONFG_FILTRATION_FILE, model);
                 status.setText("Water filtration deactivated");

@@ -4,12 +4,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leledevelopers.smartirrigation.models.Message;
+import com.leledevelopers.smartirrigation.services.SmsReceiver;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
@@ -20,8 +22,9 @@ import java.util.List;
 public class Screen_4 extends SmsServices {
 
     private static final String TAG = Screen_4.class.getSimpleName();
-
+    private  Handler handler = new Handler();
     TextView status;
+    SmsReceiver smsReceiver=new SmsReceiver();
     ImageView rtcBattery;
     Button settings, configureFieldIrrigation, configureFieldFertigation, configurePumpFiltration, printReportFieldStatus;
     List<Message> messages = new ArrayList<Message>();
@@ -33,6 +36,7 @@ public class Screen_4 extends SmsServices {
         initViews();
         this.context = getApplicationContext();
         accessPermissions();
+      //  smsReceiver.cancelTimer();
         configureFieldIrrigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +106,10 @@ public class Screen_4 extends SmsServices {
 
             }
         });
+
+
+
+
     }
 
     private void filterMessages() {
