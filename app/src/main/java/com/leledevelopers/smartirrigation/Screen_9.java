@@ -211,6 +211,8 @@ public class Screen_9 extends SmsServices {
                     smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                     b = true;
                 } else {
+                    status.setText(message+" sending failed");
+                    enableViews();
                     isGetTimeClicked = false;
                     isSetTimeClicked = false;
                 }

@@ -160,6 +160,7 @@ public class MainActivity_GSM extends SmsServices {
                     status.setText(SmsUtils.SYSTEM_DOWN);
 
                 }
+
             }
 
         });
@@ -176,6 +177,12 @@ public class MainActivity_GSM extends SmsServices {
                         // status.setText("Authentication SMS sent");
                     }
 
+                }
+                else
+                {
+
+                    status.setText(message+" sending failed");
+                    enableViews();
                 }
             }
         });

@@ -1,6 +1,7 @@
 package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -15,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.leledevelopers.smartirrigation.models.BaseConfigurationFeildFertigationModel;
 import com.leledevelopers.smartirrigation.models.ConfigurationFeildFertigationModel;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
@@ -27,6 +30,7 @@ import com.leledevelopers.smartirrigation.utils.SmsUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class Screen_6 extends SmsServices {
@@ -582,4 +586,22 @@ public class Screen_6 extends SmsServices {
             e.printStackTrace();
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String encodingMessage(String actualMessage)
+    {
+        String encodedMessage
+                = Base64.getEncoder()
+                .encodeToString(actualMessage.getBytes());
+        return encodedMessage;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String decodingMessage(String decodedMessage)
+    {
+        byte[] actualByte = Base64.getDecoder().decode(decodedMessage);
+
+        String actualString = new String(actualByte);
+        return actualString;
+    }
+
 }

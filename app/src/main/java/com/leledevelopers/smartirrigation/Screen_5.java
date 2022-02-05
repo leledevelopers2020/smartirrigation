@@ -896,6 +896,8 @@ public class Screen_5 extends SmsServices {
 
                     }
                 } else {
+                     status.setText(message+" sending failed");
+                     enableViews();
                     isEnabledClicked = false;
                     isDisabledClicked = false;
                     initializeModel();

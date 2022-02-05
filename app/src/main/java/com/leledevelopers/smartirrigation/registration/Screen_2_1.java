@@ -442,6 +442,8 @@ public class Screen_2_1 extends SmsServices {
                     }
 
                 } else {
+                    status.setText(message+" sending failed");
+                    enableViews();
                     isSetClicked = false;
                 }
             }

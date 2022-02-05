@@ -255,6 +255,8 @@ public class Screen_10 extends SmsServices {
                     b = true;
                     }
                 } else {
+                    status.setText(message+" sending failed");
+                    enableViews();
                     isSetMotorLoadClicked = false;
                 }
             }

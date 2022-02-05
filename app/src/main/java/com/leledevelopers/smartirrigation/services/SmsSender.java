@@ -45,7 +45,7 @@ public class SmsSender extends AppCompatActivity {
         System.out.println("@1"+ Arrays.toString(context.databaseList()));
         System.out.println("@2"+Arrays.toString(context.fileList()));
         /*---when the SMS has been sent---*/
-     /*   context.registerReceiver(new BroadcastReceiver() {
+        context.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
                 System.out.println("code-----> " + getResultCode());
@@ -81,7 +81,7 @@ public class SmsSender extends AppCompatActivity {
 
                 }
             }
-        }, new IntentFilter(SENT));*/
+        }, new IntentFilter(SENT));
 
         /*---when the SMS has been delivered---*/
         context.registerReceiver(new BroadcastReceiver() {
