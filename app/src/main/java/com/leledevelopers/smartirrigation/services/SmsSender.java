@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 public class SmsSender extends AppCompatActivity {
@@ -105,8 +106,10 @@ public class SmsSender extends AppCompatActivity {
 
         if (!phoneNumber.equals("") || message != null || !message.equals("")) {
             System.out.println(testing+ "hello this is ");
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phoneNumber, null, encodingMessage(message), sentPI, deliveredPI);
+            }
 
         }
 
@@ -114,5 +117,14 @@ public class SmsSender extends AppCompatActivity {
 
     public interface SmsSenderBroadcast {
         public void onReceiveStatus(boolean smsDeliveredStatus);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String encodingMessage(String actualMessage)
+    {
+        String encodedMessage
+                = Base64.getEncoder()
+                .encodeToString(actualMessage.getBytes());
+        return encodedMessage;
     }
 }
