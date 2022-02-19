@@ -6,8 +6,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.widget.TextView;
@@ -53,12 +51,12 @@ public abstract class SmsServices extends AppCompatActivity {
 
      public void sendMessage(String phoneNumber, String message, TextView view, SmsReceiver smsReceiver, double randomNumber, String screen_Specific_Sms) {
         SmsSender smsSender = new SmsSender();
-        System.out.println("---> " + smsReceiver.toString());
+
         smsSender.sendMessage(phoneNumber, message, this.context /*view*/, screen_Specific_Sms);
         smsSender.setSmsSenderBroadcast(new SmsSender.SmsSenderBroadcast() {
             @Override
             public void onReceiveStatus(boolean smsDeliveredStatus) {
-                System.out.println("service smsDeliveredStatus = " + smsDeliveredStatus);
+
                 if (smsDeliveredStatus) {
                     //smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                 } else {
@@ -80,9 +78,7 @@ public abstract class SmsServices extends AppCompatActivity {
             localList = localSubscriptionManager.getActiveSubscriptionInfoList();
             SubscriptionInfo simInfo1 = (SubscriptionInfo) localList.get(0);
             SubscriptionInfo simInfo2 = (SubscriptionInfo) localList.get(1);
-            System.out.println("simInfo1 " + simInfo1.getSubscriptionId() + " , " + simInfo1.getNumber() + " , " + simInfo1.getSubscriptionType());
-            System.out.println("simInfo2 " + simInfo2.getSubscriptionId() + " , " + simInfo2.getNumber() + " , " + simInfo2.getSubscriptionType());
-            //SendSMS From SIM One
+             //SendSMS From SIM One
             //SmsManager.getSmsManagerForSubscriptionId(simInfo1.getSubscriptionId()).sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
 
             //SendSMS From SIM Two

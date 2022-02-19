@@ -7,34 +7,23 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
-import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * @author Narsing Rao.k
  * This class contains code for receiving sms
  */
 public class SmsReceiver {
-    private  Timer timer,timer3;
-    public double randomVal=0;
-    HandlerThread handlerThread = new HandlerThread("MyHandlerThread");
-    int count=0;
+
+
+
+
     private static final String TAG = SmsReceiver.class.getSimpleName();
     private Context context;
     private BroadcastReceiver broadcastReceiver;
     private static SmsReceiverBroadcast smsReceiverBroadcast;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss a");
-    private Runnable ro;
+
 
     public SmsReceiver() {
         this.smsReceiverBroadcast = null;
@@ -117,60 +106,9 @@ public class SmsReceiver {
                 }
             }, 60 * 2000);
 
-    /*    timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if(count!=0)
-                smsReceiverBroadcast. checkTime( randomVal);
-            }
-        },0,30*1000);
-        Timer timer2 = new Timer();
-        timer2.schedule(new TimerTask() {
-            @Override
-            public void run() {
+         }
 
-                    count++;
-            }
-        },0,2*1000);
 
-        {
-             timer3 = new Timer();
-            timer3.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    try {
-
-                        timer2.cancel();
-                        System.out.println("count value=" + count);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, 0, 1000);
-        }*/
-    }
-    public  void  cancelTimer()
-    {
-
-        count=0;
-        try {
-
-            timer.cancel();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            timer3.cancel();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
- /*   @RequiresApi(api = Build.VERSION_CODES.Q)
-    public  void removeCallBacks()
-    {
-        Log.d("Tag","all the call backs removed");
-    }*/
 
     /**
      * @author Narsing Rao.K

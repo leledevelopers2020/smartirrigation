@@ -3,7 +3,6 @@ package com.leledevelopers.smartirrigation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -102,8 +101,7 @@ public class Screen_10 extends SmsServices {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    Log.d("tag", fullLoadCutOffText.getText().toString() + "full " + fullLoadCutOffText.getText().toString().length());
-                    if (fullLoadCutOffText.getText().toString().length() == 0 ||
+                     if (fullLoadCutOffText.getText().toString().length() == 0 ||
                             !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffText.getText().toString())))) {
 
                         fullLoadCutOffText.getText().clear();
@@ -131,18 +129,15 @@ public class Screen_10 extends SmsServices {
 
 
     private boolean validateInput(String noLoadCutoffTextlocal, String fullLoadCutOffTextlocal) {
-        Log.d("tag", fullLoadCutOffTextlocal + "full   " + noLoadCutoffTextlocal);
-        boolean validate = true;
+         boolean validate = true;
         try {
             if (noLoadCutoffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(noLoadCutoffTextlocal)))) {
-                System.out.println("hello no load");
-                noLoadCutoffText.getText().clear();
+                 noLoadCutoffText.getText().clear();
                 noLoadCutoffText.setError("Enter a valid value");
                 validate = false;
             }
             if (fullLoadCutOffTextlocal.equals("") || !(validateRange(0, 1024, Integer.parseInt(fullLoadCutOffTextlocal)))) {
-                System.out.println("hello full load");
-                fullLoadCutOffText.getText().clear();
+                 fullLoadCutOffText.getText().clear();
                 fullLoadCutOffText.setError("Enter a valid value");
                 validate = false;
             }
@@ -219,10 +214,8 @@ public class Screen_10 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                //   System.out.println("At screen_10 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_10_Visible = "+screen_10_Visible);
-                if (b && (randomNumber == randomValue) && screen_10_Visible) {
-                    //  System.out.println("screen_10 b = "+b);
-                    systemDown = true;
+                 if (b && (randomNumber == randomValue) && screen_10_Visible) {
+                     systemDown = true;
                     disableViews();
                     handlerActivated=false;
                     smsReceiver.unRegisterBroadCasts();
@@ -245,8 +238,7 @@ public class Screen_10 extends SmsServices {
         this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message) {
-                //System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
-                if (smsDeliveredStatus) {
+                 if (smsDeliveredStatus) {
                     if(message.equals(activityMessage.toString()) && !(handlerActivated))
 
                     {

@@ -2,8 +2,6 @@ package com.leledevelopers.smartirrigation.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.telecom.TelecomManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.leledevelopers.smartirrigation.R;

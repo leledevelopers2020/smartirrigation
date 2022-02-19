@@ -36,7 +36,6 @@ public class Screen_4 extends SmsServices {
         initViews();
         this.context = getApplicationContext();
         accessPermissions();
-      //  smsReceiver.cancelTimer();
         configureFieldIrrigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,10 +105,6 @@ public class Screen_4 extends SmsServices {
 
             }
         });
-
-
-
-
     }
 
     private void filterMessages() {

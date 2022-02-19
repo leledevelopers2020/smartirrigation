@@ -1,17 +1,14 @@
 package com.leledevelopers.smartirrigation;
 
-import android.animation.TimeAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leledevelopers.smartirrigation.registration.Screen_2_1;
 import com.leledevelopers.smartirrigation.services.SmsReceiver;
@@ -36,7 +33,6 @@ public class Screen_9 extends SmsServices {
     private boolean isSetTimeClicked = false;
     private boolean isGetTimeClicked = false;
     private static boolean screen_9_Visible = false;
-    private  Looper looper;
 
     private  StringBuffer activityMessage=new StringBuffer("");
     private  boolean handlerActivated=false;
@@ -85,16 +81,11 @@ public class Screen_9 extends SmsServices {
             public void onClick(View v) {
                 disableViews();
                 randomNumber = Math.random();
-                //smsReceiver.waitFor_1_Minute(randomNumber);
-                //b = true;
                 isSetTimeClicked = true;
                 String smsData = smsUtils.OutSMS_10(mFormat.format(Double.valueOf(calendar.get(Calendar.DATE))) + "", mFormat.format(Double.valueOf((calendar.get(Calendar.MONTH) + 1))) + "",
                         mFormat.format(Double.valueOf((calendar.get(Calendar.YEAR)) % 100)) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.HOUR_OF_DAY))) + ""
                         , mFormat.format(Double.valueOf(calendar.get(Calendar.MINUTE))) + "", mFormat.format(Double.valueOf(calendar.get(Calendar.SECOND))) + "");
                 activityMessage.replace(0,activityMessage.length(),"Date Timestamp SMS ");
-                /*String smsData=smsUtils.OutSMS_10(  calendar.get(Calendar.DATE)+"",(calendar.get(Calendar.MONTH)+1)+"",
-                        (calendar.get(Calendar.YEAR))%100+"",calendar.get(Calendar.HOUR_OF_DAY)+""
-                        ,calendar.get(Calendar.MINUTE)+"", calendar.get(Calendar.SECOND)+"");*/
                 sendMessage(SmsServices.phoneNumber, smsData, status, smsReceiver, randomNumber,"Date Timestamp SMS ");
                  status.setText("Date Timestamp SMS Sent");
             }
@@ -104,8 +95,6 @@ public class Screen_9 extends SmsServices {
             public void onClick(View v) {
                 disableViews();
                 randomNumber = Math.random();
-                //smsReceiver.waitFor_1_Minute(randomNumber);
-                //b = true;
                 activityMessage.replace(0,activityMessage.length(),"Get System Timestamp SMS ");
                 isGetTimeClicked = true;
                 String smsData = smsUtils.OutSMS_11;
@@ -203,8 +192,7 @@ public class Screen_9 extends SmsServices {
         this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message) {
-                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
-                if (smsDeliveredStatus) {
+                 if (smsDeliveredStatus) {
                     if(message.equals(activityMessage.toString()) &&!(handlerActivated))
                     //status.setText(message+" sent");
                         handlerActivated=true;

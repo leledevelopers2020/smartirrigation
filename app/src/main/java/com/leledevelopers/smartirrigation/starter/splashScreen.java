@@ -23,8 +23,7 @@ public class splashScreen extends SmsServices {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         this.context = getApplicationContext();
-
-        //accessPermissions();
+ 
 
         File file = new File(splashScreen.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
         if (file.exists()) {
@@ -90,8 +89,7 @@ public class splashScreen extends SmsServices {
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-                System.out.println(e.fillInStackTrace());
-            }
+             }
         }
     }
 }

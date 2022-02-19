@@ -301,10 +301,10 @@ public class Screen_2_1 extends SmsServices {
         status = findViewById(R.id.screen_2_1_status);
         checkbox1 = findViewById(R.id.checkbox1);
         checkbox2 = findViewById(R.id.checkbox2);
-        System.out.println("in initviews");
+
         File file = new File(Screen_2_1.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
         if (file.exists()) {
-            System.out.println("Yes file exists "+ SmsServices.phoneNumber);
+
             gsmContact.setText(SmsServices.phoneNumber);
         }
     }
@@ -522,6 +522,5 @@ public class Screen_2_1 extends SmsServices {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("isPasswordSaved = "+isPasswordSaved + " phn = "+SmsServices.phoneNumber+ "---");
-    }
+     }
 }

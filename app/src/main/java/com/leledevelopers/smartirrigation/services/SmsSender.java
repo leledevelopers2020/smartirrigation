@@ -1,27 +1,19 @@
 package com.leledevelopers.smartirrigation.services;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.SmsManager;
-import android.telephony.SubscriptionInfo;
-import android.telephony.SubscriptionManager;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.List;
 
 public class SmsSender extends AppCompatActivity {
     private SmsSenderBroadcast smsSenderBroadcast;
@@ -37,19 +29,17 @@ public class SmsSender extends AppCompatActivity {
     }
 
     public void sendMessage(String phoneNumber, String message, Context context, /*TextView view,*/ String screen_Specific_Sms) {
-        System.out.println("--> in " + " " + phoneNumber + " " + message);
-        PendingIntent sentPI = PendingIntent.getBroadcast(context, 0,
+         PendingIntent sentPI = PendingIntent.getBroadcast(context, 0,
                 new Intent(SENT), 0);
 
         PendingIntent deliveredPI = PendingIntent.getBroadcast(context, 0,
                 new Intent(DELIVERED), 0);
-        System.out.println("@1"+ Arrays.toString(context.databaseList()));
-        System.out.println("@2"+Arrays.toString(context.fileList()));
+
         /*---when the SMS has been sent---*/
         context.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                System.out.println("code-----> " + getResultCode());
+
                 testing="SENT";
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
@@ -88,7 +78,7 @@ public class SmsSender extends AppCompatActivity {
         context.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                System.out.println("code---> " + getResultCode());
+
                 testing="DELIVERED";
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
@@ -105,7 +95,7 @@ public class SmsSender extends AppCompatActivity {
 
 
         if (!phoneNumber.equals("") || message != null || !message.equals("")) {
-            System.out.println(testing+ "hello this is ");
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phoneNumber, null, encodingMessage(message), sentPI, deliveredPI);

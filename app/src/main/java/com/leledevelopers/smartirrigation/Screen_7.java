@@ -101,11 +101,8 @@ public class Screen_7 extends SmsServices {
                             disableViews();
                     randomNumber = Math.random();
                     updateData_And_SendSMS("enable","Enable filtration SMS ");
-                    //smsReceiver.waitFor_1_Minute(randomNumber);
-                    //b = true;
                     isEnabledClicked = true;
-                    //status.setText("Enable filtration SMS Sent");
-                }
+                                   }
             }
         });
         disableFiltration.setOnClickListener(new View.OnClickListener() {
@@ -123,8 +120,6 @@ public class Screen_7 extends SmsServices {
                     randomNumber = Math.random();
                     activityMessage.replace(0,activityMessage.length(),"Disable filtration SMS ");
                     updateData_And_SendSMS("disable","Disable filtration SMS ");
-                    // smsReceiver.waitFor_1_Minute(randomNumber);
-                    // b = false;
                     isDisabledClicked = true;
                     status.setText("Disable filtration SMS Sent");
                 }
@@ -278,7 +273,6 @@ public class Screen_7 extends SmsServices {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     try {
-
                         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     } catch (Exception e) {
@@ -489,8 +483,7 @@ public class Screen_7 extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                System.out.println("At screen_7 randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , screen_7_Visible = "+screen_7_Visible);
-                if (b && (randomNumber == randomValue) && screen_7_Visible) {
+                 if (b && (randomNumber == randomValue) && screen_7_Visible) {
 
                     disableViews();
                     handlerActivated=false;
@@ -514,8 +507,7 @@ public class Screen_7 extends SmsServices {
         smsTesting.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message) {
-                System.out.println("non service page smsDeliveredStatus - "+smsDeliveredStatus);
-                if(smsDeliveredStatus){
+                 if(smsDeliveredStatus){
                     if(message.equals(activityMessage.toString())&& !(handlerActivated))
                             {
                                 handlerActivated=true;

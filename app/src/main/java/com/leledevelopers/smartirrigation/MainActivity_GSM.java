@@ -41,12 +41,6 @@ public class MainActivity_GSM extends SmsServices {
         setContentView(R.layout.activity_mainactivity_gsm);
         this.context = getApplicationContext();
         initViews();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("checking handler backfgrnd service");
-            }
-        },10000);
         readUserFile();
         try {
             extraIntent = getIntent();
@@ -67,7 +61,7 @@ public class MainActivity_GSM extends SmsServices {
                      sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2, status, smsReceiver, randomNumber,"Authentication SMS ");
                     status.setText("Authentication SMS sent");
                 }
-                //  startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
+
             }
         });
 
@@ -151,8 +145,7 @@ public class MainActivity_GSM extends SmsServices {
 
             @Override
             public void checkTime(double randomValue) {
-                System.out.println("At main screen randomValue = "+randomValue+" and randomNumber = "+randomNumber+" , randomNumber vs randomValue =  "+(randomNumber == randomValue)+" , Mainacitivity_GSM_Visible = "+Mainacitivity_GSM_Visible);
-                if (b && (randomNumber == randomValue) && Mainacitivity_GSM_Visible) {
+                 if (b && (randomNumber == randomValue) && Mainacitivity_GSM_Visible) {
                     handlerActivated=false;
                     systemDown = true;
                     disableViews();
@@ -168,19 +161,16 @@ public class MainActivity_GSM extends SmsServices {
         this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
             @Override
             public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus,String message) {
-                System.out.println("non service page smsDeliveredStatus - " + smsDeliveredStatus);
-                if (smsDeliveredStatus) {
+                 if (smsDeliveredStatus) {
                     if(message.equals(activityMessage.toString()) && !(handlerActivated)){
                         smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
                         handlerActivated=true;
                         b = true;
-                        // status.setText("Authentication SMS sent");
                     }
 
                 }
                 else
                 {
-
                     status.setText(message+" sending failed");
                     enableViews();
                 }
