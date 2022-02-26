@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.DateFormat;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,17 +36,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Screen_5 extends SmsServices {
     private static final String TAG = Screen_5.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
-    ArrayAdapter<CharSequence> adapter;
-    private Spinner spinner;
+    ArrayAdapter<CharSequence> fieldNoArray, triggerFrom;
+    private Spinner spinner, wetPeriod;
     private int hour, min;
-    EditText valveOnPeriod, valveOffPeriod, soilDryness, soilWetness, motorOnTime, priority, cycles, wetPeriod;
-    TextView status;
-    private Button enableFertigation, disableFertigation,back_5;
-    private Boolean b;
+    EditText valveOnPeriod, valveOffPeriod, soilDryness, soilWetness, priority, cycles;
+    private TextView status, motorOnTime;
+    private Button enableFertigation, disableFertigation, back_5;
+    private Boolean b = false, systemDown = false;
     private ConfigureFieldIrrigationModel model;
     private CURD_Files<ConfigureFieldIrrigationModel> curd_files = new CURD_FilesImpl<ConfigureFieldIrrigationModel>();
     private List<ConfigureFieldIrrigationModel> modelList = new ArrayList<ConfigureFieldIrrigationModel>();
@@ -59,25 +65,33 @@ public class Screen_5 extends SmsServices {
     private boolean isEditedCycles = false;
     private boolean isEditedWetPeriod = false;
     private boolean isInitial = false;
+    private boolean isEnabledClicked = false;
+    private boolean isDisabledClicked = false;
+    private TimePickerDialog timePickerDialog;
+    private double randomNumber = -1;
+    private static boolean screen_5_Visible = false;
+    private Timer timer;
+    private int counter = 0;
+    private boolean handlerActivated = false;
+    private StringBuffer activityMessage = new StringBuffer("");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen5);
+        this.context = getApplicationContext();
         initViews();
-        // spinner of field no
-        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        fieldNoArray = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
+        fieldNoArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(fieldNoArray);
+        triggerFrom = ArrayAdapter.createFromResource(getApplicationContext(), R.array.triggerfrom, android.R.layout.simple_spinner_dropdown_item);
+        wetPeriod.setAdapter(triggerFrom);
         initializeModel();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (modelList.get(position).isEnabled()) {
-                    disableFertigation.setVisibility(View.VISIBLE);
-                    enableFertigation.setVisibility(View.INVISIBLE);
+                if (modelList.get(position).isEnabled() || !modelList.get(position).isModelEmpty()) {
                     model = modelList.get(position);
-                    System.out.println(model.toString());
                     valveOnPeriod.setText(model.getValveOnPeriod() + "");
                     valveOffPeriod.setText(model.getValveOffPeriod() + "");
                     soilDryness.setText(model.getSoilDryness() + "");
@@ -85,10 +99,43 @@ public class Screen_5 extends SmsServices {
                     motorOnTime.setText(model.getMotorOnTime());
                     priority.setText(model.getPriority() + "");
                     cycles.setText(model.getCycle() + "");
-                    wetPeriod.setText(model.getTiggerFrom());
+                    wetPeriod.setSelection(spinnerIntValue(model.getTiggerFrom()));
                     getHoursAndMinutes(model.getMotorOnTime());
+
+                    if (model.isEnabled()) {
+                        disableFertigation.setVisibility(View.VISIBLE);
+                        enableFertigation.setVisibility(View.INVISIBLE);
+                    } else {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                        enableFertigation.setVisibility(View.VISIBLE);
+                    }
+                    isInitial = false;
                 } else {
+                    isInitial = true;
                     setEmptyData();
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        wetPeriod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isInitial) {
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                } else if (model.isEnabled()) {
+                    if ((position + "").equals(spinnerIntValue(model.getTiggerFrom()) + "")) {
+                        isEditedWetPeriod = false;
+                        isAnyViewEdited();
+                    } else {
+                        isEditedWetPeriod = true;
+                        isAnyViewEdited();
+                    }
                 }
             }
 
@@ -97,132 +144,74 @@ public class Screen_5 extends SmsServices {
 
             }
         });
+
         valveOnPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (valveOnPeriod.getText().toString().equals(model.getValveOnPeriod() + "")) {
-                    isEditedValveOnPeriod = false;
-
-                } else {
-                    isEditedValveOnPeriod = true;
-                }
-                isAnyViewEdited();
+                valveOnPeriod.setCursorVisible(true);
             }
         });
 
         valveOffPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (valveOffPeriod.getText().toString().equals(model.getValveOffPeriod() + "")) {
-                    isEditedValveOffPeriod = false;
-
-                } else {
-                    isEditedValveOffPeriod = true;
-                }
-                isAnyViewEdited();
+                valveOffPeriod.setCursorVisible(true);
             }
         });
 
         soilDryness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (soilDryness.getText().toString().equals(model.getSoilDryness() + "")) {
-                    isEditedSoilDryness = false;
-
-                } else {
-                    isEditedSoilDryness = true;
-                }
-                isAnyViewEdited();
+                soilDryness.setCursorVisible(true);
             }
         });
 
         soilWetness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (soilWetness.getText().toString().equals(model.getSoilWetness() + "")) {
-                    isEditedSoilWetness = false;
-
-                } else {
-                    isEditedSoilWetness = true;
-                }
-                isAnyViewEdited();
+                soilWetness.setCursorVisible(true);
             }
         });
 
         priority.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (priority.getText().toString().equals(model.getPriority() + "")) {
-                    isEditedPriority = false;
-
-                } else {
-                    isEditedPriority = true;
-                }
-                isAnyViewEdited();
+                priority.setCursorVisible(true);
             }
         });
 
         cycles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (cycles.getText().toString().equals(model.getCycle() + "")) {
-                    isEditedCycles = false;
-
-                } else {
-                    isEditedCycles = true;
-                }
-                isAnyViewEdited();
+                cycles.setCursorVisible(true);
             }
         });
 
-        wetPeriod.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (wetPeriod.getText().toString().equals(model.getTiggerFrom() + "")) {
-                    isEditedWetPeriod = false;
 
-                } else {
-                    isEditedWetPeriod = true;
-                }
-                isAnyViewEdited();
-            }
-        });
         back_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Screen_5.this,Screen_4.class));
-                finish();
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                Intent intentB = (new Intent(Screen_5.this, Screen_4.class));
+                intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentB);
+
             }
         });
 
-        // motor time
+
         motorOnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInitial) {
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                } else if (motorOnTime.getText().toString().equals(model.getMotorOnTime() + "")) {
-                    isEditedMotorOnTime = false;
 
-                } else {
-                    isEditedMotorOnTime = true;
-                }
-                isAnyViewEdited();
-                TimePickerDialog timePickerDialog = new TimePickerDialog(Screen_5.this,
+                motorOnTime.clearFocus();
+                motorOnTime.setError(null);
+                timePickerDialog = new TimePickerDialog(Screen_5.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
@@ -231,21 +220,55 @@ public class Screen_5 extends SmsServices {
                                 min = minute;
                                 Calendar cal = Calendar.getInstance();
                                 cal.set(0, 0, 0, hour, min);
-                                motorOnTime.setText(DateFormat.format("hh:mm aa", cal));
+                                motorOnTime.setText(DateFormat.format("HH:mm", cal));
+
+
+                                if (isInitial) {
+                                    disableFertigation.setVisibility(View.INVISIBLE);
+                                } else if (motorOnTime.getText().toString().equals(model.getMotorOnTime() + "")) {
+                                    isEditedMotorOnTime = false;
+                                    isAnyViewEdited();
+                                } else {
+                                    isEditedMotorOnTime = true;
+                                    isAnyViewEdited();
+                                }
                             }
-                        }, 12, 0, false);
+                        }, 24, 0, true);
+
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 timePickerDialog.updateTime(hour, min);
                 timePickerDialog.show();
             }
         });
 
+
         //enable fertigation
         enableFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInput()) {
-                    updateData_And_SendSMS("enable");
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                try {
+                    valveOnPeriod.clearFocus();
+                    valveOffPeriod.clearFocus();
+                    soilDryness.clearFocus();
+                    soilWetness.clearFocus();
+                    priority.clearFocus();
+                    cycles.clearFocus();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (validateInput() && !systemDown) {
+                    disableViews();
+                    cursorVisibility();
+                    status.setText("Enable Irrigation configuration SMS Sent");
+                    activityMessage.replace(0, activityMessage.length(), "Enable Irrigation configuration SMS ");
+                    updateData_And_SendSMS("enable", "Enable Irrigation configuration SMS ");
+                    isEnabledClicked = true;
                 }
             }
         });
@@ -254,199 +277,272 @@ public class Screen_5 extends SmsServices {
         disableFertigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateData_And_SendSMS("disable");
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                if (!systemDown) {
+                    disableViews();
+                    status.setText("Disable Irrigation configuration SMS Sent");
+                    randomNumber = Math.random();
+                    activityMessage.replace(0, activityMessage.length(), "Disable Irrigation configuration SMS ");
+                    updateData_And_SendSMS("disable", "Disable Irrigation configuration SMS ");
+                    isDisabledClicked = true;
+                }
             }
         });
-    }
 
-    private void setEmptyData() {
-        disableFertigation.setVisibility(View.INVISIBLE);
-        valveOnPeriod.setText("");
-        valveOffPeriod.setText("");
-        soilDryness.setText("");
-        soilWetness.setText("");
-        motorOnTime.setText("");
-        priority.setText("");
-        cycles.setText("");
-        wetPeriod.setText("");
-        model = null;
-    }
-
-    private void isAnyViewEdited() {
-        if (isEditedValveOnPeriod || isEditedValveOffPeriod || isEditedCycles || isEditedWetPeriod || isEditedPriority
-                || isEditedSoilDryness || isEditedSoilWetness) {
-            disableFertigation.setVisibility(View.INVISIBLE);
-            enableFertigation.setVisibility(View.VISIBLE);
-        } else {
-            disableFertigation.setVisibility(View.VISIBLE);
-            enableFertigation.setVisibility(View.INVISIBLE);
-        }
-        // return (isEditedDelay_1 || isEditedDelay_2 || isEditedDelay_3 || isEditedOnTime || isEditedSeparation) ? true : false;
-    }
-
-    private void updateData_And_SendSMS(String typeOfAction) {
-        if (!spinner.getSelectedItem().toString().trim().equals("Pick one")) {
-            String smsdata;
-            fieldNo = Integer.parseInt(spinner.getSelectedItem().toString());
-            if (typeOfAction.equals("enable")) {
-                model = modelList.get(fieldNo - 1);
-                model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
-                model.setValveOnPeriod(Integer.parseInt(valveOnPeriod.getText().toString()));
-                model.setValveOffPeriod(Integer.parseInt(valveOffPeriod.getText().toString()));
-                model.setSoilDryness(Integer.parseInt(soilDryness.getText().toString()));
-                model.setSoilWetness(Integer.parseInt(soilWetness.getText().toString()));
-                model.setMotorOnTime(motorOnTime.getText().toString());
-                model.setPriority(Integer.parseInt(priority.getText().toString()));
-                model.setCycle(Integer.parseInt(cycles.getText().toString()));
-                model.setTiggerFrom(wetPeriod.getText().toString());
-                System.out.println("after set " + model.toString());
-                getHoursAndMinutes(model.getMotorOnTime());
-                model.setEnabled(true);
-                smsdata = smsUtils.OutSMS_4(model.getFieldNo(), model.getValveOnPeriod(), model.getValveOffPeriod()
-                        , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
-                        model.getSoilWetness(), model.getPriority(), model.getCycle(), model.getTiggerFrom());
-                baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
-            } else {
-                smsdata = smsUtils.OutSMS_5(fieldNo);
-                baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
+        valveOnPeriod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (!(valveOnPeriod.getText().toString().matches(regex)
+                            && valveOnPeriod.getText().toString().length() >= 2 &&
+                            validateRange(10, 999, Integer.parseInt(valveOnPeriod.getText().toString())))) {
+                        valveOnPeriod.getText().clear();
+                        valveOnPeriod.setError("Enter a valid value");
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (model.isEnabled()) {
+                        if (valveOnPeriod.getText().toString().equals(model.getValveOnPeriod() + "")) {
+                            isEditedValveOnPeriod = false;
+                            isAnyViewEdited();
+                        } else {
+                            isEditedValveOnPeriod = true;
+                            isAnyViewEdited();
+                        }
+                    }
+                }
             }
-            sendMessage(SmsServices.phoneNumber, smsdata);
-            modelList.set(fieldNo - 1, model);
-            enableFertigation.setVisibility(View.INVISIBLE);
-            disableFertigation.setVisibility(View.INVISIBLE);
-            isEditedValveOnPeriod = false;
-            isEditedValveOffPeriod = false;
-            isEditedSoilDryness = false;
-            isEditedSoilWetness = false;
-            isEditedMotorOnTime = false;
-            isEditedPriority = false;
-            isEditedCycles = false;
-            isEditedWetPeriod = false;
+        });
+        valveOffPeriod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (!(valveOffPeriod.getText().toString().matches(regex)
+                            && valveOffPeriod.getText().toString().length() >= 1 &&
+                            validateRange(1, 99, Integer.parseInt(valveOffPeriod.getText().toString())))) {
+                        valveOffPeriod.getText().clear();
+                        valveOffPeriod.setError("Enter a valid value");
 
-            /*baseConfigureFieldIrrigationModel.setModelList(modelList);
-            try {
-                curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-        } else {
-            Toast.makeText(Screen_5.this, "Please select the field no", Toast.LENGTH_LONG).show();
-            enableFertigation.setVisibility(View.VISIBLE);
-        }
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (model.isEnabled()) {
+                        if (valveOffPeriod.getText().toString().equals(model.getValveOffPeriod() + "")) {
+                            isEditedValveOffPeriod = false;
+                            isAnyViewEdited();
+                        } else {
+                            isEditedValveOffPeriod = true;
+                            isAnyViewEdited();
+                        }
+                    }
+                }
+            }
+        });
 
-        initializeModel();
+        soilDryness.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (!(soilDryness.getText().toString().matches(regex)
+                            && soilDryness.getText().toString().length() >= 3 &&
+                            validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
+                        soilDryness.getText().clear();
+                        soilDryness.setError("Enter a valid value");
+
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (model.isEnabled()) {
+                        if (soilDryness.getText().toString().equals(model.getSoilDryness() + "")) {
+                            isEditedSoilDryness = false;
+                            isAnyViewEdited();
+                        } else {
+                            isEditedSoilDryness = true;
+                            isAnyViewEdited();
+                        }
+                    }
+                }
+            }
+        });
+        soilWetness.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (!(soilWetness.getText().toString().matches(regex)
+                            && soilWetness.getText().toString().length() == 5 &&
+                            validateRange(10000, 99999, Integer.parseInt(soilWetness.getText().toString())))) {
+                        soilWetness.setError("Enter a valid value");
+                        soilWetness.getText().clear();
+
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (model.isEnabled()) {
+                        if (soilWetness.getText().toString().equals(model.getSoilWetness() + "")) {
+                            isEditedSoilWetness = false;
+                            isAnyViewEdited();
+                        } else {
+                            isEditedSoilWetness = true;
+                            isAnyViewEdited();
+                        }
+                    }
+                }
+            }
+        });
+        priority.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (!(priority.getText().toString().matches(regex) &&
+                            priority.getText().toString().length() >= 1 &&
+                            validateRange(1, 12, Integer.parseInt(priority.getText().toString())))) {
+                        priority.getText().clear();
+                        priority.setError("Enter a valid value");
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (model.isEnabled()) {
+                        if (priority.getText().toString().equals(model.getPriority() + "")) {
+                            isEditedPriority = false;
+                            isAnyViewEdited();
+                        } else {
+                            isEditedPriority = true;
+                            isAnyViewEdited();
+                        }
+                    }
+                }
+            }
+        });
+        cycles.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (!(cycles.getText().toString().matches(regex) &&
+                            cycles.getText().toString().length() == 1 &&
+                            validateRange(1, 9, Integer.parseInt(cycles.getText().toString())))) {
+                        cycles.getText().clear();
+                        cycles.setError("Enter a valid value");
+
+                    }
+                    if (isInitial) {
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                    } else if (model.isEnabled()) {
+                        if (cycles.getText().toString().equals(model.getCycle() + "")) {
+                            isEditedCycles = false;
+                            isAnyViewEdited();
+                        } else {
+                            isEditedCycles = true;
+                            isAnyViewEdited();
+                        }
+                    }
+                }
+            }
+        });
+        cycles.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    try {
+
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+
+                    }
+                    cycles.clearFocus();
+                    wetPeriod.performClick();
+                }
+                return true;
+            }
+        });
+        soilWetness.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    soilWetness.clearFocus();
+                    motorOnTime.performClick();
+                }
+                return true;
+            }
+        });
+
+
     }
 
     private boolean validateInput() {
 
         if (spinner.getSelectedItem().toString().trim().equals("Pick one")) {
-            spinner.requestFocus();
+
             return false;
         }
-        if (!(valveOnPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length() >= 2)) {
-            valveOnPeriod.requestFocus();
+        if (!(valveOnPeriod.getText().toString().matches(regex)
+                && valveOnPeriod.getText().toString().length() >= 2 &&
+                validateRange(10, 999, Integer.parseInt(valveOnPeriod.getText().toString())))) {
+
             valveOnPeriod.getText().clear();
-            valveOnPeriod.setError("please enter a valid value");
+            valveOnPeriod.setError("Enter a valid value");
             return false;
         }
-        if (!(valveOffPeriod.getText().toString().matches(regex) && valveOnPeriod.getText().toString().length() >= 1)) {
-            valveOnPeriod.requestFocus();
-            valveOnPeriod.getText().clear();
-            valveOnPeriod.setError("please enter a valid value");
+
+        if (!(valveOffPeriod.getText().toString().matches(regex)
+                && valveOffPeriod.getText().toString().length() >= 1 &&
+                validateRange(1, 99, Integer.parseInt(valveOffPeriod.getText().toString())))) {
+            valveOffPeriod.getText().clear();
+            valveOffPeriod.setError("Enter a valid value");
             return false;
+
         }
-        if (!(soilDryness.getText().toString().matches(regex)) && soilDryness.getText().toString().length() >= 3) {
-            soilDryness.requestFocus();
+        if (!(soilDryness.getText().toString().matches(regex)
+                && soilDryness.getText().toString().length() >= 3 &&
+                validateRange(100, 999, Integer.parseInt(soilDryness.getText().toString())))) {
             soilDryness.getText().clear();
-            soilDryness.setError("please enter a valid value");
+            soilDryness.setError("Enter a valid value");
             return false;
+
         }
-        if (!(soilWetness.getText().toString().matches(regex) && soilWetness.getText().toString().length() == 5)) {
-            soilWetness.requestFocus();
-            soilWetness.setError("please enter a valid value");
+        if (!(soilWetness.getText().toString().matches(regex)
+                && soilWetness.getText().toString().length() == 5 &&
+                validateRange(10000, 99999, Integer.parseInt(soilWetness.getText().toString())))) {
             soilWetness.getText().clear();
+            soilWetness.setError("Enter a valid value");
+
             return false;
+
         }
+
         if (motorOnTime.getText().toString() == "")  /// motor time validation is to be checked
         {
-            motorOnTime.requestFocus();
-            motorOnTime.setError("please enter a valid value");
+
+            motorOnTime.setError("Enter a valid value");
             return false;
         }
-        if (!(priority.getText().toString().matches(regex) && priority.getText().toString().length() >= 1)) {
-            priority.requestFocus();
-            priority.setError("please enter a valid value");
+        if (!(priority.getText().toString().matches(regex) &&
+                priority.getText().toString().length() >= 1 &&
+                validateRange(1, 12, Integer.parseInt(priority.getText().toString())))) {
             priority.getText().clear();
+            priority.setError("Enter a valid value");
+
             return false;
+
         }
-        if (!(cycles.getText().toString().matches(regex) && cycles.getText().toString().length() == 1)) {
-            cycles.requestFocus();
+
+        if (!(cycles.getText().toString().matches(regex) &&
+                cycles.getText().toString().length() == 1 && validateRange(1, 9, Integer.parseInt(cycles.getText().toString())))) {
+
             cycles.getText().clear();
-            cycles.setError("please enter a valid value");
+            cycles.setError("Enter a valid value");
             return false;
+
         }
+
         return true;
-    }
-
-    private void initializeModel() {
-
-        try {
-            if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_IRRIGATION_FILE)) {
-                baseConfigureFieldIrrigationModel = (BaseConfigureFieldIrrigationModel) curd_files.getFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
-                modelList = baseConfigureFieldIrrigationModel.getModelList();
-                if (baseConfigureFieldIrrigationModel.getLastEnabledFieldNo() != -1) {
-                    isInitial = false;
-                    model = modelList.get(baseConfigureFieldIrrigationModel.getLastEnabledFieldNo());
-                    Toast.makeText(Screen_5.this, model.toString(), Toast.LENGTH_LONG).show();
-                    if (model.isEnabled()) {
-                        spinner.setSelection(model.getFieldNo() - 1);
-                        valveOnPeriod.setText(model.getValveOnPeriod() + "");
-                        valveOffPeriod.setText(model.getValveOffPeriod() + "");
-                        soilDryness.setText(model.getSoilDryness() + "");
-                        soilWetness.setText(model.getSoilWetness() + "");
-                        motorOnTime.setText(model.getMotorOnTime());
-                        priority.setText(model.getPriority() + "");
-                        cycles.setText(model.getCycle() + "");
-                        wetPeriod.setText(model.getTiggerFrom());
-                        getHoursAndMinutes(model.getMotorOnTime());
-                        disableFertigation.setVisibility(View.VISIBLE);
-                        enableFertigation.setVisibility(View.INVISIBLE);
-                    }
-                }
-            } else {
-                Toast.makeText(Screen_5.this, "NO data", Toast.LENGTH_LONG).show();
-                for (int i = 0; i < 12; i++) {
-                    model = new ConfigureFieldIrrigationModel();
-                    model.setFieldNo(i);
-                    model.setEnabled(false);
-                    modelList.add(new ConfigureFieldIrrigationModel());
-                    baseConfigureFieldIrrigationModel.setModelList(modelList);
-                    disableFertigation.setVisibility(View.INVISIBLE);
-                    enableFertigation.setVisibility(View.VISIBLE);
-                }
-                curd_files.createFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
-                isInitial = true;
-                disableFertigation.setVisibility(View.INVISIBLE);
-            }
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void getHoursAndMinutes(String motorOnTime) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm aa", Locale.ENGLISH);
-        try {
-            Calendar c = Calendar.getInstance();
-            c.setTime(dateFormatter.parse(motorOnTime));
-            String hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
-            String mintue = String.valueOf(c.get(Calendar.MINUTE));
-            model.setMotorOnTimeHr(Integer.parseInt(hour));
-            model.setMotorOnTimeMins(Integer.parseInt(mintue));
-            System.out.println("Hour: " + hour);
-            System.out.println("Minute: " + mintue);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -462,9 +558,276 @@ public class Screen_5 extends SmsServices {
         wetPeriod = findViewById(R.id.wetPeriod);
         enableFertigation = findViewById(R.id.enableFieldFertigation5);
         disableFertigation = findViewById(R.id.disableFertigation5);
-        back_5=findViewById(R.id.back_5);
+        back_5 = findViewById(R.id.back_5);
         status = findViewById(R.id.screen_5_status);
     }
+
+    @Override
+    public void enableViews() {
+        spinner.setEnabled(true);
+        valveOnPeriod.setEnabled(true);
+        valveOffPeriod.setEnabled(true);
+        soilDryness.setEnabled(true);
+        soilWetness.setEnabled(true);
+        motorOnTime.setEnabled(true);
+        priority.setEnabled(true);
+        cycles.setEnabled(true);
+        wetPeriod.setEnabled(true);
+    }
+
+    @Override
+    public void disableViews() {
+        spinner.setEnabled(false);
+        valveOnPeriod.setEnabled(false);
+        valveOffPeriod.setEnabled(false);
+        soilDryness.setEnabled(false);
+        soilWetness.setEnabled(false);
+        motorOnTime.setEnabled(false);
+        priority.setEnabled(false);
+        cycles.setEnabled(false);
+        wetPeriod.setEnabled(false);
+    }
+
+    private void cursorVisibility() {
+        valveOnPeriod.setCursorVisible(false);
+        valveOffPeriod.setCursorVisible(false);
+        soilDryness.setCursorVisible(false);
+        soilWetness.setCursorVisible(false);
+        priority.setCursorVisible(false);
+        cycles.setCursorVisible(false);
+
+    }
+
+
+    private void setEmptyData() {
+        disableFertigation.setVisibility(View.INVISIBLE);
+        enableFertigation.setVisibility(View.VISIBLE);
+        valveOnPeriod.setText("");
+        valveOffPeriod.setText("");
+        soilDryness.setText("");
+        soilWetness.setText("");
+        motorOnTime.setText("");
+        priority.setText("");
+        cycles.setText("");
+        model = null;
+    }
+
+    @Override
+    public String toString() {
+        return "Screen_5{" +
+                "isEditedValveOnPeriod=" + isEditedValveOnPeriod +
+                ", isEditedValveOffPeriod=" + isEditedValveOffPeriod +
+                ", isEditedSoilDryness=" + isEditedSoilDryness +
+                ", isEditedSoilWetness=" + isEditedSoilWetness +
+                ", isEditedMotorOnTime=" + isEditedMotorOnTime +
+                ", isEditedPriority=" + isEditedPriority +
+                ", isEditedCycles=" + isEditedCycles +
+                ", isEditedWetPeriod=" + isEditedWetPeriod +
+                ", isInitial=" + isInitial +
+                '}';
+    }
+
+    private void isAnyViewEdited() {
+        if (isEditedValveOnPeriod || isEditedValveOffPeriod || isEditedCycles || isEditedWetPeriod || isEditedPriority
+                || isEditedSoilDryness || isEditedSoilWetness || isEditedMotorOnTime) {
+            enableFertigation.setVisibility(View.VISIBLE);
+            disableFertigation.setVisibility(View.INVISIBLE);
+        } else {
+            disableFertigation.setVisibility(View.VISIBLE);
+            enableFertigation.setVisibility(View.INVISIBLE);
+
+        }
+    }
+
+
+    private boolean validateRange(int min, int max, int inputValue) {
+        if (inputValue >= min && inputValue <= max) {
+            return true;
+        }
+        return false;
+    }
+
+
+    private void initializeModel() {
+        try {
+            if (curd_files.isFileHasData(getApplicationContext(), ProjectUtils.CONFG_IRRIGATION_FILE)) {
+                baseConfigureFieldIrrigationModel = (BaseConfigureFieldIrrigationModel) curd_files.getFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE);
+                modelList = baseConfigureFieldIrrigationModel.getModelList();
+                if (baseConfigureFieldIrrigationModel.getLastEnabledFieldNo() != -1) {
+                    model = modelList.get(baseConfigureFieldIrrigationModel.getLastEnabledFieldNo());
+                    if (model.isEnabled() || !model.isModelEmpty()) {
+                        spinner.setSelection(model.getFieldNo() - 1);
+                        valveOnPeriod.setText(model.getValveOnPeriod() + "");
+                        valveOffPeriod.setText(model.getValveOffPeriod() + "");
+                        soilDryness.setText(model.getSoilDryness() + "");
+                        soilWetness.setText(model.getSoilWetness() + "");
+                        motorOnTime.setText(model.getMotorOnTime());
+                        priority.setText(model.getPriority() + "");
+                        cycles.setText(model.getCycle() + "");
+                        wetPeriod.setSelection(spinnerIntValue(model.getTiggerFrom()));
+                        getHoursAndMinutes(model.getMotorOnTime());
+                        if (model.isEnabled()) {
+                            disableFertigation.setVisibility(View.VISIBLE);
+                            enableFertigation.setVisibility(View.INVISIBLE);
+                        } else {
+                            disableFertigation.setVisibility(View.INVISIBLE);
+                            enableFertigation.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        isInitial = true;
+                        disableFertigation.setVisibility(View.INVISIBLE);
+                        enableFertigation.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    isInitial = true;
+                    disableFertigation.setVisibility(View.INVISIBLE);
+                    enableFertigation.setVisibility(View.VISIBLE);
+                }
+            } else {
+                for (int i = 0; i < 12; i++) {
+                    ConfigureFieldIrrigationModel modelData = new ConfigureFieldIrrigationModel();
+                    modelData.setFieldNo(i);
+                    modelData.setEnabled(false);
+                    modelList.add(modelData);
+                    baseConfigureFieldIrrigationModel.setModelList(modelList);
+                }
+                curd_files.createFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
+                isInitial = true;
+                setEmptyData();
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getHoursAndMinutes(String motorOnTime) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        try {
+            Calendar c = Calendar.getInstance();
+            c.setTime(dateFormatter.parse(motorOnTime));
+            String hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
+            String mintue = String.valueOf(c.get(Calendar.MINUTE));
+            model.setMotorOnTimeHr(Integer.parseInt(hour));
+            model.setMotorOnTimeMins(Integer.parseInt(mintue));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateData_And_SendSMS(String typeOfAction, String screen_Specific_SMS) {
+        if (!spinner.getSelectedItem().toString().trim().equals("Pick one")) {
+            String smsdata;
+            fieldNo = Integer.parseInt(spinner.getSelectedItem().toString());
+            model = modelList.get(fieldNo - 1);
+            model.setFieldNo(Integer.parseInt(spinner.getSelectedItem().toString()));
+            model.setValveOnPeriod(Integer.parseInt(valveOnPeriod.getText().toString()));
+            model.setValveOffPeriod(Integer.parseInt(valveOffPeriod.getText().toString()));
+            model.setSoilDryness(Integer.parseInt(soilDryness.getText().toString()));
+            model.setSoilWetness(Integer.parseInt(soilWetness.getText().toString()));
+            model.setMotorOnTime(motorOnTime.getText().toString());
+            model.setPriority(Integer.parseInt(priority.getText().toString()));
+            model.setCycle(Integer.parseInt(cycles.getText().toString()));
+            model.setTiggerFrom((wetPeriod.getSelectedItem().toString()));
+            getHoursAndMinutes(model.getMotorOnTime());
+            if (typeOfAction.equals("enable")) {
+                model.setEnabled(true);
+                model.setModelEmpty(false);
+                smsdata = smsUtils.OutSMS_4((model.getFieldNo() < 10 ? String.format("%02d", model.getFieldNo()) : model.getFieldNo() + ""), model.getValveOnPeriod(), model.getValveOffPeriod()
+                        , model.getMotorOnTimeHr(), model.getMotorOnTimeMins(), model.getSoilDryness(),
+                        model.getSoilWetness(), model.getPriority(), model.getCycle(), spinnerIntValue(model.getTiggerFrom()));
+                baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
+                enableFertigation.setVisibility(View.INVISIBLE);
+                disableFertigation.setVisibility(View.INVISIBLE);
+                isInitial = false;
+            } else {
+                model.setEnabled(false);
+                model.setModelEmpty(false);
+                smsdata = smsUtils.OutSMS_5((fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo + ""));
+                baseConfigureFieldIrrigationModel.setLastEnabledFieldNo(fieldNo - 1);
+                disableFertigation.setVisibility(View.INVISIBLE);
+            }
+            randomNumber = Math.random();
+            sendMessage(SmsServices.phoneNumber, smsdata, status, smsReceiver, randomNumber, screen_Specific_SMS);
+            modelList.set(fieldNo - 1, model);
+            isEditedValveOnPeriod = false;
+            isEditedValveOffPeriod = false;
+            isEditedSoilDryness = false;
+            isEditedSoilWetness = false;
+            isEditedMotorOnTime = false;
+            isEditedPriority = false;
+            isEditedCycles = false;
+            isEditedWetPeriod = false;
+        } else {
+            Toast.makeText(Screen_5.this, "Please select the field no", Toast.LENGTH_LONG).show();
+            enableFertigation.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void checkSMS(String message) {
+        try {
+            if (message.toLowerCase().contains(SmsUtils.INSMS_4_1.toLowerCase()) && isEnabledClicked) {
+                if (Integer.parseInt(message.substring(SmsUtils.INSMS_4_1.length()).trim()) == model.getFieldNo()) {
+                    b = false;
+                    handlerActivated = false;
+                    isEnabledClicked = false;
+                    baseConfigureFieldIrrigationModel.setModelList(modelList);
+                    curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
+                    status.setText(message);
+                    enableViews();
+                    initializeModel();
+                }
+            } else if (message.toLowerCase().contains(SmsUtils.INSMS_5_1.toLowerCase()) && isDisabledClicked) {
+                if (Integer.parseInt(message.substring(SmsUtils.INSMS_5_1.length()).trim()) == model.getFieldNo()) {
+                    b = false;
+                    isDisabledClicked = false;
+                    baseConfigureFieldIrrigationModel.setModelList(modelList);
+                    curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
+                    status.setText(message);
+                    counter = 0;
+                    handlerActivated = false;
+                    enableViews();
+                    initializeModel();
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private int spinnerIntValue(String value) {
+        int val = 0;
+        switch (value) {
+            case "Today":
+                val = 0;
+                break;
+            case "Day+1":
+                val = 1;
+                break;
+            case "Day+2":
+                val = 2;
+                break;
+            case "Day+3":
+                val = 3;
+                break;
+            case "Day+4":
+                val = 4;
+                break;
+            case "Day+5":
+                val = 5;
+                break;
+            case "Day+6":
+                val = 6;
+                break;
+            case "Day+7":
+                val = 7;
+                break;
+            default:
+        }
+        return val;
+    }
+
 
     @Override
     protected void onStart() {
@@ -474,19 +837,51 @@ public class Screen_5 extends SmsServices {
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
-                b = false;
-                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
+                    checkSMS(message);
+                } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                 }
             }
 
             @Override
-            public void checkTime(String time) {
-                if (b) {
-                    status.setText("System Down");
+            public void checkTime(double randomValue) {
+                if (b && (randomNumber == randomValue) && screen_5_Visible) {
+                    disableViews();
+                    systemDown = true;
+                    smsReceiver.unRegisterBroadCasts();
+                    status.setText(SmsUtils.SYSTEM_DOWN);
+                    handlerActivated = false;
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intentS = (new Intent(Screen_5.this, MainActivity_GSM.class));
+                            intentS.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intentS);
+                        }
+                    }, 5000);
                 }
             }
+        });
 
+        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+            @Override
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus, String message) {
+                if (smsDeliveredStatus) {
+                    if (message.equals(activityMessage.toString()) && !(handlerActivated)) {
+                        smsReceiver.waitFor_1_Minute(randomNumber, smsReceiver);
+                        b = true;
+                        handlerActivated = true;
+                    }
+                } else {
+                    status.setText(message + " sending failed");
+                    enableViews();
+                    isEnabledClicked = false;
+                    isDisabledClicked = false;
+                    initializeModel();
+                }
+            }
         });
     }
 
@@ -494,27 +889,24 @@ public class Screen_5 extends SmsServices {
     protected void onResume() {
         super.onResume();
         smsReceiver.registerBroadCasts();
-
+        screen_5_Visible = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+        screen_5_Visible = false;
     }
 
-    public void checkSMS(String message) {
-        if(message.contains(SmsUtils.INSMS_4_1)){
-            status.setText(SmsUtils.INSMS_4_1);
-            baseConfigureFieldIrrigationModel.setModelList(modelList);
-            try {
-                curd_files.updateFile(Screen_5.this, ProjectUtils.CONFG_IRRIGATION_FILE, baseConfigureFieldIrrigationModel);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if(message.contains(SmsUtils.INSMS_5_1)){
-            status.setText("Valve configuration kept on Hold");
-        }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intentB = (new Intent(Screen_5.this, Screen_4.class));
+        intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intentB);
 
     }
+
+
 }

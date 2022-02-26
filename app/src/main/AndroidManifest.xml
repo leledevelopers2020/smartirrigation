@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leledevelopers.smartirrigation">
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -9,54 +10,77 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".Screen_10"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Screen_9"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Screen_8"
-            android:exported="true" >
+            android:exported="true"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".Screen_7"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Screen_6"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".Screen_5"
-            android:exported="true" >
+            android:exported="true"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
-            android:launchMode="singleTask"
             android:name=".MainActivity_GSM"
-            android:exported="true" />
-        <activity
+            android:exported="true"
             android:launchMode="standard"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
             android:name=".registration.Screen_2_1"
-            android:exported="true" />
-        <activity
+            android:exported="true"
             android:launchMode="standard"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".registration.Screen_1"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".registration.screen_2_2"
+            android:exported="true"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Screen_4"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
-            android:launchMode="standard"
             android:name=".starter.splashScreen"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="standard"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

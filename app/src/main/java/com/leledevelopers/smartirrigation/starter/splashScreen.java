@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.leledevelopers.smartirrigation.MainActivity_GSM;
 import com.leledevelopers.smartirrigation.R;
 import com.leledevelopers.smartirrigation.registration.Screen_1;
-import com.leledevelopers.smartirrigation.MainActivity_GSM;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 import com.leledevelopers.smartirrigation.utils.ProjectUtils;
 
@@ -22,6 +22,9 @@ public class splashScreen extends SmsServices {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        this.context = getApplicationContext();
+ 
+
         File file = new File(splashScreen.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
         if (file.exists()) {
             this.context = getApplicationContext();
@@ -46,7 +49,7 @@ public class splashScreen extends SmsServices {
                     finish();
                 }
             }
-        }, 3000);
+        }, 2000);
 
     }
 
@@ -60,6 +63,16 @@ public class splashScreen extends SmsServices {
         //nothing
     }
 
+    @Override
+    public void enableViews() {
+
+    }
+
+    @Override
+    public void disableViews() {
+
+    }
+
     private void readUserFile() {
         File file = new File(splashScreen.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH);
         if (file.exists()) {
@@ -67,14 +80,16 @@ public class splashScreen extends SmsServices {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(file));
                 String line;
-                while ((line = reader.readLine())!= null){
+                while ((line = reader.readLine()) != null) {
                     text.append(line);
                 }
-                String[] s = text.toString().split("[#]");
-                SmsServices.phoneNumber = s[0];
-            } catch (IOException e) {
+                SmsServices.phoneNumber = text.toString();
+                if (!SmsServices.phoneNumber.equals("")) {
+                    readAllMessages();
+                }
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-            }
+             }
         }
     }
 }

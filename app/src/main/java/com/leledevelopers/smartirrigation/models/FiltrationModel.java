@@ -9,7 +9,7 @@ public class FiltrationModel implements Serializable {
     private int fcOnTime;
     private int fcSeperation;
     private boolean isEnabled = false;
-    private boolean isInitialData = true;
+    private boolean isModelEmpty = true;
 
     public int getFcDelay_1() {
         return fcDelay_1;
@@ -59,12 +59,12 @@ public class FiltrationModel implements Serializable {
         isEnabled = enabled;
     }
 
-    public boolean isInitialData() {
-        return isInitialData;
+    public boolean isModelEmpty() {
+        return isModelEmpty;
     }
 
-    public void setInitialData(boolean initialData) {
-        isInitialData = initialData;
+    public void setModelEmpty(boolean modelEmpty) {
+        isModelEmpty = modelEmpty;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class FiltrationModel implements Serializable {
                 ", fcOnTime=" + fcOnTime +
                 ", fcSeperation=" + fcSeperation +
                 ", isEnabled=" + isEnabled +
-                ", isInitialData=" + isInitialData +
+                ", isModelEmpty=" + isModelEmpty +
                 '}';
     }
 }

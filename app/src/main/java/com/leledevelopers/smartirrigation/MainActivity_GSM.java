@@ -3,13 +3,11 @@ package com.leledevelopers.smartirrigation;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leledevelopers.smartirrigation.registration.Screen_1;
 import com.leledevelopers.smartirrigation.registration.Screen_2_1;
@@ -27,31 +25,50 @@ public class MainActivity_GSM extends SmsServices {
     private static final String TAG = MainActivity_GSM.class.getSimpleName();
     private SmsReceiver smsReceiver = new SmsReceiver();
     private TextView smsLabel, status;
+    private Handler handler = new Handler();
     private Button connect, resetConnection;
-    private Boolean b;
+    private Boolean b=false, extra = false, systemDown = false;
+    private Intent extraIntent;
+    private Bundle bundle;
+    private double randomNumber;
+    private static boolean Mainacitivity_GSM_Visible = false;
+    private  StringBuffer activityMessage=new StringBuffer("");
+    private  boolean handlerActivated=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "Welcome");
-        System.out.println(Build.VERSION.SDK_INT);
-        System.out.println(SmsServices.phoneNumber.replaceAll("\\s", ""));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainactivity_gsm);
+        this.context = getApplicationContext();
         initViews();
         readUserFile();
+        try {
+            extraIntent = getIntent();
+            bundle = extraIntent.getExtras();
+            if ((bundle != null)) {
+                extra = bundle.getBoolean("newUser");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                smsReceiver.waitFor_1_Minute();
-                b = true;
-                sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2);
-                status.setText(SmsUtils.OutSMS_2 + " delivery");
+                disableViews();
+                if (!systemDown) {
+                    randomNumber = Math.random();
+                    activityMessage.replace(0,activityMessage.length(),"Authentication SMS ");
+                     sendMessage(SmsServices.phoneNumber, SmsUtils.OutSMS_2, status, smsReceiver, randomNumber,"Authentication SMS ");
+                    status.setText("Authentication SMS sent");
+                }
+
             }
         });
 
         resetConnection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 openDialog();
             }
         });
@@ -64,14 +81,18 @@ public class MainActivity_GSM extends SmsServices {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                         new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
-                         status.setText("Reset Successful");
-                         handler.postDelayed(new Runnable() {
-                             @Override
-                             public void run() {
-                                 startActivity(new Intent(MainActivity_GSM.this, Screen_1.class));
-                             }
-                         },1000);
+                        new File(MainActivity_GSM.this.getExternalFilesDir(null) + ProjectUtils.FILE_PATH).delete();
+                        status.setText("Reset Successful");
+                        disableViews();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intentR=(new Intent(MainActivity_GSM.this, Screen_1.class));
+                                intentR.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intentR);
+
+                            }
+                        }, 1000);
                     }
                 });
 
@@ -96,6 +117,18 @@ public class MainActivity_GSM extends SmsServices {
     }
 
     @Override
+    public void enableViews() {
+        connect.setEnabled(true);
+        resetConnection.setEnabled(true);
+    }
+
+    @Override
+    public void disableViews() {
+        connect.setEnabled(false);
+        resetConnection.setEnabled(false);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         smsReceiver.setContext(getApplicationContext());
@@ -103,21 +136,45 @@ public class MainActivity_GSM extends SmsServices {
         smsReceiver.setSmsMessageBroadcast(new SmsReceiver.SmsReceiverBroadcast() {
             @Override
             public void onReceiveSms(String phoneNumber, String message) {
-                b = false;
-
-                status.setText("Screen 2.1\nSender's Number = " + phoneNumber + "\n Message : " + message);
-                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", ""))) {
+                if (SmsServices.phoneNumber.replaceAll("\\s", "").equals(phoneNumber.replaceAll("\\s", "")) && !systemDown) {
+                    checkSMS(message);
+                } else if (phoneNumber.contains(SmsServices.phoneNumber.replaceAll("\\s", "")) && !systemDown) {
                     checkSMS(message);
                 }
             }
 
             @Override
-            public void checkTime(String time) {
-                if (b) {
-                    status.setText("System Down");
+            public void checkTime(double randomValue) {
+                 if (b && (randomNumber == randomValue) && Mainacitivity_GSM_Visible) {
+                    handlerActivated=false;
+                    systemDown = true;
+                    disableViews();
+                    smsReceiver.unRegisterBroadCasts();
+                    status.setText(SmsUtils.SYSTEM_DOWN);
+
                 }
+
             }
 
+        });
+
+        this.setSmsServiceBroadcast(new SmsServiceBroadcast() {
+            @Override
+            public void onReceiveSmsDeliveredStatus(boolean smsDeliveredStatus,String message) {
+                 if (smsDeliveredStatus) {
+                    if(message.equals(activityMessage.toString()) && !(handlerActivated)){
+                        smsReceiver.waitFor_1_Minute(randomNumber,smsReceiver);
+                        handlerActivated=true;
+                        b = true;
+                    }
+
+                }
+                else
+                {
+                    status.setText(message+" sending failed");
+                    enableViews();
+                }
+            }
         });
     }
 
@@ -125,38 +182,48 @@ public class MainActivity_GSM extends SmsServices {
     protected void onResume() {
         super.onResume();
         smsReceiver.registerBroadCasts();
-
+        Mainacitivity_GSM_Visible = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         smsReceiver.unRegisterBroadCasts();
+        Mainacitivity_GSM_Visible = false;
     }
 
     public void checkSMS(String message) {
-        switch (message) {
-            case SmsUtils.INSMS_2_1: {
-                status.setText("Connection Successful");
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(MainActivity_GSM.this, Screen_4.class));
-                    }
-                },1000);
-                break;
-            }
-            case SmsUtils.INSMS_2_2: {
-                status.setText("Admin Changed, please reauthenticate device");
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(MainActivity_GSM.this, Screen_2_1.class));
+        if (message.toLowerCase().contains(SmsUtils.INSMS_2_1.toLowerCase())) {
+            handlerActivated=false;
+            b = false;
+            status.setText("System Connected");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (extra) {
+                        Intent intent9 = new Intent(MainActivity_GSM.this, Screen_9.class);
+                        intent9.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent9);
+
+                    } else {
+                        Intent intentM = new Intent(MainActivity_GSM.this, Screen_4.class);
+                        intentM.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intentM);
 
                     }
-                },1000);
-                break;
-            }
+                }
+            }, 1000);
+        } else if (message.toLowerCase().contains(SmsUtils.INSMS_2_2.toLowerCase())) {
+            b = false;
+            handlerActivated=false;
+            status.setText("Admin Changed, please reauthenticate device");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(MainActivity_GSM.this, Screen_2_1.class));
+                    finish();
+                }
+            }, 1000);
         }
     }
 
@@ -180,5 +247,9 @@ public class MainActivity_GSM extends SmsServices {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        randomNumber-=1;
+    }
 }

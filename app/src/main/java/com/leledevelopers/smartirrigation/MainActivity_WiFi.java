@@ -21,4 +21,19 @@ public class MainActivity_WiFi extends SmsServices {
     public void initViews() {
 
     }
+
+    @Override
+    public void enableViews() {
+
+    }
+
+    @Override
+    public void disableViews() {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

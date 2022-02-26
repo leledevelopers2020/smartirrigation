@@ -1,155 +1,217 @@
 package com.leledevelopers.smartirrigation;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.leledevelopers.smartirrigation.services.CalendarService;
+import com.leledevelopers.smartirrigation.models.Message;
+import com.leledevelopers.smartirrigation.services.MessageAdapters;
 import com.leledevelopers.smartirrigation.services.SmsServices;
 
-import java.text.ParseException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Screen_8 extends SmsServices {
-    Button fromDate, toDate, printData,back_8;
-    ArrayAdapter<CharSequence> adapter;
-    Spinner spinner;
-    String startingDate, endingDate;
-    int fieldNo;
-
-    public String getStartingDate() {
-        return startingDate;
-    }
-
-    public void setStartingDate(String startingDate) {
-        this.startingDate = startingDate;
-    }
-
-    public String getEndingDate() {
-        return endingDate;
-    }
-
-    public void setEndingDate(String endingDate) {
-        this.endingDate = endingDate;
-    }
+    Button printFieldSMS, printAllSMM, back_8;
+    ArrayAdapter<CharSequence> adapter1, adapter2;
+    Spinner fieldSpinner, allSMSSpinner;
+    RecyclerView recyclerView;
+    List<Message> messages = new ArrayList<Message>();
+    TextView nodata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen8);
         initViews();
-        adapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        fieldNo = Integer.parseInt(spinner.getSelectedItem().toString());
-        fromDate.setOnClickListener(new View.OnClickListener() {
+        this.context = getApplicationContext();
+        try {
+            readAllMessages();
+            messages = getSMS();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        adapter1 = ArrayAdapter.createFromResource(getApplicationContext(), R.array.selctFieldNoArray, android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fieldSpinner.setAdapter(adapter1);
+
+        adapter2 = ArrayAdapter.createFromResource(getApplicationContext(), R.array.messgesFrom, android.R.layout.simple_spinner_dropdown_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        allSMSSpinner.setAdapter(adapter2);
+
+        printFieldSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CalendarService calendarService = new CalendarService(Screen_8.this);
-                calendarService.dateCalculator();
-                calendarService.setBaseCalendarService(new CalendarService.BaseCalendarService() {
-                    @Override
-                    public void onClickOk(String date) {
-                        setStartingDate(date);
-                        System.out.println("fromDate = " + getStartingDate());
-                    }
-                });
+                filterMessages("fields");
             }
         });
 
-        toDate.setOnClickListener(new View.OnClickListener() {
+        printAllSMM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CalendarService calendarService = new CalendarService(Screen_8.this);
-                calendarService.dateCalculator();
-                calendarService.setBaseCalendarService(new CalendarService.BaseCalendarService() {
-                    @Override
-                    public void onClickOk(String date) {
-                        setEndingDate(date);
-                        System.out.println("fromDate = " +getEndingDate());
-                    }
-                });
+                filterMessages("date");
             }
         });
 
-        printData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String ownerNumber = SmsServices.phoneNumber.replaceAll("\\s", "");
-
-                System.out.println(getStartingDate() + " - " + getEndingDate());
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                Date dateStart = null;
-                Date dateEnd = null;
-                try {
-                    dateStart = formatter.parse(getStartingDate()+ "T00:00:00");
-                    dateEnd = formatter.parse(getEndingDate()+ "T23:59:59");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-
-                // Now create the filter and query the messages.
-                String filter = "date>=" + dateStart.getTime() + " and date<=" + dateEnd.getTime();
-                System.out.println(filter);
-                // final Uri SMS_INBOX = Uri.parse("content://sms");
-                final Uri SMS_INBOX = Uri.parse("content://sms/inbox");
-                Cursor cursor = getContentResolver().query(SMS_INBOX, null, filter, null, null);
-                List<String> items = new ArrayList<String>();
-
-                while(cursor.moveToNext()) {
-
-                    // Convert date to a readable format.
-                    Calendar calendar = Calendar.getInstance();
-                    String date =  cursor.getString(cursor.getColumnIndex("date"));
-                    Long timestamp = Long.parseLong(date);
-                    calendar.setTimeInMillis(timestamp);
-                    Date finaldate = calendar.getTime();
-                    String smsDate = finaldate.toString();
-                    String smsBody = cursor.getString(cursor.getColumnIndex("body"));
-
-                    String phoneNumber = cursor.getString(cursor.getColumnIndex("address"));
-                    if(ownerNumber.equals(phoneNumber) && smsBody.contains("field no"+fieldNo)){
-                        //if(phoneNumber.equals("+919014425331")){
-                        System.out.println("---> "+/*"919014425331"*/ownerNumber+ " , "+phoneNumber);
-                        items.add("From : " + ownerNumber +  phoneNumber + "\n" +
-                                "Date Sent: " +    smsDate + "\n" +
-                                "Message : " + smsBody + "\n");
-                    }
-
-                }
-                System.out.println("SMs data "+items);
-                System.out.println("SMs count "+items.size());
-
-                cursor.close();
-            }
-        });
         back_8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Screen_8.this,Screen_4.class));
-                finish();
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Intent intentB=(new Intent(Screen_8.this, Screen_4.class));
+                intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentB);
             }
         });
     }
+
+    private void filterMessages(String filterType) {
+        List<Message> messageArrayList = new ArrayList<Message>();
+        if (filterType.equals("fields")) {
+            int fieldNo = Integer.parseInt(fieldSpinner.getSelectedItem().toString());
+            String fieldValue = fieldNo < 10 ? String.format("%02d", fieldNo) : fieldNo + "";
+            for (int i = 0; i < messages.size(); i++) {
+                if (messages.get(i).getAction().toLowerCase().contains("field no." + fieldValue)
+                        || messages.get(i).getAction().toLowerCase().contains("field no. " + fieldValue)
+                        || messages.get(i).getAction().contains("Wet Field Detected.")
+                        || messages.get(i).getAction().contains("Phase failure detected, Suspending all Actions")) {
+                    messageArrayList.add(messages.get(i));
+                }
+                if (i == messages.size() - 1) {
+                    sortMessages(messageArrayList);
+                }
+            }
+        } else if (filterType.equals("date")) {
+            int selectedDate = spinnerIntValue(allSMSSpinner.getSelectedItem().toString());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar currentCal = Calendar.getInstance();
+            String currentdate = dateFormat.format(currentCal.getTime());
+            currentCal.add(Calendar.DATE, -selectedDate);
+            String pastDate = dateFormat.format(currentCal.getTime());
+            for (int i = 0; i < messages.size(); i++) {
+                if (messages.get(i).getDate().equals(pastDate)) {
+                    messageArrayList.add(messages.get(i));
+                }
+                if (i == messages.size() - 1) {
+                    sortMessages(messageArrayList);
+                }
+            }
+        }
+    }
+
+    private void sortMessages(List<Message> messageArrayList) {
+        if(messageArrayList.size() != 0){
+            nodata.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+            Collections.sort(messageArrayList, new SortByDate());
+            messageArrayList = reverseMessageList(messageArrayList);
+            startRecyclerView(messageArrayList);
+        } else {
+            nodata.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    private int spinnerIntValue(String value) {
+        int val = 0;
+        switch (value) {
+            case "Today":
+                val = 0;
+                break;
+            case "Yesterday":
+                val = 1;
+                break;
+            case "Day-2":
+                val = 2;
+                break;
+            case "Day-3":
+                val = 3;
+                break;
+            case "Day-4":
+                val = 4;
+                break;
+            case "Day-5":
+                val = 5;
+                break;
+            case "Day-6":
+                val = 6;
+                break;
+        }
+        return val;
+    }
+
+    private void startRecyclerView(List<Message> messageList) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new MessageAdapters(messageList));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+    }
+
     @Override
     public void initViews() {
-        fromDate = (Button) findViewById(R.id.fromDate);
-        toDate = (Button) findViewById(R.id.toDate);
-        spinner = (Spinner) findViewById(R.id.fieldNoSpinner8);
-        printData = findViewById(R.id.printData);
-        back_8=findViewById(R.id.back_8);
+        fieldSpinner = findViewById(R.id.fieldNoSpinner8);
+        allSMSSpinner = findViewById(R.id.fieldDateSpinner8);
+        printFieldSMS = findViewById(R.id.printFieldSMM);
+        printAllSMM = findViewById(R.id.printAllSMM);
+        recyclerView = findViewById(R.id.displaySMS);
+        back_8 = findViewById(R.id.back_8);
+        nodata = findViewById(R.id.no_data);
+    }
+
+    @Override
+    public void enableViews() {
+
+    }
+
+    @Override
+    public void disableViews() {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intentB=(new Intent(Screen_8.this, Screen_4.class));
+        intentB.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intentB);
+    }
+
+    private List<Message> reverseMessageList(List<Message> messages) {
+        if (messages.size() <= 1) {
+            return messages;
+        }
+        for (int i = 0; i < messages.size() / 2; i++) {
+            Message temp1 = messages.get(i);
+            Message temp2 = messages.get(messages.size() - 1 - i);
+            messages.set(i, temp2);
+            messages.set(messages.size() - 1 - i, temp1);
+        }
+        return messages;
+    }
+
+    static class SortByDate implements Comparator<Message> {
+        @Override
+        public int compare(Message a, Message b) {
+            return a.getDateTime().compareTo(b.getDateTime());
+        }
     }
 }
 

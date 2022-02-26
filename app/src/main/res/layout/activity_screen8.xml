@@ -4,36 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/screen_background"
+    
     tools:context=".Screen_8">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/button_colours"
+        android:background="@drawable/title_bar_bg"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintTop_toTopOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <Button
                 android:id="@+id/back_8"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="35dp"
                 android:layout_weight="0.1"
-                android:gravity="center_vertical"
                 android:background="@drawable/back_nav"
-                />
+                android:gravity="center_vertical" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
                 android:layout_weight="0.8"
-                android:text="Smart Irrigation"
-                android:textColor="@color/black"
                 android:gravity="center_vertical"
-                android:textSize="20dp"
+                android:text="Smart Irrigation"
                 android:textAllCaps="true"
-                android:layout_marginStart="8dp"/>
+                android:textColor="@color/black"
+                android:textSize="20dp" />
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -47,95 +51,118 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.1"
             android:gravity="center"
+            android:padding="5dp"
             android:text="Report of Field Status"
-            android:textSize="30dp" />
+            android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/layoutContent"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="0.5"
-                android:text="Select field no."
-                android:textSize="20dp" />
-
-            <Spinner
-                android:id="@+id/fieldNoSpinner8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:padding="5dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="0.5"
-                android:text="From Date: "
-                android:textSize="20dp" />
-
-            <Button
-                android:id="@+id/fromDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:background="@drawable/button_colours"
-                android:padding="5dp"
-                android:text="Select Date: "
-                android:textSize="20dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="0.5"
-                android:text="To Date: "
-                android:textSize="20dp" />
-
-            <Button
-                android:id="@+id/toDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:background="@drawable/button_colours"
-                android:padding="5dp"
-                android:text="Select Date: "
-                android:textSize="20dp" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/printData"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="0.05"
-            android:background="@drawable/button_colours"
-            android:padding="10dp"
-            android:text="Print Data"
-            android:textSize="20dp" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center_vertical"
+                    android:text="Select field no."
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/fieldNoSpinner8"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:padding="5dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/printFieldSMM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/square_black_border"
+                android:padding="12dp"
+                android:text="Print Field Data " />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:text="Select Date: "
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/fieldDateSpinner8"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.5"
+                    android:padding="5dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/printAllSMM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/square_black_border"
+                android:padding="12dp"
+                android:text="Print Data" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/displaySMS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/no_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No Data"
+                android:textAlignment="center"
+                android:textColor="@color/sandcolor"
+                android:textSize="16dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

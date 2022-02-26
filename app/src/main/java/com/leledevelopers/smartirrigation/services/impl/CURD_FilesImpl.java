@@ -2,17 +2,14 @@ package com.leledevelopers.smartirrigation.services.impl;
 
 import android.content.Context;
 
-import com.leledevelopers.smartirrigation.Screen_5;
 import com.leledevelopers.smartirrigation.services.CURD_Files;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CURD_FilesImpl<T> implements CURD_Files {
@@ -32,14 +29,14 @@ public class CURD_FilesImpl<T> implements CURD_Files {
     }
 
     @Override
-    public boolean isFileHasData(Context context,String file_name) {
+    public boolean isFileHasData(Context context, String file_name) {
         File file = new File(context.getExternalFilesDir(null), file_name);
         System.out.println("Data file length " + file.length());
         return ((file.length() != 0) ? true : false);
     }
 
     @Override
-    public void createFile(Context context, String file_name, Object data) throws  IOException {
+    public void createFile(Context context, String file_name, Object data) throws IOException {
         File file = new File(context.getExternalFilesDir(null), file_name);
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream out = new ObjectOutputStream(fos);
@@ -78,7 +75,7 @@ public class CURD_FilesImpl<T> implements CURD_Files {
 
     @Override
     public void updateFileData(Context context, String file_name, List data) throws IOException {
-        this.createFile(context,file_name,data);
+        this.createFile(context, file_name, data);
     }
 
 

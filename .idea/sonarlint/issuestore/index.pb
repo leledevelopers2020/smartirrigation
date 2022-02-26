@@ -8,6 +8,6 @@ Iapp/src/test/java/com/leledevelopers/smartirrigation/ExampleUnitTest.java,3\1\
 x
 Happ/src/main/java/com/leledevelopers/smartirrigation/utils/SmsUtils.java,e\8\e811c9aff3473c89d5e1361912205c064b988ae3
 ~
-Napp/src/main/java/com/leledevelopers/smartirrigation/services/SmsReceiver.java,f\b\fb37c9c5131988ca09ef6433c34c8b43606a74a0
-~
 Napp/src/main/java/com/leledevelopers/smartirrigation/services/SmsServices.java,b\f\bf15039440a801fdcc48a5e243b1bd16aa04a556
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">smartIrrigation</string>
+    <string name="app_name">Bhoomi Jalasandharan Udyami</string>
 
     <string-array name="selctFieldNoArray">
         <item>1</item>
@@ -17,7 +17,29 @@
     </string-array>
 
     <string-array name="languagesArray">
-        <item>english</item>
+        <item>English</item>
+
+    </string-array>
+
+    <string-array name="triggerfrom">
+        <item>Today</item>
+        <item>Day+1</item>
+        <item>Day+2</item>
+        <item>Day+3</item>
+        <item>Day+4</item>
+        <item>Day+5</item>
+        <item>Day+6</item>
+        <item>Day+7</item>
+    </string-array>
+
+    <string-array name="messgesFrom">
+        <item>Today</item>
+        <item>Yesterday</item>
+        <item>Day-2</item>
+        <item>Day-3</item>
+        <item>Day-4</item>
+        <item>Day-5</item>
+        <item>Day-6</item>
     </string-array>
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
